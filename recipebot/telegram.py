@@ -44,6 +44,10 @@ class TelegramClient:
     def _url(self, method: str) -> str:
         return f"{self.base_url}/bot{self.token}/{method}"
 
+    def redact(self, text: str) -> str:
+        """Strips the bot token from library error messages, which include the request URL."""
+        return text.replace(self.token, "<token>") if self.token else text
+
     def call(self, method: str, payload: dict[str, Any] | None = None) -> Any:
         """POSTs a Bot API method. Retries 429 (honouring retry_after) and 5xx, raises TelegramError otherwise."""
         payload = payload or {}
@@ -52,7 +56,7 @@ class TelegramClient:
             try:
                 response = self.session.post(self._url(method), json=payload, timeout=self.timeout)
             except Exception as exc:
-                last_error = TelegramError(f"network error calling {method}: {type(exc).__name__}: {exc}")
+                last_error = TelegramError(self.redact(f"network error calling {method}: {type(exc).__name__}: {exc}"))
                 self.sleep(min(2 ** attempt, 30))
                 continue
             try:
@@ -62,7 +66,7 @@ class TelegramClient:
             status = int(getattr(response, "status_code", 0) or 0)
             if body.get("ok"):
                 return body.get("result")
-            description = str(body.get("description") or f"HTTP {status}")
+            description = self.redact(str(body.get("description") or f"HTTP {status}"))
             error_code = body.get("error_code") or status
             if status == 429 or error_code == 429:
                 retry_after = float((body.get("parameters") or {}).get("retry_after") or 5)

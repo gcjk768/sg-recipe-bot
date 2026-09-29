@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import signal
 import time
 from datetime import date, datetime, time as dtime, timedelta
 from typing import Callable
@@ -13,6 +14,20 @@ from recipebot.pipeline import Pipeline
 log = logging.getLogger(__name__)
 
 MAX_SLEEP_CHUNK = 60.0
+
+
+class Shutdown(Exception):
+    """Raised inside the loop when the container is asked to stop."""
+
+
+def install_signal_handlers() -> None:
+    """Turn SIGTERM (docker stop) and SIGINT into a Shutdown exception so the loop exits cleanly."""
+
+    def _handler(signum, _frame):
+        raise Shutdown(signal.Signals(signum).name)
+
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        signal.signal(sig, _handler)
 
 
 def next_run_at(now: datetime, post_time: dtime) -> datetime:
@@ -44,15 +59,18 @@ def run_forever(
     """Runs the daily loop. max_runs is for tests; None means forever. Returns the number of runs."""
     now = now or pipeline.now
     runs = 0
-    if settings.run_on_start:
-        _safe_run(pipeline, now().date())
-        runs += 1
-    while max_runs is None or runs < max_runs:
-        target = next_run_at(now(), settings.post_time)
-        log.info("next run at %s", target.isoformat(timespec="minutes"))
-        wait_until(target, now=now, sleep=sleep)
-        _safe_run(pipeline, target.date())
-        runs += 1
+    try:
+        if settings.run_on_start:
+            _safe_run(pipeline, now().date())
+            runs += 1
+        while max_runs is None or runs < max_runs:
+            target = next_run_at(now(), settings.post_time)
+            log.info("next run at %s", target.isoformat(timespec="minutes"))
+            wait_until(target, now=now, sleep=sleep)
+            _safe_run(pipeline, target.date())
+            runs += 1
+    except Shutdown as stop:
+        log.info("received %s, stopping the loop after %d run(s)", stop, runs)
     return runs
 
 
