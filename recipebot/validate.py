@@ -16,7 +16,7 @@ from recipebot.categories import Category, get_category, is_known
 from recipebot.history import History
 from recipebot.models import ModelReply, Recipe
 from recipebot.textutil import main_ingredient_name, normalise_title, normalise_url
-from recipebot.web import Fetcher, is_homepage, page_looks_like_recipe
+from recipebot.web import Fetcher, is_bot_wall, is_homepage, page_looks_like_recipe
 
 MAX_INGREDIENTS = 10
 MAX_STEPS = 8
@@ -151,10 +151,16 @@ def check_static(recipe: Recipe, brief_category: str) -> str | None:
     return None
 
 
+BOT_WALLED = "bot walled"
+
+
 def check_source_page(recipe: Recipe, fetcher: Fetcher) -> str | None:
+    """None when the page checks out, BOT_WALLED when a bot check hides it, else the reason to drop."""
     result = fetcher.fetch(recipe.source.url)
     if result.error:
         return f"source page could not be fetched ({result.error})"
+    if is_bot_wall(result):
+        return BOT_WALLED
     if result.status != 200:
         return f"source page returned HTTP {result.status}"
     if is_homepage(result.final_url):
@@ -271,7 +277,10 @@ def validate_reply(
             if fetcher is None:
                 raise ValueError("check_pages requires a fetcher")
             problem = check_source_page(recipe, fetcher)
-            if problem:
+            if problem == BOT_WALLED:
+                # ponytail: a walled page is kept unverified; a made up URL on such a site would slip through.
+                result.warnings.append(f"{recipe.title}: source page is behind a bot check, link not verified ({recipe.source.url})")
+            elif problem:
                 result.rejected.append(Rejection(index, recipe.title, problem))
                 continue
         seen_urls.add(url_key)

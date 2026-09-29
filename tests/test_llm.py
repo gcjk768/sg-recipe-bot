@@ -2,7 +2,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from recipebot.llm import FALLBACK_BETA, AnthropicClient, LLMRefusal
+import json
+
+from recipebot.llm import FALLBACK_BETA, AnthropicClient, ClaudeCLIClient, LLMError, LLMRefusal
 
 
 def _block(**kw):
@@ -82,3 +84,40 @@ def test_refusal_raises(settings):
 def test_truncated_flag(settings):
     fake = FakeAnthropic([_response([_block(type="text", text='{"run"')], stop_reason="max_tokens")])
     assert AnthropicClient(settings, client=fake).complete("SYS", "b", web_search=False).truncated
+
+
+def _cli(settings, stdout, returncode=0):
+    calls = []
+
+    def run(cmd, **kw):
+        if "--system-prompt-file" in cmd:
+            kw["system"] = open(cmd[cmd.index("--system-prompt-file") + 1], encoding="utf-8").read()
+        calls.append((cmd, kw))
+        return SimpleNamespace(stdout=stdout, stderr="boom", returncode=returncode)
+
+    return ClaudeCLIClient(settings, run=run), calls
+
+
+def test_cli_command_and_result(settings):
+    blob = {"is_error": False, "result": '{"recipes": []}', "stop_reason": "end_turn", "modelUsage": {"claude-opus-5-5": {}}, "num_turns": 4,
+            "usage": {"input_tokens": 9, "output_tokens": 7, "cache_read_input_tokens": 4, "server_tool_use": {"web_search_requests": 3}}}
+    client, calls = _cli(settings, json.dumps(blob))
+    result = client.complete("SYS", "brief", web_search=True)
+    cmd, kw = calls[0]
+    assert cmd[1:3] == ["-p", "--output-format"] and kw["system"] == "SYS"
+    assert cmd[cmd.index("--tools") + 1] == "WebSearch,WebFetch" and cmd[cmd.index("--allowedTools") + 1] == "WebSearch,WebFetch"
+    assert cmd[cmd.index("--model") + 1] == "claude-opus-5-5" and cmd[cmd.index("--effort") + 1] == "high"
+    assert kw["input"] == "brief"
+    assert (result.text, result.web_searches, result.output_tokens, result.truncated) == ('{"recipes": []}', 3, 7, False)
+    no_search, _ = _cli(settings, "")
+    cmd = no_search.command("sys.txt", web_search=False)
+    assert cmd[cmd.index("--tools") + 1] == "" and "--allowedTools" not in cmd
+
+
+def test_cli_errors(settings):
+    with pytest.raises(LLMError, match="Not logged in"):
+        _cli(settings, json.dumps({"is_error": True, "subtype": "success", "result": "Not logged in"}), 1)[0].complete("S", "b", web_search=False)
+    with pytest.raises(LLMError, match="boom"):
+        _cli(settings, "", 1)[0].complete("S", "b", web_search=False)
+    with pytest.raises(LLMRefusal):
+        _cli(settings, json.dumps({"is_error": False, "stop_reason": "refusal", "result": "no"}))[0].complete("S", "b", web_search=False)

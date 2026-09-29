@@ -213,6 +213,7 @@ def test_page_check_accepts_schema_org_without_the_word_ingredients():
     "response,fragment",
     [
         (FakeResponse(404, body=RECIPE_HTML), "HTTP 404"),
+        (FakeResponse(403, body="<html>Forbidden</html>"), "HTTP 403"),
         (FakeResponse(200, body="<html><body>Nothing to see</body></html>"), "does not mention ingredients"),
         (FakeResponse(200, url="https://www.example.com/", body=RECIPE_HTML), "redirected to the homepage"),
         (ConnectionError("boom"), "could not be fetched"),
@@ -222,6 +223,12 @@ def test_page_check_rejections(response, fragment):
     result = validate_reply(_reply([make_recipe()]), "high_protein", history=None, fetcher=_fetcher({URL: response}))
     assert result.accepted == []
     assert fragment in result.rejected[0].reason
+
+
+def test_page_check_keeps_a_bot_walled_page():
+    wall = FakeResponse(403, body='<title>Just a moment...</title><script src="/cdn-cgi/challenge-platform/x.js"></script>')
+    result = validate_reply(_reply([make_recipe()]), "high_protein", history=None, fetcher=_fetcher({URL: wall}))
+    assert len(result.accepted) == 1 and any("bot check" in w for w in result.warnings)
 
 
 def test_page_check_requires_fetcher():
