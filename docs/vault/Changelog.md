@@ -1,8 +1,11 @@
 ---
 tags: [active]
-updated: 2026-09-29
+updated: 2026-09-30
 ---
 # Changelog
+
+## 2026-09-30
+- docs: README rewritten (highlights, flow, stack, limitations) + draw.io architecture diagram (`docs/architecture.drawio`, `.drawio.svg`, `.png`)
 
 ## 2026-09-29
 - ops: moved to the NAS — Dockge stack `/volume1/docker/sg-recipe-bot` (code + `.env` 600 + `data/history.sqlite`); PC container removed
