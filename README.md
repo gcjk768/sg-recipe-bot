@@ -29,6 +29,8 @@ The full design (system prompt, run brief, validation checks, Telegram template,
 1. Create the bot with @BotFather and add it to your channel as an administrator that can post.
    For a public channel the chat id is `@yourchannelname`. For a private channel, post once after
    adding the bot, then read the numeric id from `https://api.telegram.org/bot<TOKEN>/getUpdates`.
+   For a topic in a forum supergroup, write `CHAT/TOPIC`: the link `t.me/c/2069000031/2765` becomes
+   `TELEGRAM_CHAT_ID=<TELEGRAM_CHAT_ID>/2765` (prefix `-100`). The admin chat accepts the same form.
 2. Optional but recommended: start a private chat with the bot, send it any message, and take your
    own numeric chat id from the same `getUpdates` call. Put it in `TELEGRAM_ADMIN_CHAT_ID` so failed
    runs reach your phone.
@@ -175,7 +177,7 @@ comments. The ones you will touch:
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | required | The bot and the channel. |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | required | The bot and the channel (`CHAT/TOPIC` for a forum topic). |
 | `TELEGRAM_ADMIN_CHAT_ID` | unset | Private chat that gets a short message when a run posts nothing. |
 | `LLM_API_KEY` | required | Anthropic API key (`ANTHROPIC_API_KEY` also works). |
 | `LLM_MODEL` | `claude-opus-5-5` | Model id. |
