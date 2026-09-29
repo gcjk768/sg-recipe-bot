@@ -51,6 +51,47 @@ The container stays up, sleeps until the next post time in `TZ`, runs once, and 
 `candidates/` lists, so it survives rebuilds. If you prefer the NAS task scheduler, remove
 `restart: always` and have the scheduler call `docker compose run --rm recipebot recipebot run`.
 
+### On a UGREEN NAS (UGOS Pro) or any Docker host
+
+1. Copy this folder to the NAS, for example to `/volume1/docker/recipebot` (SSH, SMB or the Files app).
+2. Create `.env` next to `docker-compose.yml` from `.env.example` and fill in the four required
+   values: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `LLM_API_KEY`, `TZ`.
+3. Either open the UGOS Docker app, choose Project, create a project from this folder's
+   `docker-compose.yml` and start it, or over SSH run:
+
+   ```bash
+   cd /volume1/docker/recipebot
+   docker compose build
+   docker compose run --rm recipebot recipebot check-config
+   docker compose run --rm recipebot recipebot test-telegram
+   docker compose run --rm recipebot recipebot run --dry-run
+   docker compose up -d
+   ```
+
+4. Watch the first real post in the Docker app's log view or with `docker compose logs -f`.
+
+What the compose file already takes care of: the history database lives in `./data` on the NAS
+(not inside the container), `restart: unless-stopped` brings the bot back after a NAS reboot,
+`init: true` lets `docker stop` end the sleep loop cleanly, and container logs are capped at
+three 10 MB files. The container only makes outbound HTTPS connections; no port is published and
+nothing needs to be opened on the router. It runs as root inside the container, which is normal
+for a NAS bind mount; the files it writes in `./data` will be root owned.
+
+### Does it need an AI service?
+
+Yes. The recipes are found on real recipe sites and rewritten by a Claude model on every run, so
+an Anthropic API key (`LLM_API_KEY`) is required; without it `check-config` reports the missing
+setting and `run` stops before doing anything. There is no offline mode, because the bot never
+posts recipes from memory or from a fixed list.
+
+Cost is one model call a day. With the default `claude-opus-5-5` and up to 10 web searches per
+call, expect very roughly S$0.20 to S$0.60 per day depending on how much the model reads while
+searching, so on the order of S$5 to S$20 a month. Two easy ways to lower it: set
+`LLM_MODEL=claude-sonnet-5-5` (about half the token price) or lower `LLM_WEB_SEARCH_MAX_USES`
+to 5. Candidates mode (below) removes most of the search cost because the app hands the model
+the pages. Check the usage page in the Anthropic console after the first few days rather than
+trusting these estimates.
+
 ### Run locally
 
 ```bash

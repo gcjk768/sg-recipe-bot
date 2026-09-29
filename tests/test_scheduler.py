@@ -1,6 +1,9 @@
 from datetime import date, datetime, time, timedelta
 
-from recipebot.scheduler import next_run_at, run_forever, wait_until
+import os
+import signal
+
+from recipebot.scheduler import Shutdown, install_signal_handlers, next_run_at, run_forever, wait_until
 from tests.conftest import SGT
 
 
@@ -70,3 +73,35 @@ def test_crashing_run_does_not_stop_the_loop(settings):
     pipeline = Boom()
     assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2) == 2
     assert len(pipeline.days) == 2
+
+
+def test_sigterm_stops_the_loop_cleanly(settings):
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT)}
+    previous = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
+    install_signal_handlers()
+    try:
+        def sleep(seconds):
+            clock["now"] += timedelta(seconds=seconds)
+            os.kill(os.getpid(), signal.SIGTERM)
+
+        pipeline = StubPipeline()
+        assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 0
+        assert pipeline.days == []
+    finally:
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
+
+
+def test_shutdown_after_a_run_is_counted(settings):
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 30, tzinfo=SGT)}
+    calls = {"n": 0}
+
+    def sleep(seconds):
+        calls["n"] += 1
+        clock["now"] += timedelta(seconds=seconds)
+        if calls["n"] > 1:
+            raise Shutdown("SIGTERM")
+
+    pipeline = StubPipeline()
+    assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 1
+    assert pipeline.days == [date(2026, 9, 29)]

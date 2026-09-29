@@ -81,3 +81,11 @@ def test_send_plain_truncates():
 
 def test_get_me():
     assert _client(telegram_ok_session()).get_me()["username"] == "recipebot"
+
+
+def test_network_error_message_never_contains_the_token():
+    err = ConnectionError("HTTPSConnectionPool: Max retries exceeded with url: /bot123:tok/sendMessage")
+    client = _client(FakeSession(default=err), [])
+    with pytest.raises(TelegramError) as exc:
+        client.send_message("@chan", "x")
+    assert "123:tok" not in str(exc.value) and "<token>" in str(exc.value)

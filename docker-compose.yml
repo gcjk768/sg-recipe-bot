@@ -1,11 +1,21 @@
 services:
   recipebot:
     build: .
+    container_name: recipebot
     env_file: .env
     environment:
       TZ: Asia/Singapore
+      RECIPEBOT_DATA_DIR: /data
     volumes:
       - ./data:/data
-    restart: always
-    # One shot instead of the loop (for the NAS task scheduler):
+    # init forwards SIGTERM so "docker stop" ends the sleep loop cleanly instead of waiting to be killed.
+    init: true
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # One shot instead of the daemon (for the NAS task scheduler or a manual test):
+    #   docker compose run --rm recipebot recipebot run --dry-run
     #   docker compose run --rm recipebot recipebot run
