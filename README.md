@@ -48,8 +48,11 @@ docker compose logs -f
 
 The container stays up, sleeps until the next post time in `TZ`, runs once, and sleeps again.
 `./data` is mounted at `/data` and holds `history.sqlite`, the optional `rotation.json` and the
-`candidates/` lists, so it survives rebuilds. If you prefer the NAS task scheduler, remove
-`restart: always` and have the scheduler call `docker compose run --rm recipebot recipebot run`.
+`candidates/` lists, so it survives rebuilds. If you prefer the NAS task scheduler, do not start
+the daemon with `docker compose up -d` at all (or remove `restart: unless-stopped`) and have the
+scheduler call `docker compose run --rm recipebot recipebot run` once a day. Do not combine the
+two: a one shot `recipebot run` posts immediately without waiting for the post time, and the
+daemon then treats that day as done.
 
 ### On a UGREEN NAS (UGOS Pro) or any Docker host
 
@@ -151,14 +154,19 @@ configuration error (a missing token or key, a bad value, an unknown timezone).
 
 ### Restarts, missed days and double posts
 
-The loop checks the runs table before every post, keyed by the rotation date. If the container
-starts after the post time on a day that has not run yet, it posts straight away as long as it is
-within `RECIPEBOT_CATCH_UP_HOURS` of the post time, so a NAS reboot or a rebuild at 16:05 does not
-lose the day. A day that already has a run is never posted again, whatever `RUN_ON_START` says. If
-a run was killed half way (status `running` with no end time), the bot does not repeat it, because
-the first half may already be in the channel; instead it tells the admin chat once. A Telegram
-timeout after a message was sent is treated the same way: the recipe is recorded as sent and the
-admin chat hears about it, rather than risking the same recipe twice.
+The loop checks the runs table before every post, keyed by the rotation date, and never makes
+more than one attempt per date in one process. If the container starts after the post time on a
+day that has not run yet, it posts straight away as long as it is within
+`RECIPEBOT_CATCH_UP_HOURS` of the post time (the window may cross midnight), so a NAS reboot or a
+rebuild at 16:05 does not lose the day. If the window has already passed, nothing is posted for
+that day and the admin chat is told once. A day that already has a run is never posted again,
+whatever `RUN_ON_START` says, and a manual `recipebot run` (not a dry run) counts as that day's
+post. If a run was killed half way (status `running` with no end time), the bot does not repeat
+it, because the first half may already be in the channel; instead it tells the admin chat once. A
+Telegram timeout, reset or 504 after a message was sent is treated the same way: the recipe is
+recorded as sent and the admin chat hears about it, rather than risking the same recipe twice. If a
+run fails before it can even record itself (a broken `rotation.json`, an unwritable database), it
+is reported and the next attempt is the next day's.
 
 ## Settings
 

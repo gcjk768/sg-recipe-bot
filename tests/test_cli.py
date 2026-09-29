@@ -109,3 +109,10 @@ def test_logs_never_show_secrets(monkeypatch, tmp_path, capsys):
     out = capsys.readouterr().out
     assert "SECRETTOKEN" not in out and "very-secret" not in out and out.count("<redacted>") == 2
     logging.getLogger().handlers[:] = []
+
+
+@pytest.mark.parametrize("value", ["inf", "-1", "1000", "abc"])
+def test_bad_catch_up_hours_is_a_config_error(monkeypatch, capsys, value):
+    monkeypatch.setenv("RECIPEBOT_CATCH_UP_HOURS", value)
+    assert main(ENV_ARGS + ["check-config"]) == 2
+    assert "RECIPEBOT_CATCH_UP_HOURS" in capsys.readouterr().err

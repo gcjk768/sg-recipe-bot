@@ -62,6 +62,14 @@ def _env_float(name: str, default: float) -> float:
         raise ConfigError(f"{name} must be a number, got {value!r}") from None
 
 
+def _catch_up_hours(value: float) -> float:
+    import math
+
+    if not math.isfinite(value) or value < 0 or value > 168:
+        raise ConfigError("RECIPEBOT_CATCH_UP_HOURS must be a number of hours between 0 and 168")
+    return value
+
+
 def _timezone(value: str) -> str:
     try:
         ZoneInfo(value)
@@ -188,7 +196,7 @@ def load_settings() -> Settings:
         servings=_env_int("RECIPEBOT_SERVINGS", 2),
         rotation_epoch=_parse_date(_env("RECIPEBOT_ROTATION_EPOCH", "2026-09-28") or "2026-09-28"),
         run_on_start=_env_bool("RECIPEBOT_RUN_ON_START", False),
-        catch_up_hours=max(0.0, _env_float("RECIPEBOT_CATCH_UP_HOURS", 6.0)),
+        catch_up_hours=_catch_up_hours(_env_float("RECIPEBOT_CATCH_UP_HOURS", 6.0)),
         log_level=(_env("RECIPEBOT_LOG_LEVEL", "INFO") or "INFO").upper(),
         history_days=_env_int("RECIPEBOT_HISTORY_DAYS", 90),
         history_max_lines=_env_int("RECIPEBOT_HISTORY_MAX_LINES", 150),

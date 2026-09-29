@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import codecs
 import html as htmllib
 import json
 import re
@@ -95,11 +96,39 @@ _CHARSET_META = re.compile(
 )
 
 
+# Browser charset labels that Python decodes better under another name (WHATWG encoding rules).
+_CHARSET_ALIASES = {
+    "gb2312": "gb18030",
+    "gb_2312-80": "gb18030",
+    "gbk": "gb18030",
+    "iso-8859-1": "cp1252",
+    "iso8859-1": "cp1252",
+    "latin1": "cp1252",
+    "latin-1": "cp1252",
+    "ascii": "cp1252",
+    "us-ascii": "cp1252",
+    "utf8": "utf-8",
+    "big5": "big5hkscs",
+    "shift_jis": "cp932",
+    "shift-jis": "cp932",
+    "sjis": "cp932",
+    "euc-kr": "cp949",
+}
+
+
+def _codec_name(label: str) -> str:
+    label = label.strip().strip("\"'").lower()
+    return _CHARSET_ALIASES.get(label, label)
+
+
 def decode_body(raw: bytes, content_type: str = "") -> str:
-    """Decodes a fetched page. Trusts a charset named in the Content-Type header, then a
-    <meta charset> in the first 4 KB, then strict UTF-8, then UTF-8 with replacement.
-    requests' ISO-8859-1 default for headerless text/* is deliberately ignored, because it
-    turns every UTF-8 page (most recipe sites, all Chinese ones) into mojibake."""
+    """Decodes a fetched page. A byte order mark wins; then a charset named in the Content-Type
+    header, then a <meta charset> in the first 4 KB, then strict UTF-8, then UTF-8 with
+    replacement. requests' ISO-8859-1 default for headerless text/* is deliberately ignored,
+    because it turns every UTF-8 page (most recipe sites, all Chinese ones) into mojibake."""
+    for bom, name in ((codecs.BOM_UTF8, "utf-8"), (codecs.BOM_UTF16_LE, "utf-16-le"), (codecs.BOM_UTF16_BE, "utf-16-be")):
+        if raw.startswith(bom):
+            return raw[len(bom):].decode(name, errors="replace")
     candidates: list[str] = []
     header = _CHARSET_HEADER.search(content_type or "")
     if header:
@@ -109,7 +138,7 @@ def decode_body(raw: bytes, content_type: str = "") -> str:
         candidates.append(meta.group(1).decode("ascii", errors="ignore"))
     for name in candidates:
         try:
-            return raw.decode(name, errors="replace")
+            return raw.decode(_codec_name(name), errors="replace")
         except LookupError:
             continue
     try:

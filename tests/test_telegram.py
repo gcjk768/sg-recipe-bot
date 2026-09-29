@@ -124,3 +124,45 @@ def test_get_me_is_retried_after_a_read_timeout():
         return FakeResponse(200, json_body={"ok": True, "result": {"id": 1, "username": "recipebot"}})
 
     assert _client(FakeSession(default=respond), []).get_me()["username"] == "recipebot"
+
+
+def test_ssl_error_while_reading_is_ambiguous_but_handshake_failure_is_retried():
+    from recipebot.telegram import failed_before_sending
+
+    assert not failed_before_sending(Exception("SSLError: [SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC] bad record mac"))
+    assert not failed_before_sending(Exception("SSLError: EOF occurred in violation of protocol"))
+    assert failed_before_sending(Exception("SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed"))
+    assert failed_before_sending(Exception("SSLError: HTTPSConnectionPool: Max retries exceeded (Caused by SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER]')))"))
+    assert not failed_before_sending(Exception("ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"))
+    assert not failed_before_sending(Exception("ConnectionError: ConnectionResetError(104, 'Connection reset by peer')"))
+    assert failed_before_sending(Exception("ConnectTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded"))
+
+
+def test_504_on_send_message_is_ambiguous_but_502_is_retried():
+    session = FakeSession(default=lambda url: FakeResponse(504, json_body={"ok": False, "error_code": 504, "description": "Gateway Timeout"}))
+    client = _client(session, [])
+    with pytest.raises(TelegramError) as exc:
+        client.send_message("@chan", "x")
+    assert exc.value.ambiguous and len(session.posts) == 1
+
+    calls = {"n": 0}
+
+    def respond(url):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return FakeResponse(502, json_body={"ok": False, "error_code": 502, "description": "Bad Gateway"})
+        return FakeResponse(200, json_body={"ok": True, "result": {"message_id": 3}})
+
+    assert _client(FakeSession(default=respond), []).send_message("@chan", "x") == 3
+
+
+def test_get_me_retries_any_5xx():
+    calls = {"n": 0}
+
+    def respond(url):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return FakeResponse(500, json_body={"ok": False, "error_code": 500, "description": "Internal"})
+        return FakeResponse(200, json_body={"ok": True, "result": {"id": 1, "username": "recipebot"}})
+
+    assert _client(FakeSession(default=respond), []).get_me()["username"] == "recipebot"

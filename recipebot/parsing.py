@@ -42,10 +42,15 @@ def strip_fences(text: str) -> str | None:
     return body.strip()
 
 
+def _loads(text: str) -> Any:
+    """json.loads with Infinity and NaN read as null, so an absurd estimate cannot overflow later."""
+    return json.loads(text, parse_constant=lambda _token: None)
+
+
 def _try_load(text: str) -> dict | None:
     try:
-        obj = json.loads(text)
-    except (json.JSONDecodeError, TypeError):
+        obj = _loads(text)
+    except (json.JSONDecodeError, TypeError, ValueError):
         return None
     return obj if isinstance(obj, dict) else None
 
@@ -64,10 +69,10 @@ def extract_json_object(text: str, extra_candidates: list[str] | None = None) ->
 
     strict_error: str | None = None
     try:
-        json.loads(stripped)
+        _loads(stripped)
     except json.JSONDecodeError as exc:
         strict_error = f"{exc.msg} at line {exc.lineno} column {exc.colno}"
-    except TypeError as exc:
+    except (TypeError, ValueError) as exc:
         strict_error = str(exc)
 
     candidates: list[str] = []
@@ -82,7 +87,7 @@ def extract_json_object(text: str, extra_candidates: list[str] | None = None) ->
         if obj is not None:
             return obj, True
 
-    decoder = json.JSONDecoder()
+    decoder = json.JSONDecoder(parse_constant=lambda _token: None)
     positions = [m.start() for m in re.finditer(r"\{", stripped)][:_MAX_SCAN_POSITIONS]
     for pos in positions:
         try:
