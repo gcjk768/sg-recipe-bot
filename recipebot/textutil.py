@@ -47,10 +47,15 @@ def hashtag(tag: str) -> str:
 
 
 def main_ingredient_name(item: str) -> str:
-    """'chicken thigh, boneless' -> 'chicken thigh'."""
-    head = item.split(",", 1)[0]
-    head = re.sub(r"\(.*?\)", "", head)
+    """'chicken thigh, boneless' -> 'chicken thigh'; 'chicken thighs (boneless, skinless)' -> 'chicken thighs'."""
+    head = re.sub(r"\(.*?\)", " ", item)
+    head = head.split(",", 1)[0]
     return _WS.sub(" ", head).strip().lower()
+
+
+def single_line(text: object) -> str:
+    """Collapses every run of whitespace, including line breaks, into one space."""
+    return _WS.sub(" ", "" if text is None else str(text)).strip()
 
 
 def format_sgd(amount: float) -> str:

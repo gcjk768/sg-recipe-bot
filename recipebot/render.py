@@ -6,7 +6,7 @@ import html
 
 from recipebot.categories import Category
 from recipebot.models import Recipe
-from recipebot.textutil import format_qty, format_sgd, hashtag
+from recipebot.textutil import format_qty, format_sgd, hashtag, single_line
 
 TELEGRAM_MAX_CHARS = 4096
 SPLIT_THRESHOLD = 4000
@@ -26,8 +26,9 @@ class RenderError(ValueError):
 
 
 def esc(value: object) -> str:
-    """Escape &, < and > for Telegram HTML."""
-    return html.escape("" if value is None else str(value), quote=False)
+    """Escape &, < and > for Telegram HTML, with line breaks inside a field collapsed to spaces
+    so model text can never add lines to the post."""
+    return html.escape(single_line(value), quote=False)
 
 
 def esc_attr(value: object) -> str:
@@ -52,9 +53,10 @@ def _meta_line(recipe: Recipe, category: Category) -> str:
 
 
 def _ingredient_line(item) -> str:
-    text = f"{BULLET} {format_qty(item.qty)} {esc(item.unit.strip())} {esc(item.item.strip())}"
+    parts = [format_qty(item.qty), esc(item.unit), esc(item.item)]
+    text = f"{BULLET} " + " ".join(p for p in parts if p)
     if item.note and item.note.strip():
-        text += f", {esc(item.note.strip())}"
+        text += f", {esc(item.note)}"
     return text
 
 

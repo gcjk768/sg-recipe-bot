@@ -19,13 +19,30 @@ from recipebot.render import render_recipe
 log = logging.getLogger("recipebot")
 
 
-def _setup_logging(level: str) -> None:
-    logging.basicConfig(
-        level=getattr(logging, level.upper(), logging.INFO),
-        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        stream=sys.stdout,
-    )
+class RedactingFormatter(logging.Formatter):
+    """Never lets a secret (bot token, API key) into a log line, whatever library produced it."""
+
+    def __init__(self, fmt: str, datefmt: str, secrets: list[str]):
+        super().__init__(fmt, datefmt)
+        self.secrets = [s for s in secrets if s and len(s) >= 8]
+
+    def format(self, record: logging.LogRecord) -> str:
+        text = super().format(record)
+        for secret in self.secrets:
+            text = text.replace(secret, "<redacted>")
+        return text
+
+
+def _setup_logging(level: str, secrets: list[str]) -> None:
+    numeric = getattr(logging, level.upper(), logging.INFO)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(RedactingFormatter("%(asctime)s %(levelname)s %(name)s: %(message)s", "%Y-%m-%d %H:%M:%S", secrets))
+    root = logging.getLogger()
+    root.handlers[:] = [handler]
+    root.setLevel(numeric)
+    # Third party libraries stay quiet unless the owner explicitly asks for DEBUG.
+    for name in ("urllib3", "httpx", "httpcore", "anthropic"):
+        logging.getLogger(name).setLevel(logging.DEBUG if numeric <= logging.DEBUG else logging.WARNING)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -102,10 +119,6 @@ def cmd_check_config(settings: Settings) -> int:
             check()
         except ConfigError as exc:
             problems.append(str(exc))
-    try:
-        ZoneInfo(settings.timezone)
-    except Exception:  # noqa: BLE001
-        problems.append(f"TZ {settings.timezone!r} is not a known timezone")
     if problems:
         print("\nProblems:")
         for p in problems:
@@ -185,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
     except ConfigError as exc:
         print(f"configuration error: {exc}", file=sys.stderr)
         return 2
-    _setup_logging(settings.log_level)
+    _setup_logging(settings.log_level, [settings.telegram_bot_token or "", settings.llm_api_key or ""])
 
     try:
         if args.command == "check-config":
@@ -208,6 +221,9 @@ def main(argv: list[str] | None = None) -> int:
 
         pipeline = Pipeline(settings)
         if args.command == "run":
+            settings.require_llm()
+            if not args.dry_run:
+                settings.require_telegram()
             report = pipeline.run(
                 category=args.category,
                 theme=args.theme,

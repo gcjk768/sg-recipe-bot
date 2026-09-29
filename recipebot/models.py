@@ -7,30 +7,56 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
+def _none_to_blank(value: Any) -> Any:
+    return "" if value is None else value
+
+
+def _number(value: Any) -> float | None:
+    """A float from a number or numeric string, else None. Booleans are not numbers here."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value) if value == value else None  # NaN guard
+    if isinstance(value, str):
+        text = value.strip().replace(",", "")
+        text = text.lstrip("S$").lstrip("$").strip()
+        try:
+            return float(text)
+        except ValueError:
+            return None
+    return None
+
+
 class Ingredient(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     item: str
     qty: float
-    unit: str
+    unit: str = ""
     note: str = ""
 
-    @field_validator("note", mode="before")
+    @field_validator("note", "unit", mode="before")
     @classmethod
-    def _none_note(cls, value: Any) -> Any:
-        return "" if value is None else value
+    def _none_text(cls, value: Any) -> Any:
+        return _none_to_blank(value)
 
 
 class Source(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    site: str
+    site: str = ""
     author: str | None = None
     url: str
 
+    @field_validator("site", mode="before")
+    @classmethod
+    def _none_site(cls, value: Any) -> Any:
+        return _none_to_blank(value)
+
 
 class Nutrition(BaseModel):
-    """Per serving estimates from the ingredient quantities."""
+    """Per serving estimates from the ingredient quantities. Every member is optional and a
+    member the model gets wrong (a string, a fraction, null) is dropped on its own."""
 
     model_config = ConfigDict(extra="ignore")
 
@@ -38,6 +64,12 @@ class Nutrition(BaseModel):
     protein_g: int | None = None
     carbs_g: int | None = None
     fat_g: int | None = None
+
+    @field_validator("kcal", "protein_g", "carbs_g", "fat_g", mode="before")
+    @classmethod
+    def _lenient_int(cls, value: Any) -> Any:
+        number = _number(value)
+        return None if number is None else int(round(number))
 
     @property
     def plausible(self) -> bool:
@@ -58,10 +90,15 @@ class CostEstimate(BaseModel):
     per_serving_sgd: float | None = None
     note: str = ""
 
+    @field_validator("total_sgd", "per_serving_sgd", mode="before")
+    @classmethod
+    def _lenient_float(cls, value: Any) -> Any:
+        return _number(value)
+
     @field_validator("note", mode="before")
     @classmethod
-    def _none_note(cls, value: Any) -> Any:
-        return "" if value is None else value
+    def _lenient_note(cls, value: Any) -> Any:
+        return value if isinstance(value, str) else ""
 
     @property
     def plausible(self) -> bool:
@@ -109,6 +146,11 @@ class Recipe(BaseModel):
             return None
         return value
 
+    @field_validator("cuisine", "why_it_fits", mode="before")
+    @classmethod
+    def _none_text(cls, value: Any) -> Any:
+        return _none_to_blank(value)
+
     @field_validator("nutrition_per_serving", "cost_estimate", mode="before")
     @classmethod
     def _bad_object_to_none(cls, value: Any) -> Any:
@@ -122,8 +164,18 @@ class Recipe(BaseModel):
 
     @property
     def cost(self) -> CostEstimate | None:
+        """The cost estimate with a per serving figure that agrees with the total, or None.
+        The total is the headline number; a missing or contradictory per serving figure is
+        recomputed from it."""
         c = self.cost_estimate
-        return c if c is not None and c.plausible else None
+        if c is None or not c.plausible or c.total_sgd is None:
+            return None
+        servings = self.servings if self.servings > 0 else 1
+        derived = c.total_sgd / servings
+        per = c.per_serving_sgd
+        if per is None or per > c.total_sgd * 1.01 or abs(per * servings - c.total_sgd) > max(1.0, 0.35 * c.total_sgd):
+            return c.model_copy(update={"per_serving_sgd": round(derived, 2)})
+        return c
 
 
 class RunInfo(BaseModel):

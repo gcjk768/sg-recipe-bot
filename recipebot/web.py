@@ -73,11 +73,8 @@ class Fetcher:
                 if total >= self.max_bytes:
                     break
             raw = b"".join(chunks)
-            encoding = getattr(response, "encoding", None) or "utf-8"
-            try:
-                text = raw.decode(encoding, errors="replace")
-            except LookupError:
-                text = raw.decode("utf-8", errors="replace")
+            headers = getattr(response, "headers", None) or {}
+            text = decode_body(raw, headers.get("content-type", "") or headers.get("Content-Type", ""))
             return FetchResult(
                 url=url,
                 final_url=getattr(response, "url", url) or url,
@@ -90,6 +87,35 @@ class Fetcher:
             close = getattr(response, "close", None)
             if callable(close):
                 close()
+
+
+_CHARSET_HEADER = re.compile(r"charset\s*=\s*[\"']?([\w.:-]+)", re.IGNORECASE)
+_CHARSET_META = re.compile(
+    rb"<meta[^>]+charset\s*=\s*[\"']?\s*([\w.:-]+)", re.IGNORECASE
+)
+
+
+def decode_body(raw: bytes, content_type: str = "") -> str:
+    """Decodes a fetched page. Trusts a charset named in the Content-Type header, then a
+    <meta charset> in the first 4 KB, then strict UTF-8, then UTF-8 with replacement.
+    requests' ISO-8859-1 default for headerless text/* is deliberately ignored, because it
+    turns every UTF-8 page (most recipe sites, all Chinese ones) into mojibake."""
+    candidates: list[str] = []
+    header = _CHARSET_HEADER.search(content_type or "")
+    if header:
+        candidates.append(header.group(1))
+    meta = _CHARSET_META.search(raw[:4096])
+    if meta:
+        candidates.append(meta.group(1).decode("ascii", errors="ignore"))
+    for name in candidates:
+        try:
+            return raw.decode(name, errors="replace")
+        except LookupError:
+            continue
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw.decode("utf-8", errors="replace")
 
 
 # --- schema.org helpers ---------------------------------------------------------------

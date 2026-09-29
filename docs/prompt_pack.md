@@ -36,7 +36,7 @@ The verbatim text lives in [`recipebot/prompts/system_prompt.txt`](../recipebot/
 Two fields were added to the section 7 contract after the first draft of this pack, so every post can show what the meal roughly costs and what is in it:
 
 * `nutrition_per_serving`: `{"kcal": 420, "protein_g": 40, "carbs_g": 20, "fat_g": 20}`, integers per serving, estimated from the ingredient quantities (calories to the nearest 10 kcal, grams to the nearest 5 g). Required for every recipe.
-* `cost_estimate`: `{"total_sgd": 9.5, "per_serving_sgd": 4.75, "note": "chicken thigh is most of the cost"}`, Singapore dollars at regular supermarket prices for the quantities the recipe uses (pantry staples at the amount used, not the whole bottle), rounded to the nearest 0.50. Required for every recipe.
+* `cost_estimate`: `{"total_sgd": 9.5, "per_serving_sgd": 4.75, "note": "chicken thigh is most of the cost"}`, Singapore dollars at regular supermarket prices for the quantities the recipe uses (pantry staples at the amount used, not the whole bottle), rounded to the nearest 0.05. Required for every recipe.
 
 Both are estimates and the post says so. A missing or implausible estimate drops its line from the post; it never drops the recipe.
 

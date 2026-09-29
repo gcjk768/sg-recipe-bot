@@ -41,7 +41,15 @@ def test_hashtag(tag, expected):
 
 @pytest.mark.parametrize(
     "item,expected",
-    [("chicken thigh, boneless", "chicken thigh"), ("Salmon fillet (skin on)", "salmon fillet"), ("eggs", "eggs")],
+    [("chicken thigh, boneless", "chicken thigh"), ("Salmon fillet (skin on)", "salmon fillet"), ("eggs", "eggs"),
+     ("chicken thighs (boneless, skinless)", "chicken thighs"), ("prawns (about 12), peeled", "prawns")],
 )
 def test_main_ingredient_name(item, expected):
     assert main_ingredient_name(item) == expected
+
+
+def test_single_line():
+    from recipebot.textutil import single_line
+
+    assert single_line("a\nb\r\n  c\t d ") == "a b c d"
+    assert single_line(None) == ""

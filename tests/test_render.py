@@ -81,12 +81,24 @@ def test_optional_lines_dropped():
         cuisine="",
         tags=[],
     )
-    for forbidden in ("💪", "💡", "🧊", "🔥", "💰", "(", "\n\n\n"):
-        assert forbidden not in text.split("<b>Ingredients</b>")[0] or forbidden == "("
-    assert "\n\n\n" not in text
-    assert "<i>High protein · 25 min · easy · serves 2</i>" in text
-    assert text.endswith("Full recipe at Example Recipes</a>\n#highprotein")
-    assert "<b>Steps</b>\n1. Toss" in text
+    expected = (
+        "🍳 <b>Garlic Soy Chicken with Broccoli</b>\n"
+        "<i>High protein · 25 min · easy · serves 2</i>\n\n"
+        + EXPECTED.split("\n\n")[2] + "\n\n"  # ingredients block
+        + EXPECTED.split("\n\n")[3] + "\n\n"  # steps block
+        + '🔗 <a href="https://www.example.com/recipes/12345">Full recipe at Example Recipes</a>\n#highprotein'
+    )
+    assert text == expected
+
+
+def test_line_breaks_in_model_text_are_collapsed():
+    [text] = render(title="Two\nLines", why_it_fits="a\r\nb", tips=["tip\nwith break"], storage="keep\n\ncold")
+    assert "<b>Two Lines</b>" in text and "\n\na b\n\n" in text and "💡 tip with break" in text and "🧊 keep cold" in text
+
+
+def test_blank_unit_has_no_double_space():
+    [text] = render(ingredients=[{"item": "eggs", "qty": 3, "unit": "", "note": ""}])
+    assert "• 3 eggs\n" in text
 
 
 def test_quantities_and_notes():
@@ -101,6 +113,8 @@ def test_quantities_and_notes():
 def test_cost_line_variants():
     [text] = render(cost_estimate={"total_sgd": 10, "per_serving_sgd": None, "note": ""}, servings=4)
     assert "💰 Ingredients about S$10 for 4 servings, S$2.50 each (estimate)" in text
+    [fixed] = render(cost_estimate={"total_sgd": 10, "per_serving_sgd": 30, "note": "typo"}, servings=2)
+    assert "💰 Ingredients about S$10 for 2 servings, S$5 each, typo (estimate)" in fixed
     [single] = render(cost_estimate={"total_sgd": 6, "per_serving_sgd": 6, "note": "prawns"}, servings=1)
     assert "💰 Ingredients about S$6, prawns (estimate)" in single
     [bad] = render(cost_estimate={"total_sgd": -3, "per_serving_sgd": 1, "note": ""})

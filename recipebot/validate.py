@@ -31,19 +31,33 @@ ALLOWED_TAGS = {
 }
 
 # Salt, pepper, sugar, cooking oil and water do not count towards the ingredient cap.
+# The patterns run on a cleaned name (lowercase, parentheses and the part after a comma removed,
+# leading "a pinch of" and trailing "to taste" style qualifiers stripped).
+_SALT = r"(?:[a-z-]+\s+){0,3}salt(?:\s+flakes)?"
+_PEPPER = r"(?:(?:ground|white|black|freshly|cracked|coarse|coarsely|fine|finely|mixed|whole)\s+){0,3}(?:pepper|peppercorns?)(?:\s+powder)?"
 _FREE_PATTERNS = [
-    re.compile(r"^(?:(?:sea|table|kosher|fine|flaky|coarse|rock|himalayan|pink|iodised|iodized)\s+)?salt$"),
-    re.compile(r"^salt\s*(?:and|&|,)\s*(?:black\s+|white\s+)?pepper$"),
-    re.compile(r"^(?:(?:ground|white|black|freshly ground|cracked|coarse)\s+)*(?:pepper|peppercorns?)$"),
+    re.compile(rf"^{_SALT}$"),
+    re.compile(rf"^{_PEPPER}$"),
+    re.compile(rf"^{_SALT}\s*(?:and|&|,|\+|/)\s*{_PEPPER}$"),
+    re.compile(rf"^{_PEPPER}\s*(?:and|&|,|\+|/)\s*{_SALT}$"),
     re.compile(
-        r"^(?:(?:white|brown|caster|castor|granulated|raw|icing|powdered|light brown|dark brown|palm|rock|coconut|fine)\s+)?sugar$"
+        r"^(?:(?:white|brown|caster|castor|granulated|raw|icing|powdered|light|dark|soft|palm|rock|coconut|fine|"
+        r"demerara|golden|plain|regular|superfine|confectioners|cane|muscovado)\s+){0,3}sugar$"
+    ),
+    re.compile(r"^gula\s+melaka$"),
+    re.compile(
+        r"^(?:(?:cooking|vegetable|neutral|flavourless|flavorless|canola|rapeseed|sunflower|peanut|groundnut|corn|rice|bran|"
+        r"soybean|soya|soy|olive|extra|virgin|extra-virgin|light|frying|plain|regular|any|or|blended|grapeseed|avocado|coconut)\s+){0,4}oil$"
     ),
     re.compile(
-        r"^(?:(?:cooking|vegetable|neutral|canola|rapeseed|sunflower|peanut|groundnut|corn|rice bran|soybean|olive|"
-        r"extra virgin olive|light olive|frying)\s+)?oil$"
+        r"^(?:(?:hot|warm|lukewarm|cold|boiling|boiled|ice|iced|tap|filtered|room|temperature|drinking|plain|cool|tepid)\s+){0,3}water$"
     ),
-    re.compile(r"^(?:(?:hot|warm|cold|boiling|ice|iced|tap|filtered|room temperature)\s+)?water$"),
 ]
+_LEADING_QUALIFIERS = re.compile(r"^(?:a\s+)?(?:pinch|dash|splash|drizzle|little|bit|few\s+drops|generous\s+pinch|big\s+pinch)\s+of\s+")
+_TRAILING_QUALIFIERS = re.compile(
+    r"\s*(?:,|\bor\b)?\s*(?:to taste|as needed|as required|optional|if needed|to season|for seasoning|for frying|for cooking|"
+    r"for greasing|for the pan|for the wok|to cover|for boiling|for blanching|to serve|for serving|plus extra.*|plus more.*|or more.*)\s*$"
+)
 
 
 @dataclass
@@ -64,9 +78,16 @@ class ValidationResult:
     warnings: list[str] = field(default_factory=list)
 
 
-def is_free_ingredient(item: str) -> bool:
+def clean_ingredient_name(item: str) -> str:
     name = main_ingredient_name(item)
-    name = re.sub(r"\b(?:to taste|as needed|optional|for seasoning|for frying|for cooking)\b", "", name).strip(" ,")
+    name = _LEADING_QUALIFIERS.sub("", name)
+    for _ in range(2):
+        name = _TRAILING_QUALIFIERS.sub("", name).strip(" ,")
+    return name
+
+
+def is_free_ingredient(item: str) -> bool:
+    name = clean_ingredient_name(item)
     return any(p.match(name) for p in _FREE_PATTERNS)
 
 
@@ -107,6 +128,8 @@ def check_static(recipe: Recipe, brief_category: str) -> str | None:
             return f"step {i} is {len(step)} characters (cap is {MAX_STEP_CHARS})"
     if not recipe.source.url.startswith("https://"):
         return f"source.url does not start with https:// ({recipe.source.url!r})"
+    if is_homepage(recipe.source.url):
+        return f"source.url is a homepage, not a recipe page ({recipe.source.url})"
     if not recipe.title.strip():
         return "title is empty"
     return None
@@ -118,7 +141,7 @@ def check_source_page(recipe: Recipe, fetcher: Fetcher) -> str | None:
         return f"source page could not be fetched ({result.error})"
     if result.status != 200:
         return f"source page returned HTTP {result.status}"
-    if is_homepage(result.final_url) and not is_homepage(recipe.source.url):
+    if is_homepage(result.final_url):
         return f"source page redirected to the homepage ({result.final_url})"
     if not page_looks_like_recipe(result.text):
         return "source page does not mention ingredients and has no schema.org Recipe data"

@@ -12,7 +12,6 @@ from pydantic import ValidationError
 
 from recipebot.models import ModelReply
 
-_FENCE = re.compile(r"^\s*```(?:json|JSON)?\s*\n?(.*?)\n?\s*```\s*$", re.DOTALL)
 _MAX_SCAN_POSITIONS = 50
 
 ALLOWED_TOP_LEVEL = ({"run", "recipes"}, {"error", "run", "recipes"})
@@ -26,6 +25,21 @@ class ParseFailure(Exception):
 class Parsed:
     reply: ModelReply
     warnings: list[str] = field(default_factory=list)
+
+
+def strip_fences(text: str) -> str | None:
+    """The body of a ```json ... ``` block, or None when the text is not fenced.
+    Plain slicing, no regex, so a huge or unclosed fence cannot make parsing slow."""
+    if not text.startswith("```"):
+        return None
+    body = text[3:]
+    tag = re.match(r"[A-Za-z]*", body)
+    if tag:
+        body = body[tag.end():]
+    body = body.strip()
+    if body.endswith("```"):
+        body = body[:-3]
+    return body.strip()
 
 
 def _try_load(text: str) -> dict | None:
@@ -57,9 +71,9 @@ def extract_json_object(text: str, extra_candidates: list[str] | None = None) ->
         strict_error = str(exc)
 
     candidates: list[str] = []
-    fence = _FENCE.match(stripped)
-    if fence:
-        candidates.append(fence.group(1))
+    unfenced = strip_fences(stripped)
+    if unfenced is not None:
+        candidates.append(unfenced)
     for extra in extra_candidates or []:
         if extra and extra.strip():
             candidates.append(extra.strip())

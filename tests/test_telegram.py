@@ -89,3 +89,38 @@ def test_network_error_message_never_contains_the_token():
     with pytest.raises(TelegramError) as exc:
         client.send_message("@chan", "x")
     assert "123:tok" not in str(exc.value) and "<token>" in str(exc.value)
+
+
+def test_read_timeout_on_send_message_is_not_retried_and_is_ambiguous():
+    session = FakeSession(default=TimeoutError("ReadTimeout: HTTPSConnectionPool read timed out"))
+    client = _client(session, [])
+    with pytest.raises(TelegramError) as exc:
+        client.send_message("@chan", "x")
+    assert exc.value.ambiguous and "may or may not" in str(exc.value)
+    assert len(session.posts) == 1
+
+
+def test_connect_failure_on_send_message_is_retried():
+    calls = {"n": 0}
+
+    def respond(url):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise ConnectionError("HTTPSConnectionPool: Max retries exceeded (Caused by NewConnectionError: Failed to establish a new connection)")
+        return FakeResponse(200, json_body={"ok": True, "result": {"message_id": 5}})
+
+    client = _client(FakeSession(default=respond), [])
+    assert client.send_message("@chan", "x") == 5
+    assert calls["n"] == 2
+
+
+def test_get_me_is_retried_after_a_read_timeout():
+    calls = {"n": 0}
+
+    def respond(url):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise TimeoutError("ReadTimeout")
+        return FakeResponse(200, json_body={"ok": True, "result": {"id": 1, "username": "recipebot"}})
+
+    assert _client(FakeSession(default=respond), []).get_me()["username"] == "recipebot"

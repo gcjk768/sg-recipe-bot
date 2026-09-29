@@ -27,7 +27,7 @@ class FakeAnthropic:
 def test_request_kwargs_shape(settings):
     client = AnthropicClient(settings, client=FakeAnthropic([]))
     kwargs = client.request_kwargs("SYS", [{"role": "user", "content": "brief"}], web_search=True)
-    assert kwargs["model"] == "claude-opus-5-5" and kwargs["max_tokens"] == 16000
+    assert kwargs["model"] == "claude-opus-5-5" and kwargs["max_tokens"] == 32000
     assert kwargs["system"] == [{"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral"}}]
     assert kwargs["output_config"] == {"effort": "high"}
     assert kwargs["betas"] == [FALLBACK_BETA] and kwargs["fallbacks"] == "default"

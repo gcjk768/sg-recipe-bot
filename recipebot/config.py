@@ -6,6 +6,7 @@ import os
 from dataclasses import dataclass, field
 from datetime import date, time
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 class ConfigError(ValueError):
@@ -51,6 +52,24 @@ def _parse_date(value: str) -> date:
         raise ConfigError(f"RECIPEBOT_ROTATION_EPOCH must be YYYY-MM-DD, got {value!r}") from None
 
 
+def _env_float(name: str, default: float) -> float:
+    value = _env(name)
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except ValueError:
+        raise ConfigError(f"{name} must be a number, got {value!r}") from None
+
+
+def _timezone(value: str) -> str:
+    try:
+        ZoneInfo(value)
+    except (ZoneInfoNotFoundError, ValueError):
+        raise ConfigError(f"TZ {value!r} is not a known timezone name (use one like Asia/Singapore)") from None
+    return value
+
+
 def _csv(value: str | None) -> list[str]:
     if not value:
         return []
@@ -85,7 +104,7 @@ class Settings:
     llm_api_key: str | None
     llm_model: str = "claude-opus-5-5"
     llm_effort: str | None = "high"
-    llm_max_tokens: int = 16000
+    llm_max_tokens: int = 32000
     llm_fallbacks: str = "default"
     llm_web_search_tool: str = "web_search_20260209"
     llm_web_search_max_uses: int = 10
@@ -102,6 +121,8 @@ class Settings:
     servings: int = 2
     rotation_epoch: date = date(2026, 9, 28)
     run_on_start: bool = False
+    catch_up_hours: float = 6.0
+    """After a restart, a missed post is still made up to this many hours after the post time."""
     log_level: str = "INFO"
     history_days: int = 90
     history_max_lines: int = 150
@@ -152,13 +173,13 @@ def load_settings() -> Settings:
         llm_api_key=_env("LLM_API_KEY") or _env("ANTHROPIC_API_KEY"),
         llm_model=_env("LLM_MODEL", "claude-opus-5-5") or "claude-opus-5-5",
         llm_effort=effort,
-        llm_max_tokens=_env_int("LLM_MAX_TOKENS", 16000),
+        llm_max_tokens=_env_int("LLM_MAX_TOKENS", 32000),
         llm_fallbacks=fallbacks,
         llm_web_search_tool=_env("LLM_WEB_SEARCH_TOOL", "web_search_20260209") or "web_search_20260209",
         llm_web_search_max_uses=_env_int("LLM_WEB_SEARCH_MAX_USES", 10),
         llm_allowed_domains=_csv(_env("LLM_ALLOWED_DOMAINS")),
         llm_timeout_seconds=_env_int("LLM_TIMEOUT_SECONDS", 600),
-        timezone=_env("TZ", "Asia/Singapore") or "Asia/Singapore",
+        timezone=_timezone(_env("TZ", "Asia/Singapore") or "Asia/Singapore"),
         post_time=_parse_time(_env("RECIPEBOT_POST_TIME", "16:00") or "16:00"),
         data_dir=Path(_env("RECIPEBOT_DATA_DIR", "/data") or "/data"),
         source_mode=source_mode,
@@ -167,6 +188,7 @@ def load_settings() -> Settings:
         servings=_env_int("RECIPEBOT_SERVINGS", 2),
         rotation_epoch=_parse_date(_env("RECIPEBOT_ROTATION_EPOCH", "2026-09-28") or "2026-09-28"),
         run_on_start=_env_bool("RECIPEBOT_RUN_ON_START", False),
+        catch_up_hours=max(0.0, _env_float("RECIPEBOT_CATCH_UP_HOURS", 6.0)),
         log_level=(_env("RECIPEBOT_LOG_LEVEL", "INFO") or "INFO").upper(),
         history_days=_env_int("RECIPEBOT_HISTORY_DAYS", 90),
         history_max_lines=_env_int("RECIPEBOT_HISTORY_MAX_LINES", 150),

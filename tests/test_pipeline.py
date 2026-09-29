@@ -181,14 +181,113 @@ def test_llm_exception_is_contained(settings, fixed_now):
         assert history.recent_runs()[0].status == "error"
 
 
-def test_telegram_failure_is_contained_and_not_recorded_as_sent(settings, fixed_now):
+def test_telegram_rejection_is_contained_and_not_recorded_as_sent(settings, fixed_now):
     bad = FakeSession(default=lambda url: FakeResponse(400, json_body={"ok": False, "error_code": 400, "description": "Bad Request: chat not found"}))
     llm = FakeLLM([reply_text([make_recipe()])])
     pipeline, tg, _, _ = build(settings, llm, fixed_now, tg_session=bad)
     report = pipeline.run(category="high_protein")
-    assert report.status == "error" and "chat not found" in report.detail
+    assert report.status == "nothing_posted" and report.posted == []
+    assert any("telegram" in r and "chat not found" in r for r in report.rejected)
     with History(settings.db_path) as history:
         assert history.recent_sent() == []
+        assert history.recent_runs()[0].status == "nothing_posted"
+
+
+def _tg_session_failing_on(nth_message: int, error_code: int = 400, description: str = "Bad Request: flood"):
+    counter = {"n": 0}
+
+    def respond(url):
+        if url.endswith("/sendMessage"):
+            counter["n"] += 1
+            if counter["n"] == nth_message:
+                return FakeResponse(error_code, json_body={"ok": False, "error_code": error_code, "description": description})
+            return FakeResponse(200, json_body={"ok": True, "result": {"message_id": counter["n"]}})
+        return FakeResponse(200, json_body={"ok": True, "result": {"id": 1}})
+
+    return FakeSession(default=respond)
+
+
+def test_partial_delivery_reports_counts_and_records_what_was_sent(settings, fixed_now):
+    a = make_recipe(title="A", source={"site": "s", "url": "https://x.com/a"})
+    b = make_recipe(title="B", source={"site": "s", "url": "https://x.com/b"})
+    routes = {u: FakeResponse(200, body=RECIPE_HTML) for u in ("https://x.com/a", "https://x.com/b")}
+    llm = FakeLLM([reply_text([a, b])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now, web_routes=routes, tg_session=_tg_session_failing_on(2))
+    report = pipeline.run(category="high_protein", count=2)
+    assert report.status == "partial" and report.posted == ["A"] and any(r.startswith("B: telegram") for r in report.rejected)
+    [alert] = admin_texts(tg)
+    assert alert.startswith("RecipeBot posted 1 of 2 recipe(s), then hit a problem.")
+    with History(settings.db_path) as history:
+        assert [r.title for r in history.recent_sent()] == ["A"]
+        assert history.recent_runs()[0].status == "partial" and history.recent_runs()[0].posted == 1
+
+
+def test_half_sent_split_recipe_is_recorded(settings, fixed_now):
+    long = make_recipe(why_it_fits="w" * 2300, tips=["x" * 2300])
+    llm = FakeLLM([reply_text([long])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now, tg_session=_tg_session_failing_on(2))
+    report = pipeline.run(category="high_protein")
+    assert report.status == "partial" and report.posted[0].startswith("Garlic Soy Chicken with Broccoli (incomplete")
+    with History(settings.db_path) as history:
+        assert len(history.recent_sent()) == 1
+
+
+def test_ambiguous_timeout_is_recorded_not_retried(settings, fixed_now):
+    session = FakeSession(default=lambda url: (_ for _ in ()).throw(TimeoutError("ReadTimeout: read timed out")) if url.endswith("/sendMessage") else FakeResponse(200, json_body={"ok": True, "result": {"message_id": 1}}))
+    llm = FakeLLM([reply_text([make_recipe()])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now, tg_session=session)
+    report = pipeline.run(category="high_protein")
+    assert report.status == "partial" and "incomplete" in report.posted[0]
+    assert len([p for p in tg.posts if p["url"].endswith("/sendMessage") and p["json"]["chat_id"] == "@channel"]) == 1
+    with History(settings.db_path) as history:
+        assert len(history.recent_sent()) == 1
+
+
+def test_broken_rotation_file_is_reported_not_fatal(settings, fixed_now):
+    settings.data_dir.mkdir(parents=True, exist_ok=True)
+    settings.rotation_path.write_text("{not json")
+    llm = FakeLLM([])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    report = pipeline.run()
+    assert report.status == "error" and "rotation.json" in report.detail and report.category == "unresolved"
+    assert llm.calls == []
+    [alert] = admin_texts(tg)
+    assert "RecipeBot posted nothing" in alert and "invalid JSON" in alert
+
+
+def test_rotation_file_is_reread_each_run(settings, fixed_now):
+    import json as _json
+
+    settings.data_dir.mkdir(parents=True, exist_ok=True)
+    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups"),
+                   reply_text([make_recipe(title="Second", category="noodles", protein_per_serving_g=None, source={"site": "s", "url": "https://x.com/2"})], category="noodles")])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now, web_routes={URL: FakeResponse(200, body=RECIPE_HTML), "https://x.com/2": FakeResponse(200, body=RECIPE_HTML)})
+    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "soups"}}}))
+    assert pipeline.run().category == "soups"
+    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "noodles"}}}))
+    assert pipeline.run().category == "noodles"
+
+
+def test_missing_telegram_config_raises_before_the_model_is_called(settings, fixed_now):
+    from recipebot.config import ConfigError
+
+    settings.telegram_bot_token = None
+    llm = FakeLLM([reply_text([make_recipe()])])
+    pipeline = Pipeline(settings, llm=llm, fetcher=Fetcher(session=FakeSession({})), now=fixed_now)
+    with pytest.raises(ConfigError):
+        pipeline.run(category="high_protein")
+    assert llm.calls == []
+    assert pipeline.run(category="high_protein", dry_run=True, check_pages=False).status == "dry_run"
+
+
+def test_run_row_carries_the_rotation_day(settings, fixed_now):
+    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups")])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    pipeline.run(day=date(2026, 10, 4))
+    with History(settings.db_path) as history:
+        runs = history.runs_for_day(date(2026, 10, 4))
+        assert len(runs) == 1 and runs[0].status == "posted" and runs[0].category == "soups"
+        assert history.runs_for_day(date(2026, 10, 5)) == []
 
 
 def test_admin_alert_failure_does_not_crash(settings, fixed_now):
