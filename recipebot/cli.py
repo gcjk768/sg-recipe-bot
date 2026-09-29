@@ -93,6 +93,7 @@ def cmd_check_config(settings: Settings) -> int:
         ("TELEGRAM_BOT_TOKEN", _mask(settings.telegram_bot_token)),
         ("TELEGRAM_CHAT_ID", settings.telegram_chat_id or "(unset)"),
         ("TELEGRAM_ADMIN_CHAT_ID", settings.telegram_admin_chat_id or "(unset)"),
+        ("LLM_PROVIDER", settings.llm_provider),
         ("LLM_API_KEY", _mask(settings.llm_api_key)),
         ("LLM_MODEL", settings.llm_model),
         ("LLM_EFFORT", settings.llm_effort or "(omitted)"),
@@ -190,6 +191,9 @@ def cmd_test_telegram(settings: Settings, admin: bool) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Posts carry emoji; a Windows console or redirected stdout defaults to cp1252 and would crash printing them.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = build_parser()
     args = parser.parse_args(argv)
     load_dotenv(args.env_file)

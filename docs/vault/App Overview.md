@@ -9,5 +9,7 @@ Daily recipe curator for Singapore home cooking. Asks Claude (web search) for on
 - Target: the owner Channel `<TELEGRAM_CHAT_ID>`, topic **2765** → `TELEGRAM_CHAT_ID=<TELEGRAM_CHAT_ID>/2765`
 - Topic parsing: `recipebot/telegram.py` (`send_message`), validated in `recipebot/config.py` (`_chat_id`)
 - Daily loop: `recipebot/scheduler.py` (16:00 SGT); one run: `recipebot/pipeline.py`
-- Model call: `recipebot/llm.py`; prompts: `recipebot/prompts/`
+- Bot: @owner_sgrecipe_bot (token in `.env`, never committed)
+- Model call: `recipebot/llm.py` — `ClaudeCLIClient` (`claude -p --system-prompt-file ... --tools WebSearch,WebFetch`) by default, `AnthropicClient` with `LLM_PROVIDER=api`; prompts: `recipebot/prompts/`
+- Page check: `recipebot/web.py` (`curl_cffi` Chrome impersonation, `is_bot_wall`), `recipebot/validate.py` (`check_source_page`)
 - Deploy: `Dockerfile`, `docker-compose.yml`; state in `./data/history.sqlite`

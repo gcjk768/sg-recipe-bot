@@ -19,7 +19,9 @@ The full design (system prompt, run brief, validation checks, Telegram template,
 4. The JSON that comes back is parsed (one retry with the parse error appended) and every recipe is
    checked: category, difficulty, time caps, ingredient count, step count and length, an `https://`
    source URL that returns 200 and looks like a recipe page, and no duplicate of anything already
-   posted. Failing recipes are dropped, never patched.
+   posted. Pages are fetched with a Chrome TLS fingerprint (`curl_cffi`); a page hidden behind a
+   Cloudflare style bot check (403 challenge) is kept with a logged warning, since it cannot be
+   verified either way. Failing recipes are dropped, never patched.
 5. Each surviving recipe is rendered as one Telegram HTML message and sent, then written to the
    history table. If nothing could be posted, the run is logged and a short alert goes to your
    private admin chat.
@@ -34,8 +36,11 @@ The full design (system prompt, run brief, validation checks, Telegram template,
 2. Optional but recommended: start a private chat with the bot, send it any message, and take your
    own numeric chat id from the same `getUpdates` call. Put it in `TELEGRAM_ADMIN_CHAT_ID` so failed
    runs reach your phone.
-3. Get an Anthropic API key.
-4. `cp .env.example .env` and fill in the values.
+3. `cp .env.example .env` and fill in the values.
+4. Sign the container's Claude Code in once (the default `LLM_PROVIDER=cli` runs `claude -p`, billed to
+   your Claude plan): `docker compose run --rm recipebot claude`, type `/login`, follow the link, then
+   `/exit`. The login is kept in `./data/.home`. Alternatively set `CLAUDE_CODE_OAUTH_TOKEN` from
+   `claude setup-token`, or use `LLM_PROVIDER=api` with an Anthropic API key.
 
 ### Run with Docker (the NAS)
 
@@ -112,9 +117,10 @@ restart the bot itself. And the bot's own daily model call is separate: it still
 
 ### Does it need an AI service?
 
-Yes. The recipes are found on real recipe sites and rewritten by a Claude model on every run, so
-an Anthropic API key (`LLM_API_KEY`) is required; without it `check-config` reports the missing
-setting and `run` stops before doing anything. There is no offline mode, because the bot never
+Yes. The recipes are found on real recipe sites and rewritten by a Claude model on every run. By
+default that is `claude -p` (Claude Code) signed in with your Claude plan, with its WebSearch and
+WebFetch tools; set `LLM_PROVIDER=api` to call the Anthropic API with `LLM_API_KEY` instead. The
+cost figures below are for the API path; the CLI path counts against the plan's usage. There is no offline mode, because the bot never
 posts recipes from memory or from a fixed list.
 
 Cost is one model call a day. With the default `claude-opus-5-5` and up to 10 web searches per
@@ -179,7 +185,8 @@ comments. The ones you will touch:
 |---|---|---|
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | required | The bot and the channel (`CHAT/TOPIC` for a forum topic). |
 | `TELEGRAM_ADMIN_CHAT_ID` | unset | Private chat that gets a short message when a run posts nothing. |
-| `LLM_API_KEY` | required | Anthropic API key (`ANTHROPIC_API_KEY` also works). |
+| `LLM_PROVIDER` | `cli` | `cli` runs `claude -p` (signed in Claude plan); `api` calls the Anthropic API. |
+| `LLM_API_KEY` | api only | Anthropic API key (`ANTHROPIC_API_KEY` also works). |
 | `LLM_MODEL` | `claude-opus-5-5` | Model id. |
 | `LLM_EFFORT` | `high` | `low`, `medium`, `high`, `xhigh`, `max`, or `none` to omit it. |
 | `LLM_FALLBACKS` | `default` | Server side refusal fallback (beta). `off` disables it. |
