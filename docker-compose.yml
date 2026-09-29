@@ -20,3 +20,27 @@ services:
     # One shot instead of the daemon (for the NAS task scheduler or a manual test):
     #   docker compose run --rm recipebot recipebot run --dry-run
     #   docker compose run --rm recipebot recipebot run
+
+  # Optional: Claude Code CLI in a container, with this folder mounted, for editing and operating
+  # the bot from the NAS. Not started by "docker compose up"; run it on demand:
+  #   docker compose build claude
+  #   docker compose run --rm claude                  interactive session in this folder
+  #   docker compose run --rm claude remote-control   makes it show up in the Claude app
+  # Login (first run) is kept in the claude-home volume, so you only sign in once.
+  claude:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    container_name: recipebot-claude
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - claude-home:/home/node
+    environment:
+      TZ: ${TZ:-Asia/Singapore}
+    stdin_open: true
+    tty: true
+
+volumes:
+  claude-home:

@@ -77,6 +77,34 @@ three 10 MB files. The container only makes outbound HTTPS connections; no port 
 nothing needs to be opened on the router. It runs as root inside the container, which is normal
 for a NAS bind mount; the files it writes in `./data` will be root owned.
 
+### Claude Code on the NAS
+
+The compose file has an optional `claude` service: the Claude Code command line tool in a small
+container with this folder mounted at `/workspace`, so you can ask Claude to change the rotation,
+read the history database, run the tests or debug a failed day right on the NAS. It is not part
+of `docker compose up`; you start it when you want it.
+
+```bash
+docker compose build claude
+docker compose run --rm claude
+```
+
+The first start asks you to sign in: it prints a link, you open it on your phone or PC, approve,
+and paste the code back. The sign in is stored in the `claude-home` volume, so you do it once.
+Sign in with your Claude account (a Pro or Max plan covers Claude Code) or with a Console account.
+
+To drive that same session from the Claude app on your phone or at claude.ai/code instead of an
+SSH window, start it in Remote Control mode. It then appears in the app as a session on your NAS:
+
+```bash
+docker compose run --rm claude remote-control
+```
+
+Two notes. This container only reads and writes the project folder; it does not get the Docker
+socket, so ask it to give you the `docker compose` commands to run rather than expecting it to
+restart the bot itself. And the bot's own daily model call is separate: it still uses
+`LLM_API_KEY` and is billed to the API account, whatever you sign into Claude Code with.
+
 ### Does it need an AI service?
 
 Yes. The recipes are found on real recipe sites and rewritten by a Claude model on every run, so
