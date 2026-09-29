@@ -78,6 +78,14 @@ def _timezone(value: str) -> str:
     return value
 
 
+def _chat_id(name: str) -> str | None:
+    value = _env(name)
+    _, sep, topic = (value or "").partition("/")
+    if sep and not topic.isdigit():
+        raise ConfigError(f"{name} must be CHAT or CHAT/TOPIC_NUMBER (like -1002069000031/2765), got {value!r}")
+    return value
+
+
 def _csv(value: str | None) -> list[str]:
     if not value:
         return []
@@ -176,8 +184,8 @@ def load_settings() -> Settings:
     prompts_dir = _env("RECIPEBOT_PROMPTS_DIR")
     return Settings(
         telegram_bot_token=_env("TELEGRAM_BOT_TOKEN"),
-        telegram_chat_id=_env("TELEGRAM_CHAT_ID"),
-        telegram_admin_chat_id=_env("TELEGRAM_ADMIN_CHAT_ID"),
+        telegram_chat_id=_chat_id("TELEGRAM_CHAT_ID"),
+        telegram_admin_chat_id=_chat_id("TELEGRAM_ADMIN_CHAT_ID"),
         llm_api_key=_env("LLM_API_KEY") or _env("ANTHROPIC_API_KEY"),
         llm_model=_env("LLM_MODEL", "claude-opus-5-5") or "claude-opus-5-5",
         llm_effort=effort,

@@ -173,6 +173,7 @@ def test_crashing_run_does_not_stop_the_loop(settings, history):
     assert len(pipeline.days) == 2
 
 
+@pytest.mark.skipif(os.name == "nt", reason="os.kill(SIGTERM) terminates the process on Windows")
 def test_sigterm_stops_the_loop_cleanly(settings, history):
     clock = {"now": datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT)}
     previous = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}

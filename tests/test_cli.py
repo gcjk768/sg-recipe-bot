@@ -55,6 +55,12 @@ def test_bad_config_value(monkeypatch, capsys):
     assert "RECIPEBOT_COUNT" in capsys.readouterr().err
 
 
+def test_bad_topic_in_chat_id(monkeypatch, capsys):
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "-1002069000031/general")
+    assert main(ENV_ARGS + ["check-config"]) == 2
+    assert "TELEGRAM_CHAT_ID" in capsys.readouterr().err
+
+
 def test_system_prompt_command_prints_verbatim(capsys):
     assert main(ENV_ARGS + ["system-prompt"]) == 0
     assert capsys.readouterr().out == load_system_prompt() + "\n"
