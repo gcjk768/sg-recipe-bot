@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "recipebot"
+version = "0.1.0"
+description = "Scheduled bot that asks a model for simple recipes, validates them and posts them to a Telegram channel."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "anthropic>=1.9,<2",
+    "pydantic>=2.6,<3",
+    "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+recipebot = "recipebot.cli:main"
+
+[tool.setuptools]
+packages = ["recipebot"]
+
+[tool.setuptools.package-data]
+recipebot = ["prompts/*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

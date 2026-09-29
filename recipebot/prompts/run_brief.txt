@@ -1,0 +1,11 @@
+RUN BRIEF
+run_id: {{run_id}}
+category: {{category}}
+count: {{count}}
+servings: {{servings}}
+theme: {{theme}}
+recent_mains: {{recent_mains}}
+already_sent:
+{{already_sent}}
+candidate_pages:
+{{candidate_pages}}

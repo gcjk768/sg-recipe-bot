@@ -1,0 +1,283 @@
+"""Fetching recipe pages and reading their schema.org Recipe data."""
+
+from __future__ import annotations
+
+import html as htmllib
+import json
+import re
+from dataclasses import dataclass
+from typing import Any, Iterator
+from urllib.parse import urlsplit
+
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0 Safari/537.36 RecipeBot/0.1"
+)
+
+_LDJSON = re.compile(
+    r"<script[^>]*type\s*=\s*[\"']application/ld\+json[\"'][^>]*>(.*?)</script>",
+    re.IGNORECASE | re.DOTALL,
+)
+_MICRODATA = re.compile(r"itemtype\s*=\s*[\"']https?://schema\.org/Recipe[\"']", re.IGNORECASE)
+_TITLE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+_TAG = re.compile(r"<[^>]+>")
+_WS = re.compile(r"\s+")
+_DURATION = re.compile(
+    r"^P(?:(?P<d>\d+)D)?(?:T(?:(?P<h>\d+)H)?(?:(?P<m>\d+)M)?(?:(?P<s>\d+(?:\.\d+)?)S)?)?$"
+)
+
+
+@dataclass
+class FetchResult:
+    url: str
+    final_url: str
+    status: int | None
+    text: str
+    error: str | None = None
+
+    @property
+    def ok(self) -> bool:
+        return self.error is None and self.status == 200
+
+
+class Fetcher:
+    """Thin wrapper around a requests session so tests can swap in a fake."""
+
+    def __init__(self, session: Any | None = None, *, timeout: float = 20, max_bytes: int = 2_000_000):
+        if session is None:
+            import requests
+
+            session = requests.Session()
+        self.session = session
+        self.timeout = timeout
+        self.max_bytes = max_bytes
+
+    def fetch(self, url: str) -> FetchResult:
+        headers = {
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-SG,en;q=0.9,zh;q=0.8",
+        }
+        try:
+            response = self.session.get(url, headers=headers, timeout=self.timeout, allow_redirects=True, stream=True)
+        except Exception as exc:  # requests raises many subclasses; the reason text is what matters
+            return FetchResult(url=url, final_url=url, status=None, text="", error=f"{type(exc).__name__}: {exc}")
+        try:
+            chunks: list[bytes] = []
+            total = 0
+            for chunk in response.iter_content(65536):
+                if not chunk:
+                    continue
+                chunks.append(chunk)
+                total += len(chunk)
+                if total >= self.max_bytes:
+                    break
+            raw = b"".join(chunks)
+            encoding = getattr(response, "encoding", None) or "utf-8"
+            try:
+                text = raw.decode(encoding, errors="replace")
+            except LookupError:
+                text = raw.decode("utf-8", errors="replace")
+            return FetchResult(
+                url=url,
+                final_url=getattr(response, "url", url) or url,
+                status=int(response.status_code),
+                text=text,
+            )
+        except Exception as exc:
+            return FetchResult(url=url, final_url=url, status=None, text="", error=f"{type(exc).__name__}: {exc}")
+        finally:
+            close = getattr(response, "close", None)
+            if callable(close):
+                close()
+
+
+# --- schema.org helpers ---------------------------------------------------------------
+
+
+def _clean_script(body: str) -> str:
+    body = body.strip()
+    body = re.sub(r"^\s*<!--", "", body)
+    body = re.sub(r"-->\s*$", "", body)
+    body = re.sub(r"^\s*//\s*<!\[CDATA\[", "", body)
+    body = re.sub(r"//\s*\]\]>\s*$", "", body)
+    return body.strip()
+
+
+def _is_recipe_node(node: dict) -> bool:
+    kind = node.get("@type")
+    if isinstance(kind, str):
+        return kind == "Recipe" or kind.endswith("/Recipe")
+    if isinstance(kind, list):
+        return any(isinstance(k, str) and (k == "Recipe" or k.endswith("/Recipe")) for k in kind)
+    return False
+
+
+def _walk(node: Any) -> Iterator[dict]:
+    if isinstance(node, list):
+        for item in node:
+            yield from _walk(item)
+    elif isinstance(node, dict):
+        if _is_recipe_node(node):
+            yield node
+        for key in ("@graph", "mainEntity", "mainEntityOfPage", "hasPart", "itemListElement", "item"):
+            if key in node:
+                yield from _walk(node[key])
+
+
+def extract_recipe_jsonld(html: str) -> list[dict]:
+    """All schema.org Recipe nodes found in ld+json script blocks."""
+    found: list[dict] = []
+    for match in _LDJSON.finditer(html or ""):
+        body = _clean_script(match.group(1))
+        if not body:
+            continue
+        try:
+            data = json.loads(body)
+        except json.JSONDecodeError:
+            try:
+                data = json.loads(body.replace("\n", " ").replace("\t", " "))
+            except json.JSONDecodeError:
+                continue
+        found.extend(_walk(data))
+    return found
+
+
+def page_has_recipe_markup(html: str) -> bool:
+    return bool(extract_recipe_jsonld(html)) or bool(_MICRODATA.search(html or ""))
+
+
+def page_mentions_ingredients(html: str) -> bool:
+    return "ingredient" in (html or "").lower()
+
+
+def page_looks_like_recipe(html: str) -> bool:
+    """Section 3: the page mentions ingredients or carries schema.org Recipe data."""
+    return page_mentions_ingredients(html) or page_has_recipe_markup(html)
+
+
+def page_title(html: str) -> str | None:
+    match = _TITLE.search(html or "")
+    if not match:
+        return None
+    return strip_html(match.group(1)) or None
+
+
+def strip_html(text: str) -> str:
+    return _WS.sub(" ", htmllib.unescape(_TAG.sub(" ", text or ""))).strip()
+
+
+def is_homepage(url: str) -> bool:
+    try:
+        parts = urlsplit(url)
+    except ValueError:
+        return False
+    return parts.path.strip("/") == "" and not parts.query
+
+
+def iso_duration_to_minutes(value: Any) -> int | None:
+    if not isinstance(value, str):
+        return None
+    match = _DURATION.match(value.strip().upper())
+    if not match or value.strip().upper() == "P":
+        return None
+    days = int(match.group("d") or 0)
+    hours = int(match.group("h") or 0)
+    minutes = int(match.group("m") or 0)
+    seconds = float(match.group("s") or 0)
+    total = days * 1440 + hours * 60 + minutes + round(seconds / 60)
+    return int(total)
+
+
+def _text_of(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return strip_html(value)
+    if isinstance(value, dict):
+        for key in ("text", "name", "@value"):
+            if key in value and isinstance(value[key], str):
+                return strip_html(value[key])
+        return ""
+    if isinstance(value, list):
+        return ", ".join(t for t in (_text_of(v) for v in value) if t)
+    return strip_html(str(value))
+
+
+def _instructions(value: Any) -> list[str]:
+    steps: list[str] = []
+    if isinstance(value, str):
+        for line in re.split(r"\n+|<br\s*/?>|</p>|</li>", value, flags=re.IGNORECASE):
+            line = strip_html(line)
+            if line:
+                steps.append(line)
+        return steps
+    if isinstance(value, dict):
+        kind = value.get("@type", "")
+        kinds = kind if isinstance(kind, list) else [kind]
+        if "HowToSection" in kinds or "ItemList" in kinds:
+            name = _text_of(value.get("name"))
+            if name:
+                steps.append(f"[{name}]")
+            steps.extend(_instructions(value.get("itemListElement")))
+            return steps
+        text = _text_of(value)
+        if text:
+            steps.append(text)
+        return steps
+    if isinstance(value, list):
+        for item in value:
+            steps.extend(_instructions(item))
+    return steps
+
+
+def recipe_node_title(node: dict) -> str | None:
+    return _text_of(node.get("name") or node.get("headline")) or None
+
+
+def recipe_node_author(node: dict) -> str | None:
+    return _text_of(node.get("author")) or None
+
+
+def recipe_node_to_text(node: dict) -> str:
+    """Plain text summary of a schema.org Recipe node: name, author, yield, times, ingredients, steps."""
+    lines: list[str] = []
+    title = recipe_node_title(node)
+    if title:
+        lines.append(f"Name: {title}")
+    author = recipe_node_author(node)
+    if author:
+        lines.append(f"Author: {author}")
+    yield_ = _text_of(node.get("recipeYield"))
+    if yield_:
+        lines.append(f"Yield: {yield_}")
+    times = []
+    for label, key in (("Prep", "prepTime"), ("Cook", "cookTime"), ("Total", "totalTime")):
+        minutes = iso_duration_to_minutes(node.get(key))
+        if minutes is not None:
+            times.append(f"{label} {minutes} min")
+    if times:
+        lines.append("Times: " + ", ".join(times))
+    cuisine = _text_of(node.get("recipeCuisine"))
+    if cuisine:
+        lines.append(f"Cuisine: {cuisine}")
+    ingredients = node.get("recipeIngredient") or node.get("ingredients") or []
+    if isinstance(ingredients, str):
+        ingredients = [ingredients]
+    if ingredients:
+        lines.append("Ingredients:")
+        for item in ingredients:
+            text = _text_of(item)
+            if text:
+                lines.append(f"- {text}")
+    steps = _instructions(node.get("recipeInstructions"))
+    if steps:
+        lines.append("Instructions:")
+        n = 0
+        for step in steps:
+            if step.startswith("[") and step.endswith("]"):
+                lines.append(step)
+                continue
+            n += 1
+            lines.append(f"{n}. {step}")
+    return "\n".join(lines)
