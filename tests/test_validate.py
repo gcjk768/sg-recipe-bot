@@ -30,15 +30,35 @@ def _fetcher(routes=None, default=None):
     "item",
     ["salt", "Sea salt", "salt, to taste", "salt and pepper", "white pepper", "black pepper", "ground black pepper",
      "sugar", "brown sugar", "caster sugar", "oil", "cooking oil", "vegetable oil", "olive oil", "water", "hot water",
-     "boiling water", "Salt (optional)"],
+     "boiling water", "Salt (optional)",
+     # phrasing seen on Singapore and Western food blogs
+     "fine sea salt", "flaky sea salt", "pinch of salt", "a pinch of salt", "sea salt and black pepper",
+     "salt and freshly ground black pepper", "white pepper powder", "pepper powder", "soft brown sugar",
+     "golden caster sugar", "neutral cooking oil", "vegetable cooking oil", "vegetable or canola oil",
+     "extra virgin olive oil", "lukewarm water", "water to cover", "water for boiling", "oil for frying",
+     "gula melaka", "salt, or to taste", "sugar (optional)", "ice water", "cooking oil, for the wok",
+     "salt & pepper", "Kosher salt", "freshly ground pepper", "water, as needed"],
 )
 def test_free_ingredients(item):
-    assert is_free_ingredient(item)
+    assert is_free_ingredient(item), item
 
 
-@pytest.mark.parametrize("item", ["sesame oil", "chilli oil", "bell pepper", "red pepper", "coconut water", "rose water", "palm sugar syrup", "salted egg", "sugar snap peas", "soy sauce", "chicken"])
+@pytest.mark.parametrize(
+    "item",
+    ["sesame oil", "chilli oil", "bell pepper", "red pepper", "green pepper", "sichuan peppercorns", "coconut water",
+     "rose water", "palm sugar syrup", "salted egg", "sugar snap peas", "soy sauce", "chicken", "salted butter",
+     "salt fish", "sugar cane", "water chestnuts", "watercress", "oil-packed tuna", "black pepper sauce",
+     "salt baked chicken", "dried chilli", "pepper crab paste"],
+)
 def test_counted_ingredients(item):
-    assert not is_free_ingredient(item)
+    assert not is_free_ingredient(item), item
+
+
+def test_boundary_ten_real_ingredients_with_multiword_seasonings():
+    items = [{"item": f"real thing {i}", "qty": 1, "unit": "g", "note": ""} for i in range(10)]
+    items += [{"item": s, "qty": 1, "unit": "pinch", "note": ""} for s in ("fine sea salt", "white pepper powder", "neutral cooking oil", "lukewarm water")]
+    recipe = Recipe.model_validate(make_recipe(ingredients=items))
+    assert check_static(recipe, "high_protein") is None
 
 
 def test_ingredient_cap_ignores_free_items():
@@ -86,6 +106,8 @@ def test_time_caps(category, prep, total, ok):
         ({"ingredients": []}, "no ingredients"),
         ({"total_minutes": 0}, "positive"),
         ({"title": "  "}, "title is empty"),
+        ({"source": {"site": "s", "url": "https://www.recipetineats.com/"}}, "homepage"),
+        ({"source": {"site": "s", "url": "https://www.recipetineats.com"}}, "homepage"),
     ],
 )
 def test_static_rejections(overrides, fragment):
@@ -103,6 +125,50 @@ def test_schema_failure_is_a_rejection_not_a_crash():
     assert result.accepted == []
     assert result.rejected[0].title == "Broken"
     assert "schema" in result.rejected[0].reason
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"cuisine": None}, {"why_it_fits": None}, {"source": {"site": None, "url": URL}},
+        {"nutrition_per_serving": {"kcal": "420", "protein_g": 40.4, "carbs_g": "lots", "fat_g": None}},
+        {"nutrition_per_serving": {"kcal": None}}, {"nutrition_per_serving": "n/a"}, {"nutrition_per_serving": []},
+        {"cost_estimate": {"total_sgd": "S$9.50", "per_serving_sgd": "4.75", "note": None}},
+        {"cost_estimate": {"total_sgd": "cheap", "per_serving_sgd": [1], "note": 5}},
+        {"cost_estimate": None},
+    ],
+)
+def test_null_and_drifted_optional_fields_do_not_drop_the_recipe(overrides):
+    recipe = make_recipe(**overrides)
+    result = validate_reply(_reply([recipe]), "high_protein", history=None, fetcher=None, check_pages=False)
+    assert result.accepted, result.rejected
+
+
+def test_null_unit_is_tolerated():
+    recipe = make_recipe()
+    recipe["ingredients"][0]["unit"] = None
+    result = validate_reply(_reply([recipe]), "high_protein", history=None, fetcher=None, check_pages=False)
+    assert result.accepted and result.accepted[0].ingredients[0].unit == ""
+
+
+def test_estimate_members_are_coerced_individually():
+    recipe = Recipe.model_validate(make_recipe(
+        nutrition_per_serving={"kcal": "420", "protein_g": 40.4, "carbs_g": "lots", "fat_g": None},
+        cost_estimate={"total_sgd": "S$9.50", "per_serving_sgd": "4.75", "note": None},
+    ))
+    assert recipe.nutrition.kcal == 420 and recipe.nutrition.protein_g == 40 and recipe.nutrition.carbs_g is None
+    assert recipe.cost.total_sgd == 9.5 and recipe.cost.per_serving_sgd == 4.75 and recipe.cost.note == ""
+
+
+def test_cost_per_serving_is_derived_when_missing_or_contradictory():
+    derived = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 10, "per_serving_sgd": None}, servings=4)).cost
+    assert derived.per_serving_sgd == 2.5
+    contradictory = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 10, "per_serving_sgd": 9.5}, servings=2)).cost
+    assert contradictory.per_serving_sgd == 5.0
+    bigger = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 10, "per_serving_sgd": 12}, servings=2)).cost
+    assert bigger.per_serving_sgd == 5.0
+    consistent = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 10, "per_serving_sgd": 4.8}, servings=2)).cost
+    assert consistent.per_serving_sgd == 4.8
 
 
 def test_qty_as_numeric_string_is_coerced():
@@ -191,3 +257,5 @@ def test_main_ingredient_skips_staples_and_seasoning():
     ], pantry_staples=["garlic"]))
     assert main_ingredient(recipe) == "salmon fillet"
     assert main_ingredient(Recipe.model_validate(make_recipe())) == "chicken thigh"
+    recipe.ingredients[2].item = "chicken thighs (boneless, skinless)"
+    assert main_ingredient(recipe) == "chicken thighs"

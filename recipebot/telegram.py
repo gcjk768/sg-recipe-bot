@@ -12,11 +12,37 @@ MAX_MESSAGE_CHARS = 4096
 
 
 class TelegramError(Exception):
-    def __init__(self, description: str, status: int | None = None, error_code: int | None = None):
+    def __init__(self, description: str, status: int | None = None, error_code: int | None = None, *, ambiguous: bool = False):
         super().__init__(description)
         self.description = description
         self.status = status
         self.error_code = error_code
+        self.ambiguous = ambiguous
+        """True when the request may have reached Telegram (a read timeout or a reset while reading),
+        so the message might have been delivered even though no reply arrived."""
+
+
+_CONNECT_PHASE_MARKERS = (
+    "NewConnectionError",
+    "ConnectTimeout",
+    "Failed to establish a new connection",
+    "Name or service not known",
+    "nodename nor servname",
+    "Temporary failure in name resolution",
+    "Connection refused",
+    "NameResolutionError",
+    "ProxyError",
+    "SSLError",
+)
+
+
+def failed_before_sending(exc: BaseException) -> bool:
+    """True when the exception shows the request never left (DNS, refused, connect timeout, TLS),
+    so re-sending cannot duplicate anything. A read timeout or a reset mid-response is ambiguous."""
+    text = f"{type(exc).__name__}: {exc}"
+    if "ReadTimeout" in text or "ChunkedEncodingError" in text or "IncompleteRead" in text:
+        return False
+    return any(marker in text for marker in _CONNECT_PHASE_MARKERS)
 
 
 class TelegramClient:
@@ -48,17 +74,22 @@ class TelegramClient:
         """Strips the bot token from library error messages, which include the request URL."""
         return text.replace(self.token, "<token>") if self.token else text
 
-    def call(self, method: str, payload: dict[str, Any] | None = None) -> Any:
-        """POSTs a Bot API method. Retries 429 (honouring retry_after) and 5xx, raises TelegramError otherwise."""
+    def call(self, method: str, payload: dict[str, Any] | None = None, *, idempotent: bool = False) -> Any:
+        """POSTs a Bot API method. Retries 429 (honouring retry_after), 5xx and connection failures
+        that happened before the request was sent. A failure that may already have delivered a
+        non idempotent call (sendMessage) is not retried, to avoid posting twice."""
         payload = payload or {}
         last_error: TelegramError | None = None
         for attempt in range(1, self.max_attempts + 1):
             try:
                 response = self.session.post(self._url(method), json=payload, timeout=self.timeout)
             except Exception as exc:
-                last_error = TelegramError(self.redact(f"network error calling {method}: {type(exc).__name__}: {exc}"))
-                self.sleep(min(2 ** attempt, 30))
-                continue
+                message = self.redact(f"network error calling {method}: {type(exc).__name__}: {exc}")
+                if idempotent or failed_before_sending(exc):
+                    last_error = TelegramError(message)
+                    self.sleep(min(2 ** attempt, 30))
+                    continue
+                raise TelegramError(message + " (the message may or may not have been delivered)", ambiguous=True) from exc
             try:
                 body = response.json()
             except ValueError:
@@ -118,5 +149,5 @@ class TelegramClient:
         return self.send_message(chat_id, text, parse_mode=None, disable_preview=True)
 
     def get_me(self) -> dict[str, Any]:
-        result = self.call("getMe")
+        result = self.call("getMe", idempotent=True)
         return result if isinstance(result, dict) else {}

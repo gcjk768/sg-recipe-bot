@@ -119,7 +119,18 @@ The CLI loads `.env` from the current directory (or `--env-file PATH`).
 | `recipebot system-prompt` | Print the system prompt exactly as it is sent. |
 
 Exit code is 0 when a run posted (or dry ran) at least one recipe, 1 otherwise, 2 for a
-configuration error.
+configuration error (a missing token or key, a bad value, an unknown timezone).
+
+### Restarts, missed days and double posts
+
+The loop checks the runs table before every post, keyed by the rotation date. If the container
+starts after the post time on a day that has not run yet, it posts straight away as long as it is
+within `RECIPEBOT_CATCH_UP_HOURS` of the post time, so a NAS reboot or a rebuild at 16:05 does not
+lose the day. A day that already has a run is never posted again, whatever `RUN_ON_START` says. If
+a run was killed half way (status `running` with no end time), the bot does not repeat it, because
+the first half may already be in the channel; instead it tells the admin chat once. A Telegram
+timeout after a message was sent is treated the same way: the recipe is recorded as sent and the
+admin chat hears about it, rather than risking the same recipe twice.
 
 ## Settings
 
@@ -134,6 +145,7 @@ comments. The ones you will touch:
 | `LLM_MODEL` | `claude-opus-5-5` | Model id. |
 | `LLM_EFFORT` | `high` | `low`, `medium`, `high`, `xhigh`, `max`, or `none` to omit it. |
 | `LLM_FALLBACKS` | `default` | Server side refusal fallback (beta). `off` disables it. |
+| `LLM_MAX_TOKENS` | `32000` | Output budget per call, including the model's thinking. |
 | `LLM_WEB_SEARCH_MAX_USES` | `10` | Searches allowed per call. |
 | `LLM_ALLOWED_DOMAINS` | any | Comma separated list that restricts the model's web search to sites you trust. |
 | `TZ` | `Asia/Singapore` | Timezone for the daily post time and the rotation date. |
@@ -142,7 +154,8 @@ comments. The ones you will touch:
 | `RECIPEBOT_COUNT` | `1` | Recipes per run, 1 to 3. Each is its own message, two seconds apart. |
 | `RECIPEBOT_SERVINGS` | `2` | Servings requested. |
 | `RECIPEBOT_ROTATION_EPOCH` | `2026-09-28` | A date in a Week A. Any weekday works; it is aligned to its Monday. |
-| `RECIPEBOT_RUN_ON_START` | `false` | Also run once when the container starts. |
+| `RECIPEBOT_CATCH_UP_HOURS` | `6` | After a restart, a missed post is still made up to this many hours after the post time. `0` disables it. |
+| `RECIPEBOT_RUN_ON_START` | `false` | Also run once when the container starts, unless today already has a run. |
 | `RECIPEBOT_PROMPTS_DIR` | unset | Folder with `system_prompt.txt` / `run_brief.txt` that override the packaged ones. |
 
 ## The rotation
@@ -155,7 +168,8 @@ To change it, copy [`data/rotation.example.json`](data/rotation.example.json) to
 `data/rotation.json`. `weeks` replaces the cycle (any number of weeks, seven entries each, Monday
 first), `overrides` pins a single date to a category and theme, which is how the occasional
 categories (breakfast, sides, sauces_basics, use_it_up with the leftover as theme, custom with the
-scope as theme) get slotted in. `recipebot rotation` shows the result.
+scope as theme) get slotted in. The file is re-read before every run, so edits apply without a
+restart. `recipebot rotation` shows the result.
 
 ## Candidates mode
 

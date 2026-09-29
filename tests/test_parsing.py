@@ -63,3 +63,20 @@ def test_failures_carry_a_useful_message(text, fragment):
 def test_run_defaults_when_fields_missing():
     parsed = parse_reply(json.dumps({"run": {}, "recipes": []}))
     assert parsed.reply.run.count_requested == 0 and parsed.reply.run.notes == ""
+
+
+def test_unclosed_fence_with_long_whitespace_parses_fast():
+    import time
+
+    text = "```json" + " " * 20000 + "\n{" + " " * 20000
+    start = time.perf_counter()
+    with pytest.raises(ParseFailure):
+        parse_reply(text)
+    assert time.perf_counter() - start < 1.0
+
+
+def test_single_line_fence_and_language_tag():
+    body = json.dumps(make_reply([]))
+    assert parse_reply("```json" + body + "```").reply.recipes == []
+    assert parse_reply("```JSON\n" + body + "\n```").reply.recipes == []
+    assert parse_reply("```\n" + body + "\n```").reply.recipes == []

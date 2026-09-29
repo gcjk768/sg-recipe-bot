@@ -79,5 +79,33 @@ def test_run_requires_llm_key_when_not_configured(monkeypatch, tmp_path, capsys)
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
     code = main(ENV_ARGS + ["run", "--category", "soups", "--dry-run"])
-    assert code == 1
-    assert "missing required setting: LLM_API_KEY" in capsys.readouterr().out
+    assert code == 2
+    assert "missing required setting: LLM_API_KEY" in capsys.readouterr().err
+
+
+def test_run_requires_telegram_unless_dry_run(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv("LLM_API_KEY", "sk-test-key-1234")
+    for var in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"):
+        monkeypatch.delenv(var, raising=False)
+    monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
+    assert main(ENV_ARGS + ["run", "--category", "soups"]) == 2
+    assert "TELEGRAM_BOT_TOKEN" in capsys.readouterr().err
+
+
+def test_unknown_timezone_is_a_config_error(monkeypatch, capsys):
+    monkeypatch.setenv("TZ", "Mars/Olympus")
+    assert main(ENV_ARGS + ["check-config"]) == 2
+    assert "not a known timezone" in capsys.readouterr().err
+
+
+def test_logs_never_show_secrets(monkeypatch, tmp_path, capsys):
+    import logging
+
+    from recipebot.cli import _setup_logging
+
+    _setup_logging("INFO", ["123456:SECRETTOKEN", "sk-ant-very-secret"])
+    logging.getLogger("urllib3").warning("POST /bot123456:SECRETTOKEN/sendMessage")
+    logging.getLogger("recipebot").info("key is sk-ant-very-secret")
+    out = capsys.readouterr().out
+    assert "SECRETTOKEN" not in out and "very-secret" not in out and out.count("<redacted>") == 2
+    logging.getLogger().handlers[:] = []

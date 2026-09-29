@@ -121,3 +121,26 @@ def test_fetcher_errors():
     assert not result.ok and result.status is None and "TimeoutError" in result.error
     result = Fetcher(session=FakeSession({})).fetch("u")
     assert not result.ok and result.status == 404 and result.error is None
+
+
+def test_decode_body_prefers_header_then_meta_then_utf8():
+    from recipebot.web import decode_body
+
+    zh = "番茄炒蛋 Ingredients"
+    assert decode_body(zh.encode("utf-8"), "text/html; charset=utf-8") == zh
+    assert decode_body(zh.encode("gb18030"), "text/html; charset=GB18030") == zh
+    meta = ('<html><head><meta charset="gbk"><title>x</title></head>' + zh).encode("gbk")
+    assert zh in decode_body(meta, "text/html")
+    meta2 = ('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' + zh).encode("utf-8")
+    assert zh in decode_body(meta2, "")
+    assert decode_body(zh.encode("utf-8"), "text/html") == zh  # no charset anywhere: utf-8, not latin-1
+    assert decode_body(b"caf\xe9", "text/html") == "caf\ufffd"  # invalid utf-8 falls back to replacement
+    assert decode_body(zh.encode("utf-8"), "text/html; charset=not-a-real-charset") == zh
+
+
+def test_fetcher_ignores_requests_latin1_default():
+    zh = "<p>番茄炒蛋</p><p>Ingredients</p>"
+    response = FakeResponse(200, body=zh.encode("utf-8"), encoding="ISO-8859-1")
+    response.headers = {"content-type": "text/html"}
+    result = Fetcher(session=FakeSession({"u": response})).fetch("u")
+    assert "番茄炒蛋" in result.text

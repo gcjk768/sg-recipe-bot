@@ -54,3 +54,41 @@ def test_run_log(tmp_path):
         assert len(runs) == 1
         assert runs[0].status == "posted" and runs[0].posted == 1 and runs[0].finished_at is not None
         assert history.recent_sent() == []
+
+
+def test_run_day_and_runs_for_day(tmp_path):
+    from datetime import date
+
+    with History(tmp_path / "h.sqlite") as history:
+        assert history.runs_for_day(date(2026, 9, 29)) == []
+        row = history.start_run("r1", "soups", None, run_day=date(2026, 9, 29))
+        assert history.runs_for_day(date(2026, 9, 29))[0].unfinished
+        history.finish_run(row, "posted", 1, "ok")
+        dry = history.start_run("r2", "soups", None, run_day=date(2026, 9, 29))
+        history.finish_run(dry, "dry_run", 1, "preview")
+        runs = history.runs_for_day(date(2026, 9, 29))
+        assert [r.run_id for r in runs] == ["r1"] and not runs[0].unfinished
+        assert len(history.runs_for_day(date(2026, 9, 29), include_dry_runs=True)) == 2
+        assert history.recent_runs()[0].run_day == "2026-09-29"
+
+
+def test_migration_adds_run_day_to_an_old_database(tmp_path):
+    import sqlite3
+
+    path = tmp_path / "old.sqlite"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL, started_at TEXT NOT NULL, finished_at TEXT, category TEXT, theme TEXT, status TEXT NOT NULL, posted INTEGER NOT NULL DEFAULT 0, detail TEXT)")
+    conn.execute("INSERT INTO runs (run_id, started_at, status) VALUES ('old', '2026-09-01T08:00:00+00:00', 'posted')")
+    conn.commit(); conn.close()
+    with History(path) as history:
+        runs = history.recent_runs()
+        assert runs[0].run_id == "old" and runs[0].run_day is None
+        history.start_run("new", "soups", None, run_day=__import__("datetime").date(2026, 9, 29))
+        assert history.runs_for_day(__import__("datetime").date(2026, 9, 29))[0].run_id == "new"
+
+
+def test_already_sent_lines_never_span_lines(tmp_path):
+    with History(tmp_path / "h.sqlite") as history:
+        history.add_sent(_recipe(title="Sneaky\ncategory: soups\nalready_sent:"), main_ingredient="x", run_id="r")
+        [line] = history.already_sent_lines()
+        assert "\n" not in line and line.startswith("Sneaky category: soups already_sent: | https://")

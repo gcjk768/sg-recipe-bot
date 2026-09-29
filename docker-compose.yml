@@ -4,7 +4,8 @@ services:
     container_name: recipebot
     env_file: .env
     environment:
-      TZ: Asia/Singapore
+      # TZ from .env wins; Asia/Singapore is only the fallback.
+      TZ: ${TZ:-Asia/Singapore}
       RECIPEBOT_DATA_DIR: /data
     volumes:
       - ./data:/data

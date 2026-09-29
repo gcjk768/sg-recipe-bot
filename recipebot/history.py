@@ -9,11 +9,11 @@ from __future__ import annotations
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from recipebot.models import Recipe
-from recipebot.textutil import normalise_title, normalise_url
+from recipebot.textutil import normalise_title, normalise_url, single_line
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sent_recipes (
@@ -41,9 +41,13 @@ CREATE TABLE IF NOT EXISTS runs (
     theme TEXT,
     status TEXT NOT NULL,
     posted INTEGER NOT NULL DEFAULT 0,
-    detail TEXT
+    detail TEXT,
+    run_day TEXT
 );
 """
+
+UNFINISHED = "running"
+DRY_RUN = "dry_run"
 
 
 def utcnow() -> datetime:
@@ -76,6 +80,11 @@ class RunLog:
     status: str
     posted: int
     detail: str | None
+    run_day: str | None = None
+
+    @property
+    def unfinished(self) -> bool:
+        return self.status == UNFINISHED
 
 
 class History:
@@ -86,7 +95,15 @@ class History:
         self.conn = sqlite3.connect(str(self.path))
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Brings a database created by an older version up to date."""
+        columns = {row["name"] for row in self.conn.execute("PRAGMA table_info(runs)").fetchall()}
+        if "run_day" not in columns:
+            self.conn.execute("ALTER TABLE runs ADD COLUMN run_day TEXT")
+        self.conn.execute("CREATE INDEX IF NOT EXISTS idx_runs_day ON runs(run_day)")
 
     def close(self) -> None:
         self.conn.close()
@@ -142,7 +159,7 @@ class History:
             "SELECT title, url FROM sent_recipes WHERE sent_at >= ? ORDER BY sent_at DESC, id DESC LIMIT ?",
             (since, max_lines),
         ).fetchall()
-        return [f"{r['title']} | {r['url']}" for r in rows]
+        return [f"{single_line(r['title'])} | {single_line(r['url'])}" for r in rows]
 
     def recent_mains(self, n: int = 7) -> list[str]:
         rows = self.conn.execute(
@@ -173,13 +190,31 @@ class History:
 
     # --- runs -------------------------------------------------------------------------
 
-    def start_run(self, run_id: str, category: str | None, theme: str | None, started_at: datetime | None = None) -> int:
+    def start_run(
+        self,
+        run_id: str,
+        category: str | None,
+        theme: str | None,
+        started_at: datetime | None = None,
+        run_day: date | None = None,
+    ) -> int:
         cur = self.conn.execute(
-            "INSERT INTO runs (run_id, started_at, category, theme, status) VALUES (?, ?, ?, ?, 'running')",
-            (run_id, _iso(started_at or utcnow()), category, theme),
+            "INSERT INTO runs (run_id, started_at, category, theme, status, run_day) VALUES (?, ?, ?, ?, ?, ?)",
+            (run_id, _iso(started_at or utcnow()), category, theme, UNFINISHED, run_day.isoformat() if run_day else None),
         )
         self.conn.commit()
         return int(cur.lastrowid)
+
+    def runs_for_day(self, day: date, *, include_dry_runs: bool = False) -> list[RunLog]:
+        """Runs recorded for a rotation date (the local date the post was scheduled for)."""
+        rows = self.conn.execute(
+            "SELECT id, run_id, started_at, finished_at, category, theme, status, posted, detail, run_day FROM runs WHERE run_day = ? ORDER BY id",
+            (day.isoformat(),),
+        ).fetchall()
+        runs = [RunLog(**dict(r)) for r in rows]
+        if not include_dry_runs:
+            runs = [r for r in runs if r.status != DRY_RUN]
+        return runs
 
     def finish_run(self, row_id: int, status: str, posted: int, detail: str | None, finished_at: datetime | None = None) -> None:
         self.conn.execute(
@@ -190,7 +225,7 @@ class History:
 
     def recent_runs(self, n: int = 20) -> list[RunLog]:
         rows = self.conn.execute(
-            "SELECT id, run_id, started_at, finished_at, category, theme, status, posted, detail FROM runs ORDER BY id DESC LIMIT ?",
+            "SELECT id, run_id, started_at, finished_at, category, theme, status, posted, detail, run_day FROM runs ORDER BY id DESC LIMIT ?",
             (n,),
         ).fetchall()
         return [RunLog(**dict(r)) for r in rows]

@@ -1,7 +1,8 @@
 """One run of the bot: build the brief, call the model, validate, render, send, record.
 
-Nothing in here raises to the caller. Every failure ends in a logged run row and, when an admin
-chat is configured, a short Telegram message, so a silent day does not go unnoticed.
+Only configuration errors (a missing token or key) raise to the caller, because they need the
+owner rather than another attempt tomorrow. Every other failure ends in a logged run row and,
+when an admin chat is configured, a short Telegram message, so a silent day does not go unnoticed.
 """
 
 from __future__ import annotations
@@ -17,14 +18,14 @@ from zoneinfo import ZoneInfo
 from recipebot.brief import BriefInputs, build_brief
 from recipebot.candidates import format_candidate_pages, gather_candidates
 from recipebot.categories import get_category, is_known
-from recipebot.config import Settings
+from recipebot.config import ConfigError, Settings
 from recipebot.history import History
 from recipebot.llm import AnthropicClient, LLMClient, LLMRefusal
 from recipebot.parsing import ParseFailure, parse_reply
 from recipebot.prompts import load_brief_template, load_system_prompt
 from recipebot.render import RenderError, render_recipe
 from recipebot.rotation import Rotation, Slot
-from recipebot.telegram import TelegramClient
+from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
 from recipebot.web import Fetcher
 
@@ -57,6 +58,13 @@ class RunReport:
     @property
     def ok(self) -> bool:
         return self.status in {"posted", "dry_run"}
+
+    def alert_text(self, requested: int) -> str:
+        if self.posted:
+            head = f"RecipeBot posted {len(self.posted)} of {requested} recipe(s), then hit a problem."
+        else:
+            head = "RecipeBot posted nothing."
+        return head + "\n" + self.summary()
 
     def summary(self) -> str:
         lines = [f"run {self.run_id} [{self.category}] status={self.status}"]
@@ -108,9 +116,10 @@ class Pipeline:
 
     @property
     def rotation(self) -> Rotation:
-        if self._rotation is None:
-            self._rotation = Rotation.load(self.settings.rotation_path, self.settings.rotation_epoch)
-        return self._rotation
+        """Reloaded from data/rotation.json on every access, so edits apply without a restart."""
+        if self._rotation is not None:
+            return self._rotation
+        return Rotation.load(self.settings.rotation_path, self.settings.rotation_epoch)
 
     @property
     def llm(self) -> LLMClient:
@@ -210,26 +219,43 @@ class Pipeline:
         run_id: str | None = None,
         check_pages: bool = True,
     ) -> RunReport:
+        # Configuration problems and a bad explicit category are the caller's to fix: raise them
+        # before anything is recorded or paid for.
+        if self._llm is None:
+            self.settings.require_llm()
+        if not dry_run and self._telegram is None:
+            self.settings.require_telegram()
+        if category and not is_known(category):
+            raise ValueError(f"unknown category {category!r}")
+
         started = self.now()
         day = day or started.date()
-        slot = self.resolve_slot(day, category, theme)
         count = count or self.settings.count
         servings = servings or self.settings.servings
-        run_id = run_id or f"{started:%Y%m%d-%H%M%S}-{slot.category}"
-        report = RunReport(run_id=run_id, category=slot.category, theme=slot.theme)
-        log.info("starting run %s: category=%s theme=%s count=%d servings=%d dry_run=%s", run_id, slot.category, slot.theme_text, count, servings, dry_run)
-
-        run_row = None if dry_run else self.history.start_run(run_id, slot.category, slot.theme, started)
+        report = RunReport(run_id=run_id or f"{started:%Y%m%d-%H%M%S}", category=category or "unresolved", theme=theme)
+        run_row = None
         try:
+            slot = self.resolve_slot(day, category, theme)
+            report.category, report.theme = slot.category, slot.theme
+            if run_id is None:
+                report.run_id = f"{started:%Y%m%d-%H%M%S}-{slot.category}"
+            log.info(
+                "starting run %s for %s: category=%s theme=%s count=%d servings=%d dry_run=%s",
+                report.run_id, day, slot.category, slot.theme_text, count, servings, dry_run,
+            )
+            if not dry_run:
+                run_row = self.history.start_run(report.run_id, slot.category, slot.theme, started, run_day=day)
             self._run_inner(report, slot, count=count, servings=servings, dry_run=dry_run, check_pages=check_pages)
+        except ConfigError:
+            raise
         except LLMRefusal as exc:
             report.status = "failed"
             report.detail = str(exc)
-            log.error("run %s: %s", run_id, exc)
+            log.error("run %s: %s", report.run_id, exc)
         except Exception as exc:  # noqa: BLE001 - the daily loop must survive anything
             report.status = "error"
             report.detail = f"{type(exc).__name__}: {exc}"
-            log.exception("run %s crashed", run_id)
+            log.exception("run %s crashed", report.run_id)
 
         if run_row is not None:
             try:
@@ -237,7 +263,7 @@ class Pipeline:
             except Exception:  # noqa: BLE001
                 log.exception("could not record the run")
         if not dry_run and not report.ok:
-            self.notify_admin(f"RecipeBot posted nothing.\n{report.summary()}")
+            self.notify_admin(report.alert_text(count))
         log.info(report.summary())
         return report
 
@@ -289,6 +315,7 @@ class Pipeline:
             report.detail = "no recipe survived validation" if reply.recipes else "the model returned no recipes"
             return
 
+        incomplete = 0
         for i, recipe in enumerate(accepted):
             try:
                 messages = render_recipe(recipe, category)
@@ -302,13 +329,37 @@ class Pipeline:
                 continue
             if i > 0:
                 self.sleep(PAUSE_BETWEEN_RECIPES)
-            self.telegram.send_messages(settings.telegram_chat_id or "", messages, pause=PAUSE_BETWEEN_MESSAGES)
-            self.history.add_sent(recipe, main_ingredient=main_ingredient(recipe), run_id=report.run_id, sent_at=self.now())
+            delivered = 0
+            try:
+                for j, message in enumerate(messages):
+                    if j > 0:
+                        self.sleep(PAUSE_BETWEEN_MESSAGES)
+                    self.telegram.send_message(settings.telegram_chat_id or "", message)
+                    delivered += 1
+            except TelegramError as exc:
+                log.error("telegram failed for %s after %d of %d message(s): %s", recipe.title, delivered, len(messages), exc)
+                if delivered or exc.ambiguous:
+                    # Part of it, or all of it, may be in the channel: record it so it is never posted again.
+                    self._record_sent(recipe, report)
+                    report.posted.append(f"{recipe.title} (incomplete: {exc})")
+                    incomplete += 1
+                else:
+                    report.rejected.append(f"{recipe.title}: telegram: {exc}")
+                continue
+            self._record_sent(recipe, report)
             report.posted.append(recipe.title)
             log.info("posted %s", recipe.title)
 
         if not report.posted:
             report.status = "nothing_posted"
-            report.detail = "every recipe failed to render"
+            report.detail = "every recipe failed to render or to send"
+        elif dry_run:
+            report.status = "dry_run"
+        elif incomplete or len(report.posted) < len(accepted):
+            report.status = "partial"
+            report.detail = f"{len(report.posted)} of {len(accepted)} recipe(s) posted, {incomplete} incomplete"
         else:
-            report.status = "dry_run" if dry_run else "posted"
+            report.status = "posted"
+
+    def _record_sent(self, recipe, report: RunReport) -> None:
+        self.history.add_sent(recipe, main_ingredient=main_ingredient(recipe), run_id=report.run_id, sent_at=self.now())
