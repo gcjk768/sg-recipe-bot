@@ -1,0 +1,3 @@
+# Rename to high_protein.txt and add one exact recipe page URL per line, for example
+# from RecipeTin Eats, The Woks of Life, Just One Cookbook or BBC Good Food.
+# https://www.example.com/recipes/some-high-protein-dish

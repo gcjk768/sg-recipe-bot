@@ -1,0 +1,11 @@
+services:
+  recipebot:
+    build: .
+    env_file: .env
+    environment:
+      TZ: Asia/Singapore
+    volumes:
+      - ./data:/data
+    restart: always
+    # One shot instead of the loop (for the NAS task scheduler):
+    #   docker compose run --rm recipebot recipebot run

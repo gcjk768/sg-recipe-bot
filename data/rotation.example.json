@@ -1,0 +1,28 @@
+{
+  "epoch": "2026-09-28",
+  "weeks": [
+    [
+      {"category": "high_protein"},
+      {"category": "chinese_daily"},
+      {"category": "western_daily"},
+      {"category": "asian_daily"},
+      {"category": "baking_cakes", "theme": "weekend bake"},
+      {"category": "meal_prep", "theme": "lunchbox for the week"},
+      {"category": "soups"}
+    ],
+    [
+      {"category": "quick_20"},
+      {"category": "local_sg"},
+      {"category": "rice_cooker"},
+      {"category": "noodles"},
+      {"category": "desserts_no_oven"},
+      {"category": "seafood"},
+      {"category": "eggs_tofu_veg"}
+    ]
+  ],
+  "overrides": {
+    "2026-10-11": {"category": "use_it_up", "theme": "half a cabbage"},
+    "2026-10-18": {"category": "sauces_basics"},
+    "2026-10-25": {"category": "breakfast"}
+  }
+}

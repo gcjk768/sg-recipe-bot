@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+.env
+data/*
+!data/candidates/
+data/candidates/*
+!data/candidates/README.md
+!data/candidates/*.example.txt
+!data/rotation.example.json
