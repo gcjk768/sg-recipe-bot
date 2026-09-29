@@ -159,3 +159,13 @@ def test_split_output_is_exact():
     assert second == "🍳 <b>Garlic Soy Chicken with Broccoli</b>\n\n<b>Steps</b>" + EXPECTED.split("<b>Steps</b>")[1].replace(
         "Swap the broccoli for any green vegetable you have, or add sliced carrot for colour.", "x" * 2300
     )
+
+
+def test_meal_hashtags_lead_and_bad_meals_are_dropped():
+    recipe = Recipe.model_validate(make_recipe(meals=["Dinner", "brunch", "supper", "dinner", "lunch"]))
+    assert recipe.meals == ["dinner", "supper"]  # unknown and duplicate meals dropped, at most two
+    last = render_recipe(recipe, get_category("high_protein"))[-1].splitlines()[-1]
+    assert last.startswith("#dinner #supper #highprotein")
+    assert Recipe.model_validate(make_recipe(meals=None)).meals == []
+    toast = Recipe.model_validate(make_recipe(category="breakfast", meals=["breakfast"], tags=["sweet"], protein_per_serving_g=None))
+    assert render_recipe(toast, get_category("breakfast"))[-1].splitlines()[-1] == "#breakfast #sweet"

@@ -110,9 +110,8 @@ def _extras_block(recipe: Recipe, category: Category) -> str | None:
 
 
 def hashtags_line(recipe: Recipe, category: Category) -> str:
-    tags = [f"#{category.hashtag}"]
-    for tag in recipe.tags:
-        h = hashtag(tag)
+    tags = [f"#{meal}" for meal in recipe.meals]
+    for h in [f"#{category.hashtag}"] + [hashtag(tag) for tag in recipe.tags]:
         if h and h not in tags:
             tags.append(h)
     return " ".join(tags)

@@ -11,5 +11,6 @@ Daily recipe curator for Singapore home cooking. Asks Claude (web search) for on
 - Daily loop: `recipebot/scheduler.py` (16:00 SGT); one run: `recipebot/pipeline.py`
 - Bot: @owner_sgrecipe_bot (token in `.env`, never committed)
 - Model call: `recipebot/llm.py` — `ClaudeCLIClient` (`claude -p --system-prompt-file ... --tools WebSearch,WebFetch`) by default, `AnthropicClient` with `LLM_PROVIDER=api`; prompts: `recipebot/prompts/`
+- Meal tags: `meals` field (`recipebot/models.py` `MEALS`) → leading #breakfast/#lunch/#dinner/#supper (`recipebot/render.py` `hashtags_line`); tap a tag in Telegram to list that meal
 - Page check: `recipebot/web.py` (`curl_cffi` Chrome impersonation, `is_bot_wall`), `recipebot/validate.py` (`check_source_page`)
 - Deploy: `Dockerfile`, `docker-compose.yml`; state in `./data/history.sqlite`
