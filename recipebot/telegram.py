@@ -32,16 +32,35 @@ _CONNECT_PHASE_MARKERS = (
     "Connection refused",
     "NameResolutionError",
     "ProxyError",
-    "SSLError",
 )
+# A TLS failure is pre-send only when it is a handshake failure; a TLS error while reading the
+# reply happens after the request was written and is as ambiguous as a read timeout.
+_HANDSHAKE_MARKERS = (
+    "handshake",
+    "HANDSHAKE",
+    "CERTIFICATE_VERIFY_FAILED",
+    "certificate verify failed",
+    "WRONG_VERSION_NUMBER",
+    "UNSUPPORTED_PROTOCOL",
+    "TLSV1_ALERT",
+    "hostname",
+    "IP address mismatch",
+)
+_AMBIGUOUS_MARKERS = ("ReadTimeout", "ChunkedEncodingError", "IncompleteRead", "RemoteDisconnected", "ConnectionResetError")
+
+# 5xx replies to a non idempotent call: 502 and 503 come from a front end that did not process the
+# request, so a resend is safe; 500 and 504 may have processed it, so they are ambiguous.
+_RETRYABLE_5XX_FOR_SENDS = {502, 503}
 
 
 def failed_before_sending(exc: BaseException) -> bool:
-    """True when the exception shows the request never left (DNS, refused, connect timeout, TLS),
-    so re-sending cannot duplicate anything. A read timeout or a reset mid-response is ambiguous."""
+    """True when the exception shows the request never left (DNS, refused, connect timeout, TLS
+    handshake), so re-sending cannot duplicate anything. Anything else is ambiguous."""
     text = f"{type(exc).__name__}: {exc}"
-    if "ReadTimeout" in text or "ChunkedEncodingError" in text or "IncompleteRead" in text:
+    if any(marker in text for marker in _AMBIGUOUS_MARKERS):
         return False
+    if "SSLError" in text or "SSL" in text:
+        return any(marker in text for marker in _HANDSHAKE_MARKERS)
     return any(marker in text for marker in _CONNECT_PHASE_MARKERS)
 
 
@@ -106,6 +125,8 @@ class TelegramClient:
                 self.sleep(retry_after + 0.5)
                 continue
             if status >= 500:
+                if not idempotent and status not in _RETRYABLE_5XX_FOR_SENDS:
+                    raise TelegramError(description + " (the message may or may not have been delivered)", status, error_code, ambiguous=True)
                 last_error = TelegramError(description, status, error_code)
                 self.sleep(min(2 ** attempt, 30))
                 continue

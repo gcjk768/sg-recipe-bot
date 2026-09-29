@@ -203,3 +203,125 @@ def test_shutdown_after_a_run_is_counted(settings, history):
     pipeline = StubPipeline(history)
     assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 1
     assert pipeline.days == [date(2026, 9, 29)]
+
+
+class NoRowPipeline(StubPipeline):
+    """A pipeline whose runs fail before they can record themselves (broken rotation.json, unwritable db)."""
+
+    def run(self, *, day=None, **kwargs):
+        self.days.append(day)
+        self.alerts.append(f"posted nothing for {day}")
+
+
+def test_run_that_records_no_row_is_not_repeated_in_a_loop(settings, history):
+    clock, sleep = _clock(datetime(2026, 9, 29, 16, 1, 0, tzinfo=SGT))
+    pipeline = NoRowPipeline(history)
+    assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=3) == 3
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30), date(2026, 10, 1)]
+    assert clock["now"] >= datetime(2026, 10, 1, 16, 0, tzinfo=SGT)
+
+
+def test_run_that_records_no_row_via_the_wait_path_is_not_repeated(settings, history):
+    clock, sleep = _clock(datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT))
+    pipeline = NoRowPipeline(history)
+    assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2) == 2
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30)]
+
+
+def test_unreadable_history_does_not_spin(settings, history):
+    class BrokenHistory:
+        def runs_for_day(self, day, **kwargs):
+            raise RuntimeError("unable to open database file")
+
+    clock, sleep = _clock(datetime(2026, 9, 29, 16, 1, 0, tzinfo=SGT))
+    pipeline = NoRowPipeline(history)
+    pipeline.history = BrokenHistory()
+    assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2) == 2
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30)]
+
+
+def test_catch_up_window_crosses_midnight(settings, history):
+    settings.post_time = time(23, 0)
+    clock, sleep = _clock(datetime(2026, 9, 30, 1, 0, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30)]
+
+
+def test_manual_run_during_the_wait_is_respected(settings, history):
+    clock = {"now": datetime(2026, 9, 29, 15, 58, 0, tzinfo=SGT)}
+
+    def sleep(seconds):
+        clock["now"] += timedelta(seconds=seconds)
+        if not history.runs_for_day(date(2026, 9, 29)):
+            row = history.start_run("manual", "soups", None, run_day=date(2026, 9, 29))
+            history.finish_run(row, "posted", 1, "by hand")
+
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+
+
+def test_long_suspend_past_the_window_is_reported_not_posted(settings, history):
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 30, tzinfo=SGT)}
+    calls = {"n": 0}
+
+    def sleep(seconds):
+        calls["n"] += 1
+        clock["now"] += timedelta(hours=9) if calls["n"] == 1 else timedelta(seconds=seconds)
+
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+    assert len(pipeline.alerts) == 1 and "missed the post for 2026-09-29" in pipeline.alerts[0]
+
+
+def test_restart_after_the_window_on_the_same_day_is_reported_once(settings, history):
+    clock, sleep = _clock(datetime(2026, 9, 29, 23, 30, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
+    assert pipeline.days == [date(2026, 9, 30), date(2026, 10, 1)]
+    assert len(pipeline.alerts) == 1 and "2026-09-29" in pipeline.alerts[0]
+
+
+def test_first_start_before_post_time_does_not_report_yesterday(settings, history):
+    clock, sleep = _clock(datetime(2026, 9, 29, 9, 0, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 29)] and pipeline.alerts == []
+
+
+def test_catch_up_zero_still_runs_at_the_post_time(settings, history):
+    settings.catch_up_hours = 0
+    clock, sleep = _clock(datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30)]
+    assert pipeline.alerts == []
+
+
+def test_shutdown_raised_by_the_pipeline_stops_the_loop(settings, history):
+    class Stopping(StubPipeline):
+        def run(self, *, day=None, **kwargs):
+            self.days.append(day)
+            self.history.start_run("killed", "soups", None, run_day=day)
+            raise Shutdown("SIGTERM")
+
+    clock, sleep = _clock(datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT))
+    pipeline = Stopping(history)
+    assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 0
+    assert pipeline.days == [date(2026, 9, 29)]
+    assert history.runs_for_day(date(2026, 9, 29))[0].unfinished
+
+
+def test_scheduled_flag_is_passed(settings, history):
+    seen = {}
+
+    class Recording(StubPipeline):
+        def run(self, *, day=None, **kwargs):
+            seen.update(kwargs)
+            super().run(day=day, **kwargs)
+
+    clock, sleep = _clock(datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT))
+    run_forever(Recording(history), settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert seen.get("scheduled") is True

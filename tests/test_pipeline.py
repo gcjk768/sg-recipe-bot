@@ -280,14 +280,68 @@ def test_missing_telegram_config_raises_before_the_model_is_called(settings, fix
     assert pipeline.run(category="high_protein", dry_run=True, check_pages=False).status == "dry_run"
 
 
-def test_run_row_carries_the_rotation_day(settings, fixed_now):
+def test_scheduled_run_row_carries_the_rotation_day(settings, fixed_now):
+    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups")])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    pipeline.run(day=date(2026, 10, 4), scheduled=True)
+    with History(settings.db_path) as history:
+        runs = history.runs_for_day(date(2026, 10, 4))
+        assert len(runs) == 1 and runs[0].status == "posted" and runs[0].category == "soups"
+        assert history.runs_for_day(date(2026, 9, 29)) == []
+
+
+def test_manual_run_with_a_date_counts_for_today_not_that_date(settings, fixed_now):
     llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups")])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     pipeline.run(day=date(2026, 10, 4))
     with History(settings.db_path) as history:
-        runs = history.runs_for_day(date(2026, 10, 4))
-        assert len(runs) == 1 and runs[0].status == "posted" and runs[0].category == "soups"
-        assert history.runs_for_day(date(2026, 10, 5)) == []
+        assert history.runs_for_day(date(2026, 10, 4)) == []
+        assert history.runs_for_day(date(2026, 9, 29))[0].category == "soups"
+
+
+def test_early_failure_still_leaves_a_run_row(settings, fixed_now):
+    settings.data_dir.mkdir(parents=True, exist_ok=True)
+    settings.rotation_path.write_text("{not json")
+    pipeline, tg, _, _ = build(settings, FakeLLM([]), fixed_now)
+    report = pipeline.run(scheduled=True)
+    assert report.status == "error"
+    with History(settings.db_path) as history:
+        runs = history.runs_for_day(date(2026, 9, 29))
+        assert len(runs) == 1 and runs[0].status == "error" and runs[0].category is None
+
+
+def test_history_write_failure_after_posting_is_reported(settings, fixed_now, monkeypatch):
+    llm = FakeLLM([reply_text([make_recipe()])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("disk full")
+
+    monkeypatch.setattr(pipeline.history, "add_sent", boom)
+    report = pipeline.run(category="high_protein")
+    assert report.status == "partial" and report.posted == ["Garlic Soy Chicken with Broccoli"]
+    assert any("NOT recorded in history" in w and URL in w for w in report.problems)
+    [alert] = admin_texts(tg)
+    assert "posted 1 of 1" in alert and "NOT recorded" in alert
+    assert len(sent_texts(tg)) == 1
+
+
+def test_stop_signal_passes_through_and_leaves_the_row_unfinished(settings, fixed_now):
+    from recipebot.scheduler import Shutdown
+
+    class Stopper:
+        calls = []
+
+        def complete(self, system, user, *, web_search):
+            raise Shutdown("SIGTERM")
+
+    pipeline, tg, _, _ = build(settings, Stopper(), fixed_now)
+    with pytest.raises(Shutdown):
+        pipeline.run(category="soups", scheduled=True)
+    with History(settings.db_path) as history:
+        runs = history.runs_for_day(date(2026, 9, 29))
+        assert len(runs) == 1 and runs[0].unfinished
+    assert admin_texts(tg) == []
 
 
 def test_admin_alert_failure_does_not_crash(settings, fixed_now):

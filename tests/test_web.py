@@ -144,3 +144,15 @@ def test_fetcher_ignores_requests_latin1_default():
     response.headers = {"content-type": "text/html"}
     result = Fetcher(session=FakeSession({"u": response})).fetch("u")
     assert "番茄炒蛋" in result.text
+
+
+def test_decode_body_bom_and_browser_labels():
+    import codecs
+
+    from recipebot.web import decode_body
+
+    zh = "番茄炒蛋"
+    assert decode_body(codecs.BOM_UTF8 + zh.encode("utf-8"), "text/html; charset=ISO-8859-1") == zh
+    assert decode_body(zh.encode("gb18030"), 'text/html; charset="gb2312"') == zh
+    assert decode_body("caf\u00e9 \u2019".encode("cp1252"), "text/html; charset=iso-8859-1") == "caf\u00e9 \u2019"
+    assert decode_body(zh.encode("utf-8"), "TEXT/HTML; CHARSET=UTF8") == zh

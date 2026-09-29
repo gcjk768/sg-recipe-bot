@@ -259,3 +259,49 @@ def test_main_ingredient_skips_staples_and_seasoning():
     assert main_ingredient(Recipe.model_validate(make_recipe())) == "chicken thigh"
     recipe.ingredients[2].item = "chicken thighs (boneless, skinless)"
     assert main_ingredient(recipe) == "chicken thighs"
+
+
+@pytest.mark.parametrize(
+    "nutrition,cost",
+    [
+        ({"kcal": "inf"}, {"total_sgd": float("inf")}),
+        ({"kcal": 10 ** 400}, {"total_sgd": "1e999"}),
+        ({"kcal": "nan"}, {"total_sgd": "-nan"}),
+        ({"kcal": True}, {"total_sgd": False}),
+    ],
+)
+def test_non_finite_estimates_drop_only_the_line(nutrition, cost):
+    recipe = Recipe.model_validate(make_recipe(nutrition_per_serving=nutrition, cost_estimate=cost))
+    assert recipe.nutrition is None and recipe.cost is None
+
+
+def test_infinity_in_the_json_text_is_read_as_null():
+    from recipebot.parsing import parse_reply
+
+    text = '{"run": {"category": "x"}, "recipes": [{"nutrition_per_serving": {"kcal": Infinity, "fat_g": NaN}}]}'
+    parsed = parse_reply(text)
+    assert parsed.reply.recipes[0]["nutrition_per_serving"] == {"kcal": None, "fat_g": None}
+
+
+@pytest.mark.parametrize("text,expected", [("4,75", 4.75), ("1,200", 1200.0), ("S$ 9.50", 9.5), ("SGD 12", 12.0), ("1,2,3", None), ("12,345.5", 12345.5), ("$0.5", 0.5)])
+def test_number_parsing(text, expected):
+    from recipebot.models import _number
+
+    assert _number(text) == expected
+
+
+def test_derived_per_serving_rounds_to_five_cents():
+    recipe = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 9.5, "per_serving_sgd": None}, servings=3))
+    assert recipe.cost.per_serving_sgd == 3.15
+    recipe = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 9.5, "per_serving_sgd": 90}, servings=4))
+    assert recipe.cost.per_serving_sgd == 2.4
+
+
+@pytest.mark.parametrize("item", ["fish sauce or salt", "salt or soy sauce", "sugar or honey", "butter or oil", "flour for dusting", "olive oil for the salad"])
+def test_alternatives_with_a_real_ingredient_are_counted(item):
+    assert not is_free_ingredient(item), item
+
+
+@pytest.mark.parametrize("item", ["sea salt or kosher salt", "olive oil for drizzling", "cooking spray", "icing sugar for dusting", "oil, for shallow frying", "salt, such as Maldon", "water to thin"])
+def test_more_free_phrasings(item):
+    assert is_free_ingredient(item), item

@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone, tzinfo
 from pathlib import Path
 
 from recipebot.models import Recipe
@@ -88,8 +88,9 @@ class RunLog:
 
 
 class History:
-    def __init__(self, path: Path | str):
+    def __init__(self, path: Path | str, tz: tzinfo | None = None):
         self.path = Path(path)
+        self.tz = tz or timezone.utc
         if str(self.path) != ":memory:":
             self.path.parent.mkdir(parents=True, exist_ok=True)
         self.conn = sqlite3.connect(str(self.path))
@@ -104,6 +105,13 @@ class History:
         if "run_day" not in columns:
             self.conn.execute("ALTER TABLE runs ADD COLUMN run_day TEXT")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_runs_day ON runs(run_day)")
+        # Older rows: derive the local date from started_at so the loop sees days that already ran.
+        for row in self.conn.execute("SELECT id, started_at FROM runs WHERE run_day IS NULL").fetchall():
+            try:
+                local_day = datetime.fromisoformat(row["started_at"]).astimezone(self.tz).date()
+            except ValueError:
+                continue
+            self.conn.execute("UPDATE runs SET run_day = ? WHERE id = ?", (local_day.isoformat(), row["id"]))
 
     def close(self) -> None:
         self.conn.close()
@@ -204,6 +212,13 @@ class History:
         )
         self.conn.commit()
         return int(cur.lastrowid)
+
+    def update_run(self, row_id: int, *, run_id: str | None = None, category: str | None = None, theme: str | None = None) -> None:
+        self.conn.execute(
+            "UPDATE runs SET run_id = COALESCE(?, run_id), category = COALESCE(?, category), theme = COALESCE(?, theme) WHERE id = ?",
+            (run_id, category, theme, row_id),
+        )
+        self.conn.commit()
 
     def runs_for_day(self, day: date, *, include_dry_runs: bool = False) -> list[RunLog]:
         """Runs recorded for a rotation date (the local date the post was scheduled for)."""

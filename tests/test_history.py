@@ -80,11 +80,26 @@ def test_migration_adds_run_day_to_an_old_database(tmp_path):
     conn.execute("CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL, started_at TEXT NOT NULL, finished_at TEXT, category TEXT, theme TEXT, status TEXT NOT NULL, posted INTEGER NOT NULL DEFAULT 0, detail TEXT)")
     conn.execute("INSERT INTO runs (run_id, started_at, status) VALUES ('old', '2026-09-01T08:00:00+00:00', 'posted')")
     conn.commit(); conn.close()
-    with History(path) as history:
+    from zoneinfo import ZoneInfo
+
+    with History(path, tz=ZoneInfo("Asia/Singapore")) as history:
         runs = history.recent_runs()
-        assert runs[0].run_id == "old" and runs[0].run_day is None
+        assert runs[0].run_id == "old" and runs[0].run_day == "2026-09-01"  # 08:00 UTC is the same local day
         history.start_run("new", "soups", None, run_day=__import__("datetime").date(2026, 9, 29))
         assert history.runs_for_day(__import__("datetime").date(2026, 9, 29))[0].run_id == "new"
+    conn = sqlite3.connect(path)
+    conn.execute("INSERT INTO runs (run_id, started_at, status) VALUES ('late', '2026-09-01T17:30:00+00:00', 'posted')")
+    conn.commit(); conn.close()
+    with History(path, tz=ZoneInfo("Asia/Singapore")) as history:
+        assert history.runs_for_day(__import__("datetime").date(2026, 9, 2))[0].run_id == "late"  # 01:30 next day in Singapore
+
+
+def test_update_run(tmp_path):
+    with History(tmp_path / "h.sqlite") as history:
+        row = history.start_run("provisional", None, None)
+        history.update_run(row, run_id="final", category="soups", theme=None)
+        run = history.recent_runs()[0]
+        assert run.run_id == "final" and run.category == "soups" and run.theme is None
 
 
 def test_already_sent_lines_never_span_lines(tmp_path):

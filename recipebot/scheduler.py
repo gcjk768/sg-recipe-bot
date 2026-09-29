@@ -1,11 +1,14 @@
 """The tiny loop: sleep until the next post time, run once, sleep again.
 
-The loop is idempotent per rotation date. It consults the runs table before every run, so:
+The loop makes at most one attempt per rotation date per process, and consults the runs table
+before every attempt, so:
 * a container that (re)starts after the post time catches up the missed post, within
-  RECIPEBOT_CATCH_UP_HOURS of the post time;
-* a restart after the day's post never posts a second time;
+  RECIPEBOT_CATCH_UP_HOURS of the post time, even across midnight;
+* a date that already has a run (scheduled or manual) is never posted a second time;
 * a run that was killed half way is reported to the admin chat and not repeated, because the
-  first half may already be in the channel.
+  first half may already be in the channel;
+* a run that fails before it can record itself is not retried in a loop; the next attempt is
+  tomorrow's.
 """
 
 from __future__ import annotations
@@ -27,8 +30,9 @@ MAX_SKIP_DAYS = 7
 NONE, DONE, UNFINISHED = "none", "done", "unfinished"
 
 
-class Shutdown(Exception):
-    """Raised inside the loop when the container is asked to stop."""
+class Shutdown(BaseException):
+    """Raised inside the loop when the container is asked to stop. A BaseException, so the
+    pipeline's catch all cannot swallow it and a stop request always ends the process."""
 
 
 def install_signal_handlers() -> None:
@@ -47,6 +51,14 @@ def next_run_at(now: datetime, post_time: dtime) -> datetime:
     candidate = datetime.combine(now.date(), post_time, tzinfo=tz)
     if candidate <= now:
         candidate = datetime.combine(now.date() + timedelta(days=1), post_time, tzinfo=tz)
+    return candidate
+
+
+def last_scheduled_at(now: datetime, post_time: dtime) -> datetime:
+    """The most recent occurrence of post_time at or before now (yesterday's when today's is still ahead)."""
+    candidate = datetime.combine(now.date(), post_time, tzinfo=now.tzinfo)
+    if candidate > now:
+        candidate = datetime.combine(now.date() - timedelta(days=1), post_time, tzinfo=now.tzinfo)
     return candidate
 
 
@@ -85,63 +97,90 @@ def run_forever(
     """Runs the daily loop. max_runs is for tests; None means forever. Returns the number of runs."""
     now = now or pipeline.now
     runs = 0
-    reported: set[date] = set()
+    process_start = now()
+    attempted: set[date] = set()  # one attempt per rotation date per process, whatever the database says
+    reported_unfinished: set[date] = set()
+    reported_missed: set[date] = set()
+    window = timedelta(hours=settings.catch_up_hours)
+
+    def status(day: date) -> str:
+        if day in attempted:
+            return DONE
+        return day_status(pipeline, day)
 
     def run_day(day: date) -> None:
         nonlocal runs
+        attempted.add(day)
         _safe_run(pipeline, day)
         runs += 1
 
     def report_unfinished(day: date) -> None:
-        if day in reported:
+        if day in reported_unfinished:
             return
-        reported.add(day)
+        reported_unfinished.add(day)
         text = (
             f"RecipeBot: the run for {day.isoformat()} started but never finished, most likely because the "
-            "container was stopped mid run. Not running again today, because the recipe may already be in the "
-            "channel. Check the channel and `recipebot history`."
+            "container was stopped mid run. Not running again for that day, because the recipe may already be "
+            "in the channel. Check the channel and `recipebot history`."
         )
         log.warning(text)
-        pipeline.notify_admin(text)
+        _safe_notify(pipeline, text)
+
+    def report_missed(day: date, scheduled: datetime) -> None:
+        if day in reported_missed:
+            return
+        reported_missed.add(day)
+        text = (
+            f"RecipeBot missed the post for {day.isoformat()}: the post time {scheduled:%H:%M} passed more than "
+            f"{settings.catch_up_hours:g} hours ago while the bot was not running. Nothing was posted for that day. "
+            "Run `recipebot run` by hand if you still want it."
+        )
+        log.warning(text)
+        _safe_notify(pipeline, text)
+
+    def consider(day: date, why: str) -> bool:
+        """Runs `day` unless it was already attempted or recorded. Returns True when it ran."""
+        current = status(day)
+        if current == NONE:
+            log.info("%s: running for %s", why, day)
+            run_day(day)
+            return True
+        if current == UNFINISHED:
+            report_unfinished(day)
+        else:
+            log.info("%s: %s already has a run, skipping", why, day)
+        return False
 
     try:
         if settings.run_on_start:
-            today = now().date()
-            status = day_status(pipeline, today)
-            if status == NONE:
-                log.info("run_on_start: running for %s", today)
-                run_day(today)
-            elif status == UNFINISHED:
-                report_unfinished(today)
-            else:
-                log.info("run_on_start: %s already has a run, skipping", today)
+            consider(now().date(), "run_on_start")
 
         while max_runs is None or runs < max_runs:
             current = now()
-            today = current.date()
-            scheduled = datetime.combine(today, settings.post_time, tzinfo=current.tzinfo)
-            window_end = scheduled + timedelta(hours=settings.catch_up_hours)
-            if scheduled <= current < window_end:
-                status = day_status(pipeline, today)
-                if status == NONE:
-                    log.info("post time %s has passed and %s has not run yet, catching up", settings.post_time, today)
-                    run_day(today)
+            last = last_scheduled_at(current, settings.post_time)
+            if current < last + window:
+                if consider(last.date(), f"post time {settings.post_time:%H:%M} has passed"):
                     continue
-                if status == UNFINISHED:
-                    report_unfinished(today)
+            elif window > timedelta(0) and status(last.date()) == NONE and (last >= process_start or last.date() == current.date()):
+                report_missed(last.date(), last)
 
             target = next_run_at(current, settings.post_time)
             for _ in range(MAX_SKIP_DAYS):
-                status = day_status(pipeline, target.date())
-                if status == NONE:
+                day_state = status(target.date())
+                if day_state == NONE:
                     break
-                if status == UNFINISHED:
+                if day_state == UNFINISHED:
                     report_unfinished(target.date())
                 log.info("%s already has a run, skipping to the next day", target.date())
                 target = next_run_at(target, settings.post_time)
             log.info("next run at %s", target.isoformat(timespec="minutes"))
             wait_until(target, now=now, sleep=sleep)
-            run_day(target.date())
+            woke = now()
+            if window > timedelta(0) and woke >= target + window:
+                # Slept far past the post time (a suspended NAS). The top of the loop reports it.
+                log.warning("woke at %s, %s after the post time; not posting this late", woke.isoformat(timespec="minutes"), woke - target)
+                continue
+            consider(target.date(), "scheduled post time")
     except Shutdown as stop:
         log.info("received %s, stopping the loop after %d run(s)", stop, runs)
     return runs
@@ -149,6 +188,13 @@ def run_forever(
 
 def _safe_run(pipeline: Pipeline, day: date) -> None:
     try:
-        pipeline.run(day=day)
+        pipeline.run(day=day, scheduled=True)
     except Exception:  # noqa: BLE001 - pipeline.run already catches, this is belt and braces
         log.exception("scheduled run crashed")
+
+
+def _safe_notify(pipeline: Pipeline, text: str) -> None:
+    try:
+        pipeline.notify_admin(text)
+    except Exception:  # noqa: BLE001
+        log.exception("could not send admin alert")

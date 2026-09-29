@@ -50,6 +50,8 @@ class RunReport:
     posted: list[str] = field(default_factory=list)
     rejected: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    problems: list[str] = field(default_factory=list)
+    """Things the owner must look at, such as a post that could not be recorded."""
     notes: str = ""
     detail: str = ""
     messages: list[list[str]] = field(default_factory=list)
@@ -72,6 +74,8 @@ class RunReport:
             lines.append("posted: " + "; ".join(self.posted))
         if self.rejected:
             lines.append("dropped: " + "; ".join(self.rejected))
+        if self.problems:
+            lines.append("needs attention: " + "; ".join(self.problems))
         if self.notes:
             lines.append("model notes: " + self.notes)
         if self.detail:
@@ -111,7 +115,7 @@ class Pipeline:
     @property
     def history(self) -> History:
         if self._history is None:
-            self._history = History(self.settings.db_path)
+            self._history = History(self.settings.db_path, tz=self.tz)
         return self._history
 
     @property
@@ -218,7 +222,11 @@ class Pipeline:
         dry_run: bool = False,
         run_id: str | None = None,
         check_pages: bool = True,
+        scheduled: bool = False,
     ) -> RunReport:
+        """One run. `day` is the rotation date. `scheduled` marks a run made by the daily loop;
+        it is recorded against `day`, while a manual run is recorded against the actual local date,
+        so a manual post counts as that day's post and `--date` rehearsals never block the loop."""
         # Configuration problems and a bad explicit category are the caller's to fix: raise them
         # before anything is recorded or paid for.
         if self._llm is None:
@@ -230,21 +238,25 @@ class Pipeline:
 
         started = self.now()
         day = day or started.date()
+        run_day = day if scheduled else started.date()
         count = count or self.settings.count
         servings = servings or self.settings.servings
         report = RunReport(run_id=run_id or f"{started:%Y%m%d-%H%M%S}", category=category or "unresolved", theme=theme)
         run_row = None
         try:
+            if not dry_run:
+                # Recorded first, so a failure in the rotation or the model still leaves a trace for the day.
+                run_row = self.history.start_run(report.run_id, category, theme, started, run_day=run_day)
             slot = self.resolve_slot(day, category, theme)
             report.category, report.theme = slot.category, slot.theme
             if run_id is None:
                 report.run_id = f"{started:%Y%m%d-%H%M%S}-{slot.category}"
+            if run_row is not None:
+                self.history.update_run(run_row, run_id=report.run_id, category=slot.category, theme=slot.theme)
             log.info(
-                "starting run %s for %s: category=%s theme=%s count=%d servings=%d dry_run=%s",
-                report.run_id, day, slot.category, slot.theme_text, count, servings, dry_run,
+                "starting run %s for %s: category=%s theme=%s count=%d servings=%d dry_run=%s scheduled=%s",
+                report.run_id, day, slot.category, slot.theme_text, count, servings, dry_run, scheduled,
             )
-            if not dry_run:
-                run_row = self.history.start_run(report.run_id, slot.category, slot.theme, started, run_day=day)
             self._run_inner(report, slot, count=count, servings=servings, dry_run=dry_run, check_pages=check_pages)
         except ConfigError:
             raise
@@ -256,6 +268,7 @@ class Pipeline:
             report.status = "error"
             report.detail = f"{type(exc).__name__}: {exc}"
             log.exception("run %s crashed", report.run_id)
+        # A BaseException (a stop signal) passes through: the row stays 'running', which the loop reports.
 
         if run_row is not None:
             try:
@@ -340,15 +353,17 @@ class Pipeline:
                 log.error("telegram failed for %s after %d of %d message(s): %s", recipe.title, delivered, len(messages), exc)
                 if delivered or exc.ambiguous:
                     # Part of it, or all of it, may be in the channel: record it so it is never posted again.
-                    self._record_sent(recipe, report)
                     report.posted.append(f"{recipe.title} (incomplete: {exc})")
                     incomplete += 1
+                    if not self._record_sent(recipe, report):
+                        incomplete += 1
                 else:
                     report.rejected.append(f"{recipe.title}: telegram: {exc}")
                 continue
-            self._record_sent(recipe, report)
             report.posted.append(recipe.title)
             log.info("posted %s", recipe.title)
+            if not self._record_sent(recipe, report):
+                incomplete += 1
 
         if not report.posted:
             report.status = "nothing_posted"
@@ -361,5 +376,13 @@ class Pipeline:
         else:
             report.status = "posted"
 
-    def _record_sent(self, recipe, report: RunReport) -> None:
-        self.history.add_sent(recipe, main_ingredient=main_ingredient(recipe), run_id=report.run_id, sent_at=self.now())
+    def _record_sent(self, recipe, report: RunReport) -> bool:
+        """Writes the posted recipe to the history table. Returns False (and says so in the report)
+        when the write fails, so the owner knows the channel and the table disagree."""
+        try:
+            self.history.add_sent(recipe, main_ingredient=main_ingredient(recipe), run_id=report.run_id, sent_at=self.now())
+            return True
+        except Exception as exc:  # noqa: BLE001
+            log.exception("posted %s but could not record it", recipe.title)
+            report.problems.append(f"posted but NOT recorded in history: {recipe.title} {recipe.source.url} ({type(exc).__name__}: {exc})")
+            return False

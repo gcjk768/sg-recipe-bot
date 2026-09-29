@@ -242,12 +242,15 @@ def main(argv: list[str] | None = None) -> int:
             print(report.summary())
             return 0 if report.ok else 1
         if args.command == "loop":
-            from recipebot.scheduler import install_signal_handlers, run_forever
+            from recipebot.scheduler import Shutdown, install_signal_handlers, run_forever
 
             settings.require_telegram()
             settings.require_llm()
             install_signal_handlers()
-            run_forever(pipeline, settings)
+            try:
+                run_forever(pipeline, settings)
+            except Shutdown:
+                pass
             return 0
     except ConfigError as exc:
         print(f"configuration error: {exc}", file=sys.stderr)

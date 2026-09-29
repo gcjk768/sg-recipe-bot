@@ -2,29 +2,54 @@
 
 from __future__ import annotations
 
+import math
+import re
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+_THOUSANDS = re.compile(r"^-?\d{1,3}(?:,\d{3})+(?:\.\d+)?$")
+_DECIMAL_COMMA = re.compile(r"^-?\d+,\d{1,2}$")
 
 
 def _none_to_blank(value: Any) -> Any:
     return "" if value is None else value
 
 
+def _finite(number: float) -> float | None:
+    return number if math.isfinite(number) else None
+
+
 def _number(value: Any) -> float | None:
-    """A float from a number or numeric string, else None. Booleans are not numbers here."""
+    """A finite float from a number or numeric string, else None. Booleans, infinities, NaN and
+    oversized values are not numbers here. "4,75" is read as a decimal comma, "1,200" as thousands."""
     if isinstance(value, bool):
         return None
     if isinstance(value, (int, float)):
-        return float(value) if value == value else None  # NaN guard
-    if isinstance(value, str):
-        text = value.strip().replace(",", "")
-        text = text.lstrip("S$").lstrip("$").strip()
         try:
-            return float(text)
-        except ValueError:
+            return _finite(float(value))
+        except OverflowError:
+            return None
+    if isinstance(value, str):
+        text = value.strip()
+        text = re.sub(r"^(?:S\$|SGD|\$)\s*", "", text, flags=re.IGNORECASE).strip()
+        if "," in text:
+            if _THOUSANDS.match(text):
+                text = text.replace(",", "")
+            elif _DECIMAL_COMMA.match(text):
+                text = text.replace(",", ".")
+            else:
+                return None
+        try:
+            return _finite(float(text))
+        except (ValueError, OverflowError):
             return None
     return None
+
+
+def round_money(amount: float) -> float:
+    """Singapore style rounding to the nearest 5 cents: 3.1667 -> 3.15, 2.375 -> 2.40."""
+    return round(round(amount / 0.05) * 0.05, 2)
 
 
 class Ingredient(BaseModel):
@@ -174,7 +199,7 @@ class Recipe(BaseModel):
         derived = c.total_sgd / servings
         per = c.per_serving_sgd
         if per is None or per > c.total_sgd * 1.01 or abs(per * servings - c.total_sgd) > max(1.0, 0.35 * c.total_sgd):
-            return c.model_copy(update={"per_serving_sgd": round(derived, 2)})
+            return c.model_copy(update={"per_serving_sgd": round_money(derived)})
         return c
 
 

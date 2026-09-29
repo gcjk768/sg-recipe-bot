@@ -33,7 +33,10 @@ ALLOWED_TAGS = {
 # Salt, pepper, sugar, cooking oil and water do not count towards the ingredient cap.
 # The patterns run on a cleaned name (lowercase, parentheses and the part after a comma removed,
 # leading "a pinch of" and trailing "to taste" style qualifiers stripped).
-_SALT = r"(?:[a-z-]+\s+){0,3}salt(?:\s+flakes)?"
+_SALT = (
+    r"(?:(?:sea|table|kosher|fine|flaky|flaked|coarse|rock|himalayan|pink|iodised|iodized|cooking|plain|regular|"
+    r"garlic|celery|onion|seasoned|seasoning|smoked|black|maldon|natural|salt)\s+){0,3}salt(?:\s+flakes)?"
+)
 _PEPPER = r"(?:(?:ground|white|black|freshly|cracked|coarse|coarsely|fine|finely|mixed|whole)\s+){0,3}(?:pepper|peppercorns?)(?:\s+powder)?"
 _FREE_PATTERNS = [
     re.compile(rf"^{_SALT}$"),
@@ -52,11 +55,14 @@ _FREE_PATTERNS = [
     re.compile(
         r"^(?:(?:hot|warm|lukewarm|cold|boiling|boiled|ice|iced|tap|filtered|room|temperature|drinking|plain|cool|tepid)\s+){0,3}water$"
     ),
+    re.compile(r"^(?:cooking|oil|non-stick|nonstick|olive oil)\s+spray$"),
 ]
 _LEADING_QUALIFIERS = re.compile(r"^(?:a\s+)?(?:pinch|dash|splash|drizzle|little|bit|few\s+drops|generous\s+pinch|big\s+pinch)\s+of\s+")
 _TRAILING_QUALIFIERS = re.compile(
     r"\s*(?:,|\bor\b)?\s*(?:to taste|as needed|as required|optional|if needed|to season|for seasoning|for frying|for cooking|"
-    r"for greasing|for the pan|for the wok|to cover|for boiling|for blanching|to serve|for serving|plus extra.*|plus more.*|or more.*)\s*$"
+    r"for greasing|for greasing the (?:pan|tin)|for the pan|for the wok|for the tin|to cover|for boiling|for blanching|to serve|"
+    r"for serving|for dusting|for drizzling|for brushing|for rolling|for shallow frying|for deep frying|for the dough|for the batter|"
+    r"to thin|for sprinkling|plus extra.*|plus more.*|or more.*|such as .*|like .*|or other .*|or similar.*)\s*$"
 )
 
 
@@ -79,16 +85,26 @@ class ValidationResult:
 
 
 def clean_ingredient_name(item: str) -> str:
-    name = main_ingredient_name(item)
+    name = main_ingredient_name(item).strip("'\" ")
     name = _LEADING_QUALIFIERS.sub("", name)
     for _ in range(2):
-        name = _TRAILING_QUALIFIERS.sub("", name).strip(" ,")
+        name = _TRAILING_QUALIFIERS.sub("", name).strip(" ,'\"")
     return name
+
+
+def _matches_free(name: str) -> bool:
+    return any(p.match(name) for p in _FREE_PATTERNS)
 
 
 def is_free_ingredient(item: str) -> bool:
     name = clean_ingredient_name(item)
-    return any(p.match(name) for p in _FREE_PATTERNS)
+    if _matches_free(name):
+        return True
+    # "salt or soy sauce" counts (the alternative is a real ingredient); "sea salt or kosher salt" does not.
+    if " or " in name:
+        parts = [part.strip() for part in name.split(" or ") if part.strip()]
+        return bool(parts) and all(_matches_free(part) for part in parts)
+    return False
 
 
 def counted_ingredients(recipe: Recipe) -> list[str]:
