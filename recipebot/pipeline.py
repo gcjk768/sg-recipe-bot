@@ -20,7 +20,7 @@ from recipebot.candidates import format_candidate_pages, gather_candidates
 from recipebot.categories import get_category, is_known
 from recipebot.config import ConfigError, Settings
 from recipebot.history import History
-from recipebot.llm import AnthropicClient, LLMClient, LLMRefusal
+from recipebot.llm import LLMClient, LLMRefusal, make_client
 from recipebot.parsing import ParseFailure, parse_reply
 from recipebot.prompts import load_brief_template, load_system_prompt
 from recipebot.render import RenderError, render_recipe
@@ -129,7 +129,7 @@ class Pipeline:
     def llm(self) -> LLMClient:
         if self._llm is None:
             self.settings.require_llm()
-            self._llm = AnthropicClient(self.settings)
+            self._llm = make_client(self.settings)
         return self._llm
 
     @property

@@ -79,6 +79,14 @@ def _timezone(value: str) -> str:
     return value
 
 
+def _chat_id(name: str) -> str | None:
+    value = _env(name)
+    _, sep, topic = (value or "").partition("/")
+    if sep and not topic.isdigit():
+        raise ConfigError(f"{name} must be CHAT or CHAT/TOPIC_NUMBER (like <TELEGRAM_CHAT_ID>/2765), got {value!r}")
+    return value
+
+
 def _csv(value: str | None) -> list[str]:
     if not value:
         return []
@@ -111,6 +119,8 @@ class Settings:
 
     # Model
     llm_api_key: str | None
+    llm_provider: str = "cli"
+    """cli: `claude -p` with a signed in Claude plan. api: the Anthropic API with LLM_API_KEY."""
     llm_model: str = "claude-opus-5-5"
     llm_effort: str | None = "high"
     llm_max_tokens: int = 32000
@@ -157,6 +167,12 @@ class Settings:
             raise ConfigError("missing required settings: " + ", ".join(missing))
 
     def require_llm(self) -> None:
+        if self.llm_provider == "cli":
+            import shutil
+
+            if not shutil.which("claude"):
+                raise ConfigError("LLM_PROVIDER=cli but the claude command is not installed (or set LLM_PROVIDER=api)")
+            return
         if not self.llm_api_key:
             raise ConfigError("missing required setting: LLM_API_KEY (or ANTHROPIC_API_KEY)")
 
@@ -168,6 +184,9 @@ def load_settings() -> Settings:
     fallbacks = (_env("LLM_FALLBACKS", "default") or "default").lower()
     if fallbacks not in {"default", "off"}:
         raise ConfigError("LLM_FALLBACKS must be 'default' or 'off'")
+    provider = (_env("LLM_PROVIDER", "cli") or "cli").lower()
+    if provider not in {"cli", "api"}:
+        raise ConfigError("LLM_PROVIDER must be 'cli' or 'api'")
     source_mode = (_env("RECIPEBOT_SOURCE_MODE", "search") or "search").lower()
     if source_mode not in {"search", "candidates"}:
         raise ConfigError("RECIPEBOT_SOURCE_MODE must be 'search' or 'candidates'")
@@ -177,9 +196,10 @@ def load_settings() -> Settings:
     prompts_dir = _env("RECIPEBOT_PROMPTS_DIR")
     return Settings(
         telegram_bot_token=_env("TELEGRAM_BOT_TOKEN"),
-        telegram_chat_id=_env("TELEGRAM_CHAT_ID"),
-        telegram_admin_chat_id=_env("TELEGRAM_ADMIN_CHAT_ID"),
+        telegram_chat_id=_chat_id("TELEGRAM_CHAT_ID"),
+        telegram_admin_chat_id=_chat_id("TELEGRAM_ADMIN_CHAT_ID"),
         llm_api_key=_env("LLM_API_KEY") or _env("ANTHROPIC_API_KEY"),
+        llm_provider=provider,
         llm_model=_env("LLM_MODEL", "claude-opus-5-5") or "claude-opus-5-5",
         llm_effort=effort,
         llm_max_tokens=_env_int("LLM_MAX_TOKENS", 32000),

@@ -186,7 +186,8 @@ Return one JSON object and nothing else. Use exactly these keys.
       "tips": ["Swap the broccoli for any green vegetable you have, or add sliced carrot for colour."],
       "storage": "Keeps 3 days in the fridge and reheats well.",
       "source": {"site": "Example Recipes", "author": "Author Name", "url": "https://www.example.com/recipes/12345"},
-      "tags": ["one pan", "weeknight", "meal prep"]
+      "tags": ["one pan", "weeknight", "meal prep"],
+      "meals": ["dinner"]
     }
   ]
 }
@@ -203,6 +204,7 @@ Field rules:
 * tips: array of 0 to 2 strings. storage: one sentence or null.
 * source.url: the exact page. source.author: the author named on the page, or null.
 * tags: 1 to 4 short lowercase tags chosen from: one pan, one pot, weeknight, weekend, meal prep, rice cooker, no oven, tray bake, stir fry, steamed, braised, soup, noodles, rice, salad, hawker style, freezer friendly, lunchbox, kid friendly, vegetarian, spicy, sweet, budget, leftovers, no cook, under 20 minutes. Do not repeat the category as a tag, the bot adds the category hashtag itself.
+* meals: 1 or 2 of "breakfast", "lunch", "dinner", "supper", the meals this dish suits best in a Singapore home. Supper means a light late night bite. Use two only when the dish really fits both, for example ["lunch", "dinner"].
 * run.notes: an empty string normally. Use it to explain when count_returned is below count_requested, or when you swapped an ingredient for availability.
 
 8. WHEN THINGS GO WRONG

@@ -106,7 +106,7 @@ def test_fetcher_success_and_headers():
     assert result.ok and result.status == 200 and result.final_url == "https://a.com/r/" and "Ingredients" in result.text
     call = session.gets[0]
     assert call["timeout"] == 5 and call["allow_redirects"] is True and call["stream"] is True
-    assert "Mozilla" in call["headers"]["User-Agent"]
+    assert "User-Agent" not in call["headers"]  # the Chrome impersonating session sets a matching one
 
 
 def test_fetcher_caps_bytes_and_handles_bad_encoding():

@@ -145,7 +145,12 @@ class TelegramClient:
     ) -> int | None:
         if len(text) > MAX_MESSAGE_CHARS:
             raise TelegramError(f"message is {len(text)} characters, Telegram allows {MAX_MESSAGE_CHARS}")
-        payload: dict[str, Any] = {"chat_id": chat_id, "text": text}
+        # "CHAT/TOPIC" (as in a t.me/c/CHAT/TOPIC link) posts into a forum topic of a supergroup.
+        chat, _, topic = str(chat_id).partition("/")
+        payload: dict[str, Any] = {"chat_id": chat}
+        if topic:
+            payload["message_thread_id"] = int(topic)
+        payload["text"] = text
         if parse_mode:
             payload["parse_mode"] = parse_mode
         if disable_preview:

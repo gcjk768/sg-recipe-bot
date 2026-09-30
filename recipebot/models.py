@@ -52,6 +52,9 @@ def round_money(amount: float) -> float:
     return round(round(amount / 0.05) * 0.05, 2)
 
 
+MEALS = ("breakfast", "lunch", "dinner", "supper")
+
+
 class Ingredient(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -166,6 +169,18 @@ class Recipe(BaseModel):
     storage: str | None = None
     source: Source
     tags: list[str] = Field(default_factory=list)
+    meals: list[str] = Field(default_factory=list)
+
+    @field_validator("meals", mode="before")
+    @classmethod
+    def _known_meals(cls, value: Any) -> list[str]:
+        """Up to two of MEALS, lowercased; anything else is dropped rather than failing the recipe."""
+        meals: list[str] = []
+        for meal in value if isinstance(value, list) else []:
+            meal = str(meal).strip().lower()
+            if meal in MEALS and meal not in meals:
+                meals.append(meal)
+        return meals[:2]
 
     @field_validator("equipment", "pantry_staples", "tips", "tags", mode="before")
     @classmethod
