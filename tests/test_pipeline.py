@@ -5,7 +5,7 @@ import pytest
 
 from recipebot.history import History
 from recipebot.llm import LLMResult
-from recipebot.pipeline import Pipeline
+from recipebot.pipeline import DIAGNOSE_SYSTEM, Pipeline
 from recipebot.telegram import TelegramClient
 from recipebot.web import Fetcher
 from tests.conftest import RECIPE_HTML, FakeLLM, FakeResponse, FakeSession, make_recipe, reply_text, telegram_ok_session
@@ -250,9 +250,26 @@ def test_broken_rotation_file_is_reported_not_fatal(settings, fixed_now):
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     report = pipeline.run()
     assert report.status == "error" and "rotation.json" in report.detail and report.category == "unresolved"
-    assert llm.calls == []
+    assert [c["system"] for c in llm.calls] == [DIAGNOSE_SYSTEM]  # no recipe call, only the triage
     [alert] = admin_texts(tg)
     assert "RecipeBot posted nothing" in alert and "invalid JSON" in alert
+
+
+def test_alert_carries_model_diagnosis(settings, fixed_now):
+    llm = FakeLLM([RuntimeError("api down"), "Anthropic outage. Transient, it retries tomorrow."])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    pipeline.run(category="noodles")
+    [alert] = admin_texts(tg)
+    assert alert.endswith("Diagnosis: Anthropic outage. Transient, it retries tomorrow.")
+    assert "RuntimeError: api down" in llm.calls[1]["user"] and llm.calls[1]["web_search"] is False
+
+
+def test_alert_says_so_when_diagnosis_fails_too(settings, fixed_now):
+    llm = FakeLLM([RuntimeError("claude -p failed (auth)")])  # the queue is empty for the triage call
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    pipeline.run(category="noodles")
+    [alert] = admin_texts(tg)
+    assert "Diagnosis: unavailable" in alert and "claude setup-token" in alert
 
 
 def test_rotation_file_is_reread_each_run(settings, fixed_now):
