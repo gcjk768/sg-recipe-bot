@@ -22,6 +22,12 @@ def test_send_message_payload():
     assert session.posts[1]["json"] == {"chat_id": "@chan", "text": "plain", "link_preview_options": {"is_disabled": True}}
 
 
+def test_send_message_to_forum_topic():
+    session = telegram_ok_session()
+    _client(session).send_message("-1002069000031/2765", "hi", parse_mode=None)
+    assert session.posts[0]["json"] == {"chat_id": "-1002069000031", "message_thread_id": 2765, "text": "hi"}
+
+
 def test_send_messages_pauses_between_parts():
     session = telegram_ok_session()
     sleeps = []

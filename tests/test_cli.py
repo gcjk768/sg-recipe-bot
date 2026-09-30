@@ -10,6 +10,12 @@ from tests.conftest import make_recipe, make_reply
 ENV_ARGS = ["--env-file", "/nonexistent/.env"]
 
 
+@pytest.fixture(autouse=True)
+def _api_provider(monkeypatch):
+    # These tests exercise the API key checks; the claude CLI path is covered in test_llm.py.
+    monkeypatch.setenv("LLM_PROVIDER", "api")
+
+
 def test_preview_renders_saved_reply(tmp_path, capsys):
     path = tmp_path / "reply.json"
     path.write_text(json.dumps(make_reply([make_recipe()])))
@@ -53,6 +59,19 @@ def test_bad_config_value(monkeypatch, capsys):
     monkeypatch.setenv("RECIPEBOT_COUNT", "9")
     assert main(ENV_ARGS + ["check-config"]) == 2
     assert "RECIPEBOT_COUNT" in capsys.readouterr().err
+
+
+def test_bad_topic_in_chat_id(monkeypatch, capsys):
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "-1002069000031/general")
+    assert main(ENV_ARGS + ["check-config"]) == 2
+    assert "TELEGRAM_CHAT_ID" in capsys.readouterr().err
+
+
+def test_cli_provider_needs_claude_on_path(monkeypatch, capsys):
+    monkeypatch.setenv("LLM_PROVIDER", "cli")
+    monkeypatch.setenv("PATH", "")
+    assert main(ENV_ARGS + ["check-config"]) == 1
+    assert "claude command is not installed" in capsys.readouterr().out
 
 
 def test_system_prompt_command_prints_verbatim(capsys):

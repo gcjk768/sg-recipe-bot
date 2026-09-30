@@ -10,10 +10,13 @@ from dataclasses import dataclass
 from typing import Any, Iterator
 from urllib.parse import urlsplit
 
-USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/124.0 Safari/537.36 RecipeBot/0.1"
-)
+# Cloudflare style bot checks answer 403 with a challenge page whatever the URL, so the page can
+# neither be confirmed nor ruled out.
+_BOT_WALL_MARKERS = ("challenge-platform", "cf_chl", "cf-chl", "captcha")
+
+
+def is_bot_wall(result: "FetchResult") -> bool:
+    return result.status == 403 and any(marker in result.text for marker in _BOT_WALL_MARKERS)
 
 _LDJSON = re.compile(
     r"<script[^>]*type\s*=\s*[\"']application/ld\+json[\"'][^>]*>(.*?)</script>",
@@ -42,20 +45,20 @@ class FetchResult:
 
 
 class Fetcher:
-    """Thin wrapper around a requests session so tests can swap in a fake."""
+    """Thin wrapper around a requests style session so tests can swap in a fake."""
 
     def __init__(self, session: Any | None = None, *, timeout: float = 20, max_bytes: int = 2_000_000):
         if session is None:
-            import requests
+            # A Chrome TLS fingerprint: many recipe sites 403 the plain `requests` handshake.
+            from curl_cffi import requests as cffi_requests
 
-            session = requests.Session()
+            session = cffi_requests.Session(impersonate="chrome")
         self.session = session
         self.timeout = timeout
         self.max_bytes = max_bytes
 
     def fetch(self, url: str) -> FetchResult:
         headers = {
-            "User-Agent": USER_AGENT,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-SG,en;q=0.9,zh;q=0.8",
         }

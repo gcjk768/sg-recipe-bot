@@ -3,7 +3,11 @@ model search the web when the brief says candidate_pages is none, and returns th
 
 from __future__ import annotations
 
+import json
 import logging
+import shutil
+import subprocess
+import tempfile
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
@@ -124,3 +128,66 @@ class AnthropicClient:
             cache_read_tokens=cache_read,
             web_searches=searches,
         )
+
+
+class ClaudeCLIClient:
+    """`claude -p` (Claude Code, signed in with a Claude plan) instead of the API. The system prompt
+    replaces Claude Code's own and is passed as a file (17 KB overflows the Windows command line),
+    the brief goes over stdin, and web search uses Claude Code's
+    WebSearch and WebFetch tools. No API key; usage counts against the signed in plan."""
+
+    def __init__(self, settings: Settings, run: Any = subprocess.run):
+        self.settings = settings
+        self.run = run
+
+    def command(self, system_file: str, *, web_search: bool) -> list[str]:
+        exe = shutil.which("claude") or "claude"
+        tools = "WebSearch,WebFetch" if web_search else ""
+        cmd = [exe, "-p", "--output-format", "json", "--model", self.settings.llm_model,
+               "--system-prompt-file", system_file, "--tools", tools, "--strict-mcp-config", "--no-session-persistence"]
+        if web_search:
+            cmd += ["--allowedTools", tools]
+        if self.settings.llm_effort:
+            cmd += ["--effort", self.settings.llm_effort]
+        return cmd
+
+    def complete(self, system: str, user: str, *, web_search: bool) -> LLMResult:
+        with tempfile.TemporaryDirectory() as tmp:
+            system_file = f"{tmp}/system_prompt.txt"
+            with open(system_file, "w", encoding="utf-8") as fh:
+                fh.write(system)
+            try:
+                proc = self.run(
+                    self.command(system_file, web_search=web_search), input=user, capture_output=True, text=True,
+                    encoding="utf-8", errors="replace", timeout=self.settings.llm_timeout_seconds,
+                )
+            except subprocess.TimeoutExpired:
+                raise LLMError(f"claude -p timed out after {self.settings.llm_timeout_seconds}s") from None
+            except OSError as exc:
+                raise LLMError(f"could not start claude: {exc}") from exc
+        try:
+            blob = json.loads(proc.stdout)
+        except ValueError:
+            raise LLMError(f"claude -p exit {proc.returncode}: {(proc.stderr or proc.stdout)[:300]}") from None
+        if blob.get("is_error") or proc.returncode != 0:
+            raise LLMError(f"claude -p failed ({blob.get('subtype')}): {str(blob.get('result'))[:300]}")
+        if blob.get("stop_reason") == "refusal":
+            raise LLMRefusal(f"the model declined the request: {str(blob.get('result'))[:300]}")
+        usage = blob.get("usage") or {}
+        text = str(blob.get("result") or "")
+        return LLMResult(
+            text=text,
+            stop_reason=blob.get("stop_reason"),
+            model=next(iter(blob.get("modelUsage") or {}), self.settings.llm_model),
+            text_blocks=[text],
+            input_tokens=int(usage.get("input_tokens") or 0),
+            output_tokens=int(usage.get("output_tokens") or 0),
+            cache_read_tokens=int(usage.get("cache_read_input_tokens") or 0),
+            # Claude Code runs WebSearch/WebFetch as its own sub-requests, so server_tool_use stays 0;
+            # every turn after the first follows one tool call.
+            web_searches=max(int(blob.get("num_turns") or 1) - 1, 0),
+        )
+
+
+def make_client(settings: Settings) -> LLMClient:
+    return ClaudeCLIClient(settings) if settings.llm_provider == "cli" else AnthropicClient(settings)

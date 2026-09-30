@@ -125,7 +125,7 @@ Template:
 
 Rendering rules:
 
-* Category labels and hashtags come from the category list at the top of this file. Tags become hashtags with the spaces removed (#onepan, #mealprep). Hashtags make the channel searchable later.
+* Category labels and hashtags come from the category list at the top of this file. Tags become hashtags with the spaces removed (#onepan, #mealprep). Hashtags make the channel searchable later. The meal hashtags (#breakfast, #lunch, #dinner, #supper, from the recipe's `meals` field) come first, so tapping one lists every recipe for that meal.
 * Drop the bracketed title_zh when it is null. Drop the protein line unless the category is high_protein. Drop the nutrition and cost lines when the estimate is missing or implausible (no calories, a negative or absurd number). Drop the ", {cost note}" part when the note is empty and the "for N servings, S$X each" part when the recipe serves one. Drop the tip and storage lines when empty. Drop the ", {note}" part when the note is empty. Print whole numbers without a decimal (400 g, not 400.0 g) and money as S$9.50 or S$10.
 * Vary the leading emoji by category if you like: 🧁 for baking_cakes and desserts_no_oven, 🍲 for soups and rice_cooker, 🍜 for noodles, 🥗 for sides and eggs_tofu_veg, 🍳 for the rest.
 * Leave link previews on. Telegram previews the first link in the message, so the recipe's own photo appears under the post without you hosting any images.
