@@ -89,8 +89,10 @@ class RunLog:
 
 class History:
     def __init__(self, path: Path | str, tz: tzinfo | None = None):
+        """`tz` is the owner's timezone. It is needed once, to give runs recorded by an older
+        version their local date; without it that one-time backfill waits for a caller that has it."""
         self.path = Path(path)
-        self.tz = tz or timezone.utc
+        self.tz = tz
         if str(self.path) != ":memory:":
             self.path.parent.mkdir(parents=True, exist_ok=True)
         self.conn = sqlite3.connect(str(self.path))
@@ -106,6 +108,9 @@ class History:
             self.conn.execute("ALTER TABLE runs ADD COLUMN run_day TEXT")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_runs_day ON runs(run_day)")
         # Older rows: derive the local date from started_at so the loop sees days that already ran.
+        # Only with a known timezone: a UTC guess would be written once and never corrected.
+        if self.tz is None:
+            return
         for row in self.conn.execute("SELECT id, started_at FROM runs WHERE run_day IS NULL").fetchall():
             try:
                 local_day = datetime.fromisoformat(row["started_at"]).astimezone(self.tz).date()
@@ -219,6 +224,17 @@ class History:
             (run_id, category, theme, row_id),
         )
         self.conn.commit()
+
+    def run_day_span(self) -> tuple[date | None, date | None]:
+        """(first date with any real run, last date with a finished real run). Dry runs never count."""
+        row = self.conn.execute(
+            "SELECT MIN(run_day) AS first_day, MAX(CASE WHEN status != ? THEN run_day END) AS last_finished "
+            "FROM runs WHERE run_day IS NOT NULL AND status != ?",
+            (UNFINISHED, DRY_RUN),
+        ).fetchone()
+        first = date.fromisoformat(row["first_day"]) if row["first_day"] else None
+        last = date.fromisoformat(row["last_finished"]) if row["last_finished"] else None
+        return first, last
 
     def runs_for_day(self, day: date, *, include_dry_runs: bool = False) -> list[RunLog]:
         """Runs recorded for a rotation date (the local date the post was scheduled for)."""

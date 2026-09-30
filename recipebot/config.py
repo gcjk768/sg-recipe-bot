@@ -65,8 +65,9 @@ def _env_float(name: str, default: float) -> float:
 def _catch_up_hours(value: float) -> float:
     import math
 
-    if not math.isfinite(value) or value < 0 or value > 168:
-        raise ConfigError("RECIPEBOT_CATCH_UP_HOURS must be a number of hours between 0 and 168")
+    # Below one day, so a catch up can never reach back to a slot whose next day's post is due too.
+    if not math.isfinite(value) or value < 0 or value > 23:
+        raise ConfigError("RECIPEBOT_CATCH_UP_HOURS must be a number of hours between 0 and 23")
     return value
 
 

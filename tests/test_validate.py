@@ -305,3 +305,26 @@ def test_alternatives_with_a_real_ingredient_are_counted(item):
 @pytest.mark.parametrize("item", ["sea salt or kosher salt", "olive oil for drizzling", "cooking spray", "icing sugar for dusting", "oil, for shallow frying", "salt, such as Maldon", "water to thin"])
 def test_more_free_phrasings(item):
     assert is_free_ingredient(item), item
+
+
+@pytest.mark.parametrize(
+    "item",
+    ["nonstick cooking spray", "non-stick cooking spray", "cooking oil spray", "canola oil spray", "vegetable oil spray",
+     "ice", "ice cubes", "crushed ice", "salt and sugar", "kosher or sea salt", "white or black pepper",
+     "crushed black pepper", "just boiled water", "salt, pepper and sugar", "salt & white pepper", "confectioners' sugar",
+     "brown or white sugar"],
+)
+def test_round_three_free_phrasings(item):
+    assert is_free_ingredient(item), item
+
+
+@pytest.mark.parametrize("item", ["salt and vinegar", "sugar and cinnamon", "butter spray", "ice cream", "salt or fish sauce", "pepper and onion"])
+def test_round_three_combinations_with_a_real_ingredient_count(item):
+    assert not is_free_ingredient(item), item
+
+
+def test_cost_per_serving_tolerance_is_rounding_only():
+    recipe = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 20, "per_serving_sgd": 7}, servings=2))
+    assert recipe.cost.per_serving_sgd == 10.0
+    kept = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 20, "per_serving_sgd": 9.95}, servings=2))
+    assert kept.cost.per_serving_sgd == 9.95

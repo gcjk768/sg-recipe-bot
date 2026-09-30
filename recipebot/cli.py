@@ -161,7 +161,7 @@ def cmd_rotation(settings: Settings, start: date | None, days: int) -> int:
 def cmd_history(settings: Settings, limit: int) -> int:
     from recipebot.history import History
 
-    with History(settings.db_path) as history:
+    with History(settings.db_path, tz=ZoneInfo(settings.timezone)) as history:
         sent = history.recent_sent(limit)
         print(f"Last {len(sent)} posts:")
         for row in sent:

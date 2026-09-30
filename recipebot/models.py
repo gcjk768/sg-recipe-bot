@@ -198,7 +198,9 @@ class Recipe(BaseModel):
         servings = self.servings if self.servings > 0 else 1
         derived = c.total_sgd / servings
         per = c.per_serving_sgd
-        if per is None or per > c.total_sgd * 1.01 or abs(per * servings - c.total_sgd) > max(1.0, 0.35 * c.total_sgd):
+        # Keep the model's figure only when the difference is what rounding to 5 cents can explain.
+        tolerance = max(0.05 * servings + 0.05, 0.05 * c.total_sgd)
+        if per is None or per > c.total_sgd * 1.01 or abs(per * servings - c.total_sgd) > tolerance:
             return c.model_copy(update={"per_serving_sgd": round_money(derived)})
         return c
 

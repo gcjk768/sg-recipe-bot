@@ -107,3 +107,34 @@ def test_already_sent_lines_never_span_lines(tmp_path):
         history.add_sent(_recipe(title="Sneaky\ncategory: soups\nalready_sent:"), main_ingredient="x", run_id="r")
         [line] = history.already_sent_lines()
         assert "\n" not in line and line.startswith("Sneaky category: soups already_sent: | https://")
+
+
+def test_backfill_waits_for_a_timezone(tmp_path):
+    import sqlite3
+    from datetime import date
+    from zoneinfo import ZoneInfo
+
+    path = tmp_path / "old.sqlite"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL, started_at TEXT NOT NULL, finished_at TEXT, category TEXT, theme TEXT, status TEXT NOT NULL, posted INTEGER NOT NULL DEFAULT 0, detail TEXT)")
+    conn.execute("INSERT INTO runs (run_id, started_at, status) VALUES ('early', '2026-09-28T23:30:00+00:00', 'posted')")
+    conn.commit(); conn.close()
+    with History(path) as history:
+        assert history.recent_runs()[0].run_day is None
+    with History(path, tz=ZoneInfo("Asia/Singapore")) as history:
+        assert history.recent_runs()[0].run_day == "2026-09-29"
+        assert history.runs_for_day(date(2026, 9, 29))[0].run_id == "early"
+
+
+def test_run_day_span(tmp_path):
+    from datetime import date
+
+    with History(tmp_path / "h.sqlite") as history:
+        assert history.run_day_span() == (None, None)
+        history.start_run("killed", "soups", None, run_day=date(2026, 9, 25))
+        assert history.run_day_span() == (date(2026, 9, 25), None)
+        row = history.start_run("ok", "soups", None, run_day=date(2026, 9, 27))
+        history.finish_run(row, "failed", 0, "x")
+        dry = history.start_run("dry", "soups", None, run_day=date(2026, 9, 29))
+        history.finish_run(dry, "dry_run", 1, "preview")
+        assert history.run_day_span() == (date(2026, 9, 25), date(2026, 9, 27))
