@@ -35,6 +35,14 @@ PAUSE_BETWEEN_RECIPES = 2.0
 PAUSE_BETWEEN_MESSAGES = 1.0
 MAX_MODEL_ATTEMPTS = 2
 
+DIAGNOSE_SYSTEM = (
+    "You triage failures of RecipeBot, a Python bot in a Docker container on a Synology NAS. Once a day "
+    "it asks `claude -p` (signed in with CLAUDE_CODE_OAUTH_TOKEN from `claude setup-token`) for a recipe as "
+    "JSON, validates it, and posts it to Telegram. The owner reads your reply on a phone and cannot run a "
+    "debugger. Given the failure alert, reply in at most 4 short plain-text lines: the likely cause, then the "
+    "exact fix (a command, an .env variable, or 'transient, it retries tomorrow'). No markdown, no preamble."
+)
+
 TRUNCATED_MESSAGE = (
     "The reply was cut off before the JSON object ended (the output limit was reached). "
     "Return the same structure with shorter text, or fewer recipes, so the whole object fits."
@@ -211,6 +219,18 @@ class Pipeline:
 
     # --- the run -------------------------------------------------------------------------
 
+    def diagnose(self, alert: str) -> str:
+        """Ask the model (no tools, read only) for a likely cause and fix. When the model itself is the
+        broken part, say so, since that is the most common reason for a silent day."""
+        # ponytail: shares llm_timeout_seconds, so a hung claude -p can delay the alert by that much again.
+        try:
+            reply = self.llm.complete(DIAGNOSE_SYSTEM, alert, web_search=False).text.strip()
+        except Exception as exc:  # noqa: BLE001 - the alert goes out regardless
+            log.warning("auto-diagnosis failed: %s", exc)
+            return (f"unavailable, the model call failed too ({str(exc)[:200]}). If claude -p is the problem, the "
+                    "sign-in has probably expired: run `claude setup-token` and update CLAUDE_CODE_OAUTH_TOKEN in .env.")
+        return reply[:800] or "the model returned nothing."
+
     def run(
         self,
         *,
@@ -276,7 +296,8 @@ class Pipeline:
             except Exception:  # noqa: BLE001
                 log.exception("could not record the run")
         if not dry_run and not report.ok:
-            self.notify_admin(report.alert_text(count))
+            alert = report.alert_text(count)
+            self.notify_admin(alert + "\n\nDiagnosis: " + self.diagnose(alert))
         log.info(report.summary())
         return report
 
