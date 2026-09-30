@@ -5,6 +5,7 @@ updated: 2026-09-30
 # Changelog
 
 ## 2026-09-30
+- ops: `pull_policy: build` on `recipebot` (`docker-compose.yml`) — Dockge Update now rebuilds the image from the code on disk
 - feat: failure alerts carry an auto-diagnosis — `recipebot/pipeline.py` `Pipeline.diagnose` sends the alert back through the model client (no tools) for cause + fix; if the model is unreachable too, the alert says so and points at `claude setup-token`
 - fix: scheduler reports every missed day once — one admin alert lists each date since the last finished run whose post time passed with no run (multi-day NAS sleep, outage ending after midnight); a run killed half way is reported even when the restart is past the window; a new database never reports days before it existed and skips a catch-up when the next post is under 12 h away (`recipebot/scheduler.py` `report_gap`, `recipebot/history.py` `run_day_span`)
 - fix: `RECIPEBOT_CATCH_UP_HOURS` capped at 23; with 0, a wake more than 15 min late no longer posts; `RECIPEBOT_RUN_ON_START` runs the pending slot, which may be yesterday's just after midnight (`recipebot/config.py`, `recipebot/scheduler.py`)
