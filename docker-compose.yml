@@ -1,6 +1,8 @@
 services:
   recipebot:
     build: .
+    # Dockge Update/Start then rebuilds from the code on disk instead of reusing the old image.
+    pull_policy: build
     container_name: recipebot
     env_file: .env
     environment:
