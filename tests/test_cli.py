@@ -141,3 +141,19 @@ def test_catch_up_hours_must_stay_below_a_day(monkeypatch, capsys, value):
     monkeypatch.setenv("RECIPEBOT_CATCH_UP_HOURS", value)
     assert main(ENV_ARGS + ["check-config"]) == 2
     assert "between 0 and 23" in capsys.readouterr().err
+
+
+def test_test_telegram_prints_a_redacted_one_line_error(monkeypatch, capsys):
+    from recipebot import telegram as tg
+
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "123456789:SECRETSECRET")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "@chan")
+    monkeypatch.setenv("LLM_API_KEY", "sk-test-key-1234")
+
+    def fake_call(self, method, payload=None, *, idempotent=False):
+        raise tg.TelegramError(self.redact("network error calling getMe: ReadTimeout: url: /bot123456789:SECRETSECRET/getMe"))
+
+    monkeypatch.setattr(tg.TelegramClient, "call", fake_call)
+    assert main(ENV_ARGS + ["test-telegram"]) == 1
+    err = capsys.readouterr().err
+    assert err.startswith("telegram error: ") and "SECRETSECRET" not in err and "Traceback" not in err

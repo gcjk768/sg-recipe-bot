@@ -138,22 +138,34 @@ def test_ssl_error_while_reading_is_ambiguous_but_handshake_failure_is_retried()
     assert failed_before_sending(Exception("ConnectTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded"))
 
 
-def test_504_on_send_message_is_ambiguous_but_502_is_retried():
-    session = FakeSession(default=lambda url: FakeResponse(504, json_body={"ok": False, "error_code": 504, "description": "Gateway Timeout"}))
+@pytest.mark.parametrize("status", [500, 502, 504])
+def test_ambiguous_5xx_on_send_message_is_not_resent(status):
+    session = FakeSession(default=lambda url: FakeResponse(status, json_body={"ok": False, "error_code": status, "description": "Gateway trouble"}))
     client = _client(session, [])
     with pytest.raises(TelegramError) as exc:
         client.send_message("@chan", "x")
     assert exc.value.ambiguous and len(session.posts) == 1
 
+
+def test_503_on_send_message_is_retried():
     calls = {"n": 0}
 
     def respond(url):
         calls["n"] += 1
         if calls["n"] == 1:
-            return FakeResponse(502, json_body={"ok": False, "error_code": 502, "description": "Bad Gateway"})
+            return FakeResponse(503, json_body={"ok": False, "error_code": 503, "description": "Service Unavailable"})
         return FakeResponse(200, json_body={"ok": True, "result": {"message_id": 3}})
 
     assert _client(FakeSession(default=respond), []).send_message("@chan", "x") == 3
+
+
+def test_ambiguous_error_does_not_chain_the_raw_exception():
+    err = TimeoutError("ReadTimeout: HTTPSConnectionPool(host='api.telegram.org'): url: /bot123:tok/sendMessage")
+    client = _client(FakeSession(default=err), [])
+    with pytest.raises(TelegramError) as exc:
+        client.send_message("@chan", "x")
+    assert exc.value.__cause__ is None and exc.value.__suppress_context__
+    assert "123:tok" not in str(exc.value)
 
 
 def test_get_me_retries_any_5xx():

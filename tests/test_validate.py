@@ -328,3 +328,21 @@ def test_cost_per_serving_tolerance_is_rounding_only():
     assert recipe.cost.per_serving_sgd == 10.0
     kept = Recipe.model_validate(make_recipe(cost_estimate={"total_sgd": 20, "per_serving_sgd": 9.95}, servings=2))
     assert kept.cost.per_serving_sgd == 9.95
+
+
+@pytest.mark.parametrize(
+    "nutrition,plausible",
+    [
+        ({"kcal": 420, "protein_g": 40, "carbs_g": 20, "fat_g": 20}, True),
+        ({"kcal": 30, "protein_g": 0, "carbs_g": 5, "fat_g": 5}, True),  # a light side, rounded to 5 g
+        ({"kcal": 650, "protein_g": 35}, True),  # partial macros skip the cross check
+        ({"kcal": 4200, "protein_g": 40}, False),
+        ({"kcal": 600, "protein_g": 400}, False),
+        ({"kcal": 10}, False),
+        ({"kcal": 300, "protein_g": 60, "carbs_g": 80, "fat_g": 40}, False),  # macros imply 920 kcal
+        ({"kcal": 900, "protein_g": 10, "carbs_g": 20, "fat_g": 5}, False),  # macros imply 165 kcal
+    ],
+)
+def test_nutrition_plausibility(nutrition, plausible):
+    recipe = Recipe.model_validate(make_recipe(nutrition_per_serving=nutrition))
+    assert (recipe.nutrition is not None) == plausible

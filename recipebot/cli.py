@@ -15,6 +15,7 @@ from recipebot.categories import CATEGORIES, get_category
 from recipebot.config import ConfigError, Settings, load_dotenv, load_settings
 from recipebot.models import Recipe
 from recipebot.render import render_recipe
+from recipebot.telegram import TelegramError
 
 log = logging.getLogger("recipebot")
 
@@ -255,6 +256,9 @@ def main(argv: list[str] | None = None) -> int:
     except ConfigError as exc:
         print(f"configuration error: {exc}", file=sys.stderr)
         return 2
+    except TelegramError as exc:
+        print(f"telegram error: {exc}", file=sys.stderr)
+        return 1
     except KeyboardInterrupt:
         print("interrupted", file=sys.stderr)
         return 130

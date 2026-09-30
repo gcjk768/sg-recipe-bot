@@ -80,3 +80,13 @@ def test_single_line_fence_and_language_tag():
     assert parse_reply("```json" + body + "```").reply.recipes == []
     assert parse_reply("```JSON\n" + body + "\n```").reply.recipes == []
     assert parse_reply("```\n" + body + "\n```").reply.recipes == []
+
+
+def test_deep_nesting_is_a_parse_failure_not_a_crash():
+    deep = "[" * 5000 + "]" * 5000
+    text = '{"run": {"category": "x"}, "recipes": ' + deep + "}"
+    with pytest.raises(ParseFailure):
+        parse_reply(text)
+    with pytest.raises(ParseFailure) as exc:
+        parse_reply(deep)
+    assert "nested too deeply" in str(exc.value) or "JSON parse error" in str(exc.value)
