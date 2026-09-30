@@ -35,17 +35,18 @@ ALLOWED_TAGS = {
 # leading "a pinch of" and trailing "to taste" style qualifiers stripped).
 _SALT = (
     r"(?:(?:sea|table|kosher|fine|flaky|flaked|coarse|rock|himalayan|pink|iodised|iodized|cooking|plain|regular|"
-    r"garlic|celery|onion|seasoned|seasoning|smoked|black|maldon|natural|salt)\s+){0,3}salt(?:\s+flakes)?"
+    r"garlic|celery|onion|seasoned|seasoning|smoked|black|maldon|natural|salt|or)\s+){0,3}salt(?:\s+flakes)?"
 )
-_PEPPER = r"(?:(?:ground|white|black|freshly|cracked|coarse|coarsely|fine|finely|mixed|whole)\s+){0,3}(?:pepper|peppercorns?)(?:\s+powder)?"
+_PEPPER = (
+    r"(?:(?:ground|white|black|freshly|cracked|crushed|coarse|coarsely|fine|finely|mixed|whole|or)\s+){0,3}"
+    r"(?:pepper|peppercorns?)(?:\s+powder)?"
+)
 _FREE_PATTERNS = [
     re.compile(rf"^{_SALT}$"),
     re.compile(rf"^{_PEPPER}$"),
-    re.compile(rf"^{_SALT}\s*(?:and|&|,|\+|/)\s*{_PEPPER}$"),
-    re.compile(rf"^{_PEPPER}\s*(?:and|&|,|\+|/)\s*{_SALT}$"),
     re.compile(
         r"^(?:(?:white|brown|caster|castor|granulated|raw|icing|powdered|light|dark|soft|palm|rock|coconut|fine|"
-        r"demerara|golden|plain|regular|superfine|confectioners|cane|muscovado)\s+){0,3}sugar$"
+        r"demerara|golden|plain|regular|superfine|confectioners'?|cane|muscovado|or)\s+){0,3}sugar$"
     ),
     re.compile(r"^gula\s+melaka$"),
     re.compile(
@@ -53,10 +54,13 @@ _FREE_PATTERNS = [
         r"soybean|soya|soy|olive|extra|virgin|extra-virgin|light|frying|plain|regular|any|or|blended|grapeseed|avocado|coconut)\s+){0,4}oil$"
     ),
     re.compile(
-        r"^(?:(?:hot|warm|lukewarm|cold|boiling|boiled|ice|iced|tap|filtered|room|temperature|drinking|plain|cool|tepid)\s+){0,3}water$"
+        r"^(?:(?:hot|warm|lukewarm|cold|boiling|boiled|ice|iced|tap|filtered|room|temperature|drinking|plain|cool|tepid|"
+        r"just|freshly|recently|or)\s+){0,3}water$"
     ),
-    re.compile(r"^(?:cooking|oil|non-stick|nonstick|olive oil)\s+spray$"),
+    re.compile(r"^(?:crushed\s+|shaved\s+)?ice(?:\s+cubes?)?$"),
+    re.compile(r"^(?:(?:non-stick|nonstick|cooking|olive|canola|vegetable|avocado|coconut|oil)\s+){0,3}spray$"),
 ]
+_JOINERS = re.compile(r"\s*(?:\bor\b|\band\b|&|/|\+)\s*")
 _LEADING_QUALIFIERS = re.compile(r"^(?:a\s+)?(?:pinch|dash|splash|drizzle|little|bit|few\s+drops|generous\s+pinch|big\s+pinch)\s+of\s+")
 _TRAILING_QUALIFIERS = re.compile(
     r"\s*(?:,|\bor\b)?\s*(?:to taste|as needed|as required|optional|if needed|to season|for seasoning|for frying|for cooking|"
@@ -100,10 +104,11 @@ def is_free_ingredient(item: str) -> bool:
     name = clean_ingredient_name(item)
     if _matches_free(name):
         return True
-    # "salt or soy sauce" counts (the alternative is a real ingredient); "sea salt or kosher salt" does not.
-    if " or " in name:
-        parts = [part.strip() for part in name.split(" or ") if part.strip()]
-        return bool(parts) and all(_matches_free(part) for part in parts)
+    # "salt and pepper", "sea salt or kosher salt" are free; "salt or soy sauce" counts, because one
+    # of the alternatives is a real ingredient.
+    parts = [part.strip() for part in _JOINERS.split(name) if part.strip()]
+    if len(parts) > 1:
+        return all(_matches_free(part) for part in parts)
     return False
 
 

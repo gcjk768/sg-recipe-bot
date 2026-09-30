@@ -276,12 +276,132 @@ def test_long_suspend_past_the_window_is_reported_not_posted(settings, history):
     assert len(pipeline.alerts) == 1 and "missed the post for 2026-09-29" in pipeline.alerts[0]
 
 
+def _seed(history, day, status="posted"):
+    row = history.start_run(f"seed-{day}", "soups", None, run_day=day)
+    if status != "running":
+        history.finish_run(row, status, 1 if status == "posted" else 0, "seed")
+
+
 def test_restart_after_the_window_on_the_same_day_is_reported_once(settings, history):
+    _seed(history, date(2026, 9, 28))
     clock, sleep = _clock(datetime(2026, 9, 29, 23, 30, 0, tzinfo=SGT))
     pipeline = StubPipeline(history)
     run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
     assert pipeline.days == [date(2026, 9, 30), date(2026, 10, 1)]
     assert len(pipeline.alerts) == 1 and "2026-09-29" in pipeline.alerts[0]
+
+
+def test_fresh_install_after_the_window_reports_nothing(settings, history):
+    clock, sleep = _clock(datetime(2026, 9, 29, 23, 30, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)] and pipeline.alerts == []
+
+
+def test_outage_restart_after_midnight_is_reported(settings, history):
+    _seed(history, date(2026, 9, 28))
+    clock, sleep = _clock(datetime(2026, 9, 30, 1, 0, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+    assert len(pipeline.alerts) == 1 and "missed the post for 2026-09-29" in pipeline.alerts[0]
+
+
+def test_multi_day_outage_lists_every_missed_day_in_one_alert(settings, history):
+    _seed(history, date(2026, 9, 26))
+    clock, sleep = _clock(datetime(2026, 9, 29, 23, 0, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+    [alert] = pipeline.alerts
+    assert "2026-09-27, 2026-09-28 and 2026-09-29" in alert and "those days" in alert
+
+
+@pytest.mark.parametrize("hours,lost", [(25, ["2026-09-29"]), (30, ["2026-09-29"]), (47, ["2026-09-29", "2026-09-30"])])
+def test_suspend_across_post_times_reports_every_lost_day(settings, history, hours, lost):
+    _seed(history, date(2026, 9, 28))
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 30, tzinfo=SGT)}
+    calls = {"n": 0}
+
+    def sleep(seconds):
+        calls["n"] += 1
+        clock["now"] += timedelta(hours=hours) if calls["n"] == 1 else timedelta(seconds=seconds)
+
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    joined = "\n".join(pipeline.alerts)
+    assert len(pipeline.alerts) == 1
+    for day in lost:
+        assert day in joined
+    for day in pipeline.days:
+        assert day.isoformat() not in joined
+
+
+def test_unfinished_run_outside_the_window_is_reported(settings, history):
+    _seed(history, date(2026, 9, 28))
+    _seed(history, date(2026, 9, 29), status="running")
+    clock, sleep = _clock(datetime(2026, 9, 30, 9, 0, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+    assert len(pipeline.alerts) == 1 and "never finished" in pipeline.alerts[0] and "2026-09-29" in pipeline.alerts[0]
+
+
+def test_zero_window_late_wake_does_not_post_and_reports(settings, history):
+    settings.catch_up_hours = 0
+    _seed(history, date(2026, 9, 28))
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 30, tzinfo=SGT)}
+    calls = {"n": 0}
+
+    def sleep(seconds):
+        calls["n"] += 1
+        clock["now"] += timedelta(hours=9) if calls["n"] == 1 else timedelta(seconds=seconds)
+
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 30)]
+    assert len(pipeline.alerts) == 1 and "2026-09-29" in pipeline.alerts[0] and "catch up is disabled" in pipeline.alerts[0]
+
+
+def test_zero_window_slightly_late_wake_still_posts(settings, history):
+    settings.catch_up_hours = 0
+    clock = {"now": datetime(2026, 9, 29, 15, 59, 30, tzinfo=SGT)}
+    calls = {"n": 0}
+
+    def sleep(seconds):
+        calls["n"] += 1
+        clock["now"] += timedelta(minutes=5) if calls["n"] == 1 else timedelta(seconds=seconds)
+
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 29)] and pipeline.alerts == []
+
+
+def test_fresh_database_does_not_catch_up_yesterday_just_before_todays_post(settings, history):
+    settings.catch_up_hours = 23
+    clock, sleep = _clock(datetime(2026, 9, 29, 14, 30, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
+    assert pipeline.days == [date(2026, 9, 29)] and pipeline.alerts == []
+
+
+def test_established_database_does_catch_up_yesterday_with_a_long_window(settings, history):
+    settings.catch_up_hours = 23
+    _seed(history, date(2026, 9, 27))
+    clock, sleep = _clock(datetime(2026, 9, 29, 14, 30, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
+    assert pipeline.days == [date(2026, 9, 28), date(2026, 9, 29)]
+
+
+def test_run_on_start_uses_the_pending_slot_after_midnight(settings, history):
+    settings.run_on_start = True
+    settings.post_time = time(23, 50)
+    clock, sleep = _clock(datetime(2026, 9, 30, 0, 30, 0, tzinfo=SGT))
+    pipeline = StubPipeline(history)
+    run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=2)
+    assert pipeline.days == [date(2026, 9, 29), date(2026, 9, 30)]
+    assert clock["now"] >= datetime(2026, 9, 30, 23, 50, tzinfo=SGT)
 
 
 def test_first_start_before_post_time_does_not_report_yesterday(settings, history):

@@ -116,6 +116,11 @@ _CHARSET_ALIASES = {
 }
 
 
+# Labels that name a Python codec but never describe a web page: "undefined" is a templating bug
+# seen in the wild (<meta charset="undefined">), the rest are not text encodings of HTML.
+_UNUSABLE_LABELS = {"undefined", "idna", "punycode", "raw_unicode_escape", "unicode_escape", "rot13", "rot_13", "base64", "hex", "zlib", "bz2", "uu", "quopri"}
+
+
 def _codec_name(label: str) -> str:
     label = label.strip().strip("\"'").lower()
     return _CHARSET_ALIASES.get(label, label)
@@ -137,9 +142,12 @@ def decode_body(raw: bytes, content_type: str = "") -> str:
     if meta:
         candidates.append(meta.group(1).decode("ascii", errors="ignore"))
     for name in candidates:
+        codec = _codec_name(name)
+        if codec in _UNUSABLE_LABELS:
+            continue
         try:
-            return raw.decode(_codec_name(name), errors="replace")
-        except LookupError:
+            return raw.decode(codec, errors="replace")
+        except (LookupError, ValueError):  # unknown label, or a codec that refuses to decode (UnicodeError)
             continue
     try:
         return raw.decode("utf-8")

@@ -116,3 +116,28 @@ def test_bad_catch_up_hours_is_a_config_error(monkeypatch, capsys, value):
     monkeypatch.setenv("RECIPEBOT_CATCH_UP_HOURS", value)
     assert main(ENV_ARGS + ["check-config"]) == 2
     assert "RECIPEBOT_CATCH_UP_HOURS" in capsys.readouterr().err
+
+
+def test_history_command_backfills_in_the_configured_timezone(monkeypatch, tmp_path, capsys):
+    import sqlite3
+    from datetime import date
+
+    from recipebot.history import History
+
+    path = tmp_path / "history.sqlite"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL, started_at TEXT NOT NULL, finished_at TEXT, category TEXT, theme TEXT, status TEXT NOT NULL, posted INTEGER NOT NULL DEFAULT 0, detail TEXT)")
+    conn.execute("INSERT INTO runs (run_id, started_at, status) VALUES ('early', '2026-09-28T23:30:00+00:00', 'posted')")
+    conn.commit(); conn.close()
+    monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("TZ", "Asia/Singapore")
+    assert main(ENV_ARGS + ["history"]) == 0
+    with History(path) as history:
+        assert history.recent_runs()[0].run_day == "2026-09-29"
+
+
+@pytest.mark.parametrize("value", ["23.5", "24"])
+def test_catch_up_hours_must_stay_below_a_day(monkeypatch, capsys, value):
+    monkeypatch.setenv("RECIPEBOT_CATCH_UP_HOURS", value)
+    assert main(ENV_ARGS + ["check-config"]) == 2
+    assert "between 0 and 23" in capsys.readouterr().err

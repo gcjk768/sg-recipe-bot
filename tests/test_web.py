@@ -156,3 +156,12 @@ def test_decode_body_bom_and_browser_labels():
     assert decode_body(zh.encode("gb18030"), 'text/html; charset="gb2312"') == zh
     assert decode_body("caf\u00e9 \u2019".encode("cp1252"), "text/html; charset=iso-8859-1") == "caf\u00e9 \u2019"
     assert decode_body(zh.encode("utf-8"), "TEXT/HTML; CHARSET=UTF8") == zh
+
+
+@pytest.mark.parametrize("label", ["undefined", "idna", "base64", "rot13", "bogus-charset"])
+def test_decode_body_skips_unusable_labels(label):
+    from recipebot.web import decode_body
+
+    body = f'<meta charset="{label}"><p>番茄 ingredient</p>'.encode("utf-8")
+    assert "番茄 ingredient" in decode_body(body, "text/html")
+    assert "番茄 ingredient" in decode_body(body, f"text/html; charset={label}")

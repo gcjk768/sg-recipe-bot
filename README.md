@@ -159,7 +159,11 @@ more than one attempt per date in one process. If the container starts after the
 day that has not run yet, it posts straight away as long as it is within
 `RECIPEBOT_CATCH_UP_HOURS` of the post time (the window may cross midnight), so a NAS reboot or a
 rebuild at 16:05 does not lose the day. If the window has already passed, nothing is posted for
-that day and the admin chat is told once. A day that already has a run is never posted again,
+that day and the admin chat is told once. That report covers every day since the last recorded run,
+so a NAS that slept for two days lists both. On a brand new database there is nothing to catch up
+before the first post time, and a catch up is skipped when the next post is less than 12 hours
+away, so the first day never gets two recipes back to back. A day that already has a run is never
+posted again,
 whatever `RUN_ON_START` says, and a manual `recipebot run` (not a dry run) counts as that day's
 post. If a run was killed half way (status `running` with no end time), the bot does not repeat
 it, because the first half may already be in the channel; instead it tells the admin chat once. A
@@ -190,7 +194,7 @@ comments. The ones you will touch:
 | `RECIPEBOT_COUNT` | `1` | Recipes per run, 1 to 3. Each is its own message, two seconds apart. |
 | `RECIPEBOT_SERVINGS` | `2` | Servings requested. |
 | `RECIPEBOT_ROTATION_EPOCH` | `2026-09-28` | A date in a Week A. Any weekday works; it is aligned to its Monday. |
-| `RECIPEBOT_CATCH_UP_HOURS` | `6` | After a restart, a missed post is still made up to this many hours after the post time. `0` disables it. |
+| `RECIPEBOT_CATCH_UP_HOURS` | `6` | After a restart, a missed post is still made up to this many hours after the post time, 0 to 23. `0` disables it. |
 | `RECIPEBOT_RUN_ON_START` | `false` | Also run once when the container starts, unless today already has a run. |
 | `RECIPEBOT_PROMPTS_DIR` | unset | Folder with `system_prompt.txt` / `run_brief.txt` that override the packaged ones. |
 
