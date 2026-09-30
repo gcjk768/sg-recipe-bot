@@ -255,7 +255,8 @@ def run_forever(
 
 def _safe_run(pipeline: Pipeline, day: date) -> None:
     try:
-        pipeline.run(day=day, scheduled=True)
+        # ponytail: a restart mid-batch skips the rest of that day (the date already has runs); per-slot tracking if that bites.
+        pipeline.run_daily(day)
     except Exception:  # noqa: BLE001 - pipeline.run already catches, this is belt and braces
         log.exception("scheduled run crashed")
 

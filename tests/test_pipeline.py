@@ -419,3 +419,22 @@ def test_no_admin_chat_means_no_alert(settings, fixed_now):
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     report = pipeline.run(category="soups")
     assert report.status == "failed" and tg.posts == []
+
+
+def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch):
+    monkeypatch.setattr("recipebot.rotation.PER_MEAL", 2)
+    plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 29))
+    assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2
+    assert len({s.category for m, s in plan if m != "breakfast"}) == 4
+    urls = [f"https://x.com/{i}" for i in range(len(plan))]
+    llm = FakeLLM([reply_text([make_recipe(title=f"Dish {i}", category=s.category, meals=["supper"], prep_minutes=5,
+                                           cook_minutes=10, total_minutes=15, source={"site": "s", "url": urls[i]})],
+                                category=s.category) for i, (_, s) in enumerate(plan)])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now, web_routes={u: FakeResponse(200, body=RECIPE_HTML) for u in urls})
+    reports = pipeline.run_daily(date(2026, 9, 29))
+    assert [r.status for r in reports] == ["posted"] * len(plan)
+    assert "theme: a lunch dish" in llm.calls[2]["user"]
+    posts = sent_texts(tg)
+    assert len(posts) == len(plan) and "#breakfast" in posts[0] and "#dinner" in posts[-1]
+    with History(settings.db_path) as history:  # recorded against the scheduled date, so the loop won't rerun it
+        assert len(history.runs_for_day(date(2026, 9, 29))) == len(plan)
