@@ -67,6 +67,24 @@ DEFAULT_WEEKS: list[list[Slot]] = [
 ]
 
 
+PER_MEAL = 5
+MAIN_CATEGORIES = (
+    "high_protein", "chinese_daily", "western_daily", "asian_daily", "local_sg", "soups",
+    "rice_cooker", "noodles", "seafood", "eggs_tofu_veg", "quick_20", "meal_prep",
+)
+
+
+def daily_plan(day: date) -> list[tuple[str, Slot]]:
+    """The scheduled day's posts as (meal, slot): PER_MEAL breakfasts, then PER_MEAL lunches and
+    dinners from 2 * PER_MEAL different main categories, shifted by one each day."""
+    shift = day.toordinal() % len(MAIN_CATEGORIES)
+    mains = (MAIN_CATEGORIES[shift:] + MAIN_CATEGORIES[:shift])[: 2 * PER_MEAL]
+    plan = [("breakfast", Slot("breakfast", "a breakfast dish"))] * PER_MEAL
+    plan += [("lunch", Slot(c, "a lunch dish")) for c in mains[:PER_MEAL]]
+    plan += [("dinner", Slot(c, "a dinner dish")) for c in mains[PER_MEAL:]]
+    return plan
+
+
 class RotationError(ValueError):
     pass
 

@@ -5,6 +5,7 @@ updated: 2026-09-30
 # Changelog
 
 ## 2026-09-30
+- feat: 15 posts a day — 5 breakfast, 5 lunch, 5 dinner at 16:00, one `claude -p` call per recipe; lunch/dinner draw 10 distinct main categories shifted daily; each post leads with its meal hashtag (`recipebot/rotation.py` `daily_plan`, `recipebot/pipeline.py` `run_daily`, `recipebot/scheduler.py`). The two-week rotation now only drives manual `recipebot run`. A restart mid-batch skips the rest of that day
 - ops: `pull_policy: build` on `recipebot` (`docker-compose.yml`) — Dockge Update now rebuilds the image from the code on disk
 - feat: failure alerts carry an auto-diagnosis — `recipebot/pipeline.py` `Pipeline.diagnose` sends the alert back through the model client (no tools) for cause + fix; if the model is unreachable too, the alert says so and points at `claude setup-token`
 - fix: scheduler reports every missed day once — one admin alert lists each date since the last finished run whose post time passed with no run (multi-day NAS sleep, outage ending after midnight); a run killed half way is reported even when the restart is past the window; a new database never reports days before it existed and skips a catch-up when the next post is under 12 h away (`recipebot/scheduler.py` `report_gap`, `recipebot/history.py` `run_day_span`)

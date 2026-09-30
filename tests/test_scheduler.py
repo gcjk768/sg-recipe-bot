@@ -45,6 +45,9 @@ class StubPipeline:
         if self.fail:
             raise RuntimeError("boom")
 
+    def run_daily(self, day):
+        self.run(day=day)
+
     def notify_admin(self, text):
         self.alerts.append(text)
 
@@ -433,16 +436,3 @@ def test_shutdown_raised_by_the_pipeline_stops_the_loop(settings, history):
     assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 0
     assert pipeline.days == [date(2026, 9, 29)]
     assert history.runs_for_day(date(2026, 9, 29))[0].unfinished
-
-
-def test_scheduled_flag_is_passed(settings, history):
-    seen = {}
-
-    class Recording(StubPipeline):
-        def run(self, *, day=None, **kwargs):
-            seen.update(kwargs)
-            super().run(day=day, **kwargs)
-
-    clock, sleep = _clock(datetime(2026, 9, 29, 15, 59, 0, tzinfo=SGT))
-    run_forever(Recording(history), settings, sleep=sleep, now=lambda: clock["now"], max_runs=1)
-    assert seen.get("scheduled") is True

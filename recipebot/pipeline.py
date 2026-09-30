@@ -24,7 +24,7 @@ from recipebot.llm import LLMClient, LLMRefusal, make_client
 from recipebot.parsing import ParseFailure, parse_reply
 from recipebot.prompts import load_brief_template, load_system_prompt
 from recipebot.render import RenderError, render_recipe
-from recipebot.rotation import Rotation, Slot
+from recipebot.rotation import Rotation, Slot, daily_plan
 from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
 from recipebot.web import Fetcher
@@ -243,6 +243,7 @@ class Pipeline:
         run_id: str | None = None,
         check_pages: bool = True,
         scheduled: bool = False,
+        meal: str | None = None,
     ) -> RunReport:
         """One run. `day` is the rotation date. `scheduled` marks a run made by the daily loop;
         it is recorded against `day`, while a manual run is recorded against the actual local date,
@@ -277,7 +278,7 @@ class Pipeline:
                 "starting run %s for %s: category=%s theme=%s count=%d servings=%d dry_run=%s scheduled=%s",
                 report.run_id, day, slot.category, slot.theme_text, count, servings, dry_run, scheduled,
             )
-            self._run_inner(report, slot, count=count, servings=servings, dry_run=dry_run, check_pages=check_pages)
+            self._run_inner(report, slot, count=count, servings=servings, dry_run=dry_run, check_pages=check_pages, meal=meal)
         except ConfigError:
             raise
         except LLMRefusal as exc:
@@ -301,7 +302,17 @@ class Pipeline:
         log.info(report.summary())
         return report
 
-    def _run_inner(self, report: RunReport, slot: Slot, *, count: int, servings: int, dry_run: bool, check_pages: bool) -> None:
+    def run_daily(self, day: date) -> list[RunReport]:
+        """The scheduled day: one run per recipe in rotation.daily_plan, so one bad recipe or a
+        truncated reply costs a single post, and each run sees the ones posted before it."""
+        reports = []
+        for i, (meal, slot) in enumerate(daily_plan(day)):
+            if i:
+                self.sleep(PAUSE_BETWEEN_RECIPES)
+            reports.append(self.run(category=slot.category, theme=slot.theme, count=1, day=day, scheduled=True, meal=meal))
+        return reports
+
+    def _run_inner(self, report: RunReport, slot: Slot, *, count: int, servings: int, dry_run: bool, check_pages: bool, meal: str | None = None) -> None:
         settings = self.settings
         category = get_category(slot.category)
 
@@ -351,6 +362,8 @@ class Pipeline:
 
         incomplete = 0
         for i, recipe in enumerate(accepted):
+            if meal and meal not in recipe.meals:
+                recipe.meals = [meal] + recipe.meals[:1]  # the slot's meal tag always leads
             try:
                 messages = render_recipe(recipe, category)
             except RenderError as exc:
