@@ -50,7 +50,7 @@ def _loads(text: str) -> Any:
 def _try_load(text: str) -> dict | None:
     try:
         obj = _loads(text)
-    except (json.JSONDecodeError, TypeError, ValueError):
+    except (json.JSONDecodeError, TypeError, ValueError, RecursionError):
         return None
     return obj if isinstance(obj, dict) else None
 
@@ -72,6 +72,8 @@ def extract_json_object(text: str, extra_candidates: list[str] | None = None) ->
         _loads(stripped)
     except json.JSONDecodeError as exc:
         strict_error = f"{exc.msg} at line {exc.lineno} column {exc.colno}"
+    except RecursionError:
+        strict_error = "JSON nested too deeply"
     except (TypeError, ValueError) as exc:
         strict_error = str(exc)
 
@@ -92,7 +94,7 @@ def extract_json_object(text: str, extra_candidates: list[str] | None = None) ->
     for pos in positions:
         try:
             obj, _end = decoder.raw_decode(stripped, pos)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, RecursionError):
             continue
         if isinstance(obj, dict) and ("run" in obj or "recipes" in obj or "error" in obj):
             return obj, True

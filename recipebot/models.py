@@ -98,10 +98,18 @@ class Nutrition(BaseModel):
 
     @property
     def plausible(self) -> bool:
-        if self.kcal is None or not 0 < self.kcal <= 5000:
+        """A single home served portion: 20 to 2500 kcal, each macro 0 to 250 g, and when all three
+        macros are given, their energy (4 kcal/g protein and carbs, 9 kcal/g fat) within about half of
+        the stated calories, with room for the 5 g and 10 kcal rounding the prompt asks for."""
+        if self.kcal is None or not 20 <= self.kcal <= 2500:
             return False
-        for value in (self.protein_g, self.carbs_g, self.fat_g):
-            if value is not None and not 0 <= value <= 1000:
+        macros = (self.protein_g, self.carbs_g, self.fat_g)
+        for value in macros:
+            if value is not None and not 0 <= value <= 250:
+                return False
+        if all(value is not None for value in macros):
+            implied = 4 * self.protein_g + 4 * self.carbs_g + 9 * self.fat_g
+            if abs(implied - self.kcal) > max(100, 0.5 * self.kcal):
                 return False
         return True
 

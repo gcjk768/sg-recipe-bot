@@ -48,11 +48,12 @@ docker compose logs -f
 
 The container stays up, sleeps until the next post time in `TZ`, runs once, and sleeps again.
 `./data` is mounted at `/data` and holds `history.sqlite`, the optional `rotation.json` and the
-`candidates/` lists, so it survives rebuilds. If you prefer the NAS task scheduler, do not start
-the daemon with `docker compose up -d` at all (or remove `restart: unless-stopped`) and have the
-scheduler call `docker compose run --rm recipebot recipebot run` once a day. Do not combine the
-two: a one shot `recipebot run` posts immediately without waiting for the post time, and the
-daemon then treats that day as done.
+`candidates/` lists, so it survives rebuilds. If you prefer the NAS task scheduler, do not run
+`docker compose up -d`; if you already did, stop the daemon with `docker compose down` (removing
+`restart: unless-stopped` does not stop a daemon that is already running). Then have the scheduler
+call `docker compose run --rm recipebot recipebot run` once a day. Do not combine the two in either
+order: a one shot `recipebot run` posts immediately and does not check whether the day already has
+a post, so the daemon's post plus a scheduler run gives two recipes that day.
 
 ### On a UGREEN NAS (UGOS Pro) or any Docker host
 

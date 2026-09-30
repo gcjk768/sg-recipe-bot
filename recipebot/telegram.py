@@ -48,9 +48,10 @@ _HANDSHAKE_MARKERS = (
 )
 _AMBIGUOUS_MARKERS = ("ReadTimeout", "ChunkedEncodingError", "IncompleteRead", "RemoteDisconnected", "ConnectionResetError")
 
-# 5xx replies to a non idempotent call: 502 and 503 come from a front end that did not process the
-# request, so a resend is safe; 500 and 504 may have processed it, so they are ambiguous.
-_RETRYABLE_5XX_FOR_SENDS = {502, 503}
+# 5xx replies to a non idempotent call: only 503 (service unavailable) reliably means the request
+# was not processed. A 502 can come from the front end after the Bot API server already received it,
+# and 500 or 504 may have processed it, so those are treated as ambiguous rather than resent.
+_RETRYABLE_5XX_FOR_SENDS = {503}
 
 
 def failed_before_sending(exc: BaseException) -> bool:
@@ -108,7 +109,7 @@ class TelegramClient:
                     last_error = TelegramError(message)
                     self.sleep(min(2 ** attempt, 30))
                     continue
-                raise TelegramError(message + " (the message may or may not have been delivered)", ambiguous=True) from exc
+                raise TelegramError(message + " (the message may or may not have been delivered)", ambiguous=True) from None
             try:
                 body = response.json()
             except ValueError:
