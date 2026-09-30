@@ -120,10 +120,12 @@ def test_model_error_object(settings, fixed_now):
 
 
 def test_nothing_survives_validation(settings, fixed_now):
-    llm = FakeLLM([reply_text([make_recipe(difficulty="hard"), make_recipe(title="B", total_minutes=99)])])
+    bad = reply_text([make_recipe(difficulty="hard"), make_recipe(title="B", total_minutes=99)])
+    llm = FakeLLM([bad, bad])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     report = pipeline.run(category="high_protein")
-    assert report.status == "nothing_posted" and len(report.rejected) == 2
+    assert report.status == "nothing_posted" and len(report.rejected) == 4 and report.model_calls == 2
+    assert "Every recipe was rejected" in llm.calls[1]["user"] and "difficulty 'hard'" in llm.calls[1]["user"]
     assert sent_texts(tg) == []
     [alert] = admin_texts(tg)
     assert "dropped:" in alert and "difficulty 'hard'" in alert
@@ -438,3 +440,10 @@ def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch
     assert len(posts) == len(plan) and "#breakfast" in posts[0] and "#dinner" in posts[-1]
     with History(settings.db_path) as history:  # recorded against the scheduled date, so the loop won't rerun it
         assert len(history.runs_for_day(date(2026, 9, 29))) == len(plan)
+
+
+def test_all_rejected_then_second_pick_posts(settings, fixed_now):
+    llm = FakeLLM([reply_text([make_recipe(total_minutes=99)]), reply_text([make_recipe()])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    report = pipeline.run(category="high_protein")
+    assert report.status == "posted" and report.model_calls == 2 and len(sent_texts(tg)) == 1

@@ -5,6 +5,7 @@ updated: 2026-09-30
 # Changelog
 
 ## 2026-09-30
+- fix: when every recipe in a reply fails validation, the run asks the model once more with the rejection reasons (`recipebot/pipeline.py` `_run_inner`); rejected dishes aren't in history, so the model kept re-picking the same one (3× shakshuka over the 20 min breakfast cap)
 - feat: 15 posts a day — 5 breakfast, 5 lunch, 5 dinner at 16:00, one `claude -p` call per recipe; lunch/dinner draw 10 distinct main categories shifted daily; each post leads with its meal hashtag (`recipebot/rotation.py` `daily_plan`, `recipebot/pipeline.py` `run_daily`, `recipebot/scheduler.py`). The two-week rotation now only drives manual `recipebot run`. A restart mid-batch skips the rest of that day
 - ops: `pull_policy: build` on `recipebot` (`docker-compose.yml`) — Dockge Update now rebuilds the image from the code on disk
 - feat: failure alerts carry an auto-diagnosis — `recipebot/pipeline.py` `Pipeline.diagnose` sends the alert back through the model client (no tools) for cause + fix; if the model is unreachable too, the alert says so and points at `claude setup-token`

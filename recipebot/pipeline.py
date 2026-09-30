@@ -186,7 +186,7 @@ class Pipeline:
     def _ask_model(self, inputs: BriefInputs, web_search: bool, report: RunReport):
         """Calls the model, retrying once on bad JSON with the error appended to the brief.
         Returns the parsed reply, or None after two failures (the report explains why)."""
-        previous_error: str | None = None
+        previous_error = inputs.previous_error
         last_failure = ""
         for attempt in range(1, MAX_MODEL_ATTEMPTS + 1):
             inputs.previous_error = previous_error
@@ -328,21 +328,29 @@ class Pipeline:
         )
         web_search = inputs.candidate_pages is None
 
-        reply = self._ask_model(inputs, web_search, report)
-        if reply is None:
-            return
-        report.notes = reply.run.notes or ""
-        if reply.is_error:
-            report.status = "model_error"
-            report.detail = f"model returned an error: {reply.error}"
-            log.warning("run %s: %s (%s)", report.run_id, report.detail, report.notes)
-            return
-        if reply.run.count_returned != len(reply.recipes):
-            report.warnings.append(f"run.count_returned={reply.run.count_returned} but {len(reply.recipes)} recipes were returned")
+        for attempt in range(2):
+            reply = self._ask_model(inputs, web_search, report)
+            if reply is None:
+                return
+            report.notes = reply.run.notes or ""
+            if reply.is_error:
+                report.status = "model_error"
+                report.detail = f"model returned an error: {reply.error}"
+                log.warning("run %s: %s (%s)", report.run_id, report.detail, report.notes)
+                return
+            if reply.run.count_returned != len(reply.recipes):
+                report.warnings.append(f"run.count_returned={reply.run.count_returned} but {len(reply.recipes)} recipes were returned")
 
-        validation = validate_reply(
-            reply, category.key, history=self.history, fetcher=self.fetcher, check_pages=check_pages
-        )
+            validation = validate_reply(
+                reply, category.key, history=self.history, fetcher=self.fetcher, check_pages=check_pages
+            )
+            if validation.accepted or not validation.rejected or attempt:
+                break
+            # Every recipe broke a rule: ask once more, naming what was wrong, so the model picks another dish.
+            report.rejected.extend(str(r) for r in validation.rejected)
+            inputs.previous_error = "Every recipe was rejected, choose a different dish that fits the rules: " + "; ".join(
+                str(r) for r in validation.rejected)
+            log.info("run %s: all recipes rejected, asking again", report.run_id)
         report.rejected.extend(str(r) for r in validation.rejected)
         report.warnings.extend(validation.warnings)
         for rejection in validation.rejected:
