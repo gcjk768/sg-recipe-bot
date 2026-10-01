@@ -1,8 +1,13 @@
 ---
 tags: [active]
-updated: 2026-10-01
+updated: 2026-10-02
 ---
 # Changelog
+
+## 2026-10-02
+- feat: NAS vault "movement log + memory" (`recipebot/vault.py` `Vault`). Writes `Activity/YYYY-MM-DD.md` (`- HH:MM emoji **what** · detail · [[entity]]`, SGT: daily run started/finished, each recipe posted per meal, failed runs, missed days, unfinished runs), one `Recipes/<Title>.md` per post (frontmatter + full recipe + append-only `## History`), and `Home.md` (this week's menu). Atomic writes, chmod 664 + chown uid 1000; best-effort, never raises
+- feat: memory — every brief gets `recent_menu`, the last 14 days of posted titles + cuisines from the vault, newest first, capped at 4,000 chars (`recipebot/brief.py` `RECENT_MENU_HEADER`, `recipebot/pipeline.py` `_run_inner`). The SQLite dedupe (`already_sent`, `recent_mains`) is unchanged
+- ops: `VAULT_DIR=/vault` in `docker-compose.yml`, host folder from `VAULT_HOST_PATH` in `.env` (NAS: `/volume1/James/Obsidian/SG Recipes`, default `./data/vault`)
 
 ## 2026-10-01
 - feat: every Telegram message uses the shared HTML "card" style — meal header (`SECTION_TITLES`), short recipe card (⏱ time · 👥 serves, 🔥 kcal · 💰 cost, 🔗 Recipe link, hashtags), divider, then why/ingredients/steps/notes in an `<blockquote expandable>` (`recipebot/render.py` `render_recipe`). Admin alerts (failed run, missed day, unfinished run) and `recipebot test-telegram` are cards too, background in an expandable quote (`recipebot/render.py` `render_alert`, `recipebot/pipeline.py`, `recipebot/scheduler.py`, `recipebot/cli.py`). Same information as before
