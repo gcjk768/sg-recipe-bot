@@ -23,7 +23,8 @@ from recipebot.history import History
 from recipebot.llm import LLMClient, LLMRefusal, make_client
 from recipebot.parsing import ParseFailure, parse_reply
 from recipebot.prompts import load_brief_template, load_system_prompt
-from recipebot.render import RenderError, render_recipe
+from recipebot import telegram as tg
+from recipebot.render import RenderError, render_alert, render_recipe
 from recipebot.rotation import Rotation, Slot, daily_plan
 from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
@@ -157,12 +158,13 @@ class Pipeline:
         scheduled = self.rotation.for_date(day).slot
         return Slot(scheduled.category, theme if theme else scheduled.theme)
 
-    def notify_admin(self, text: str) -> None:
+    def notify_admin(self, blocks: list[str]) -> None:
+        """Sends an alert card (blocks from render.render_alert) to the admin chat."""
         chat_id = self.settings.telegram_admin_chat_id
         if not chat_id or not self.settings.telegram_bot_token:
             return
         try:
-            self.telegram.send_plain(chat_id, text)
+            self.telegram.send_html(chat_id, blocks)
         except Exception as exc:  # an alert must never take the run down
             log.error("could not send admin alert: %s", exc)
 
@@ -298,7 +300,20 @@ class Pipeline:
                 log.exception("could not record the run")
         if not dry_run and not report.ok:
             alert = report.alert_text(count)
-            self.notify_admin(alert + "\n\nDiagnosis: " + self.diagnose(alert))
+            diagnosis = self.diagnose(alert)
+            details = [f"\U0001f194 <code>{tg.esc(report.run_id)}</code>"]  # 🆔
+            if report.detail:
+                details.append(f"\U0001f4ac {tg.esc(report.detail[:300])}")  # 💬
+            details.append(f"\U0001fa7a <b>Diagnosis</b>\n{tg.esc(diagnosis)}")  # 🩺
+            label = get_category(report.category).label if is_known(report.category) else report.category
+            self.notify_admin(render_alert(
+                "failed",
+                f"posted {len(report.posted)} of {count}" if report.posted else "posted nothing",
+                label or "run",
+                f"status {report.status}",
+                details,
+                background=alert,
+            ))
         log.info(report.summary())
         return report
 

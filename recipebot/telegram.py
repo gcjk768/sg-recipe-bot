@@ -1,14 +1,63 @@
-"""Telegram Bot API client: sendMessage with HTML parse mode, rate limit handling and admin alerts."""
+"""Telegram Bot API client: HTML card messages (escaping, block-safe splitting, plain-text fallback),
+rate limit handling and admin alerts."""
 
 from __future__ import annotations
 
+import html
 import logging
+import re
 import time
 from typing import Any, Callable
 
 log = logging.getLogger(__name__)
 
 MAX_MESSAGE_CHARS = 4096
+DIVIDER = "━" * 16
+LINK_SEP = "  ·  "
+
+
+def esc(value: object) -> str:
+    """HTML-escapes dynamic text (model output included) for Telegram's HTML parse mode."""
+    return html.escape("" if value is None else str(value), quote=False)
+
+
+def esc_attr(value: object) -> str:
+    return html.escape("" if value is None else str(value), quote=True)
+
+
+def expandable(inner_html: str) -> str:
+    return f"<blockquote expandable>{inner_html}</blockquote>"
+
+
+def split_blocks(blocks: list[str], limit: int = MAX_MESSAGE_CHARS) -> list[str]:
+    """Packs blocks (each a closed piece of HTML) into messages joined by blank lines, splitting only
+    between blocks so a tag is never cut. A single block over the limit raises ValueError."""
+    messages: list[str] = []
+    current = ""
+    for block in (b for b in blocks if b):
+        if len(block) > limit:
+            raise ValueError(f"a message block is {len(block)} characters, Telegram allows {limit}")
+        joined = f"{current}\n\n{block}" if current else block
+        if len(joined) > limit:
+            messages.append(current)
+            joined = block
+        current = joined
+    if current:
+        messages.append(current)
+    return messages
+
+
+_LINK = re.compile(r'<a href="([^"]*)">(.*?)</a>', re.DOTALL)
+_TAG = re.compile(r"<[^>]+>")
+
+
+def html_to_plain(text: str) -> str:
+    """Fallback body when Telegram rejects the HTML: tags dropped, links kept as 'label (url)'."""
+    text = _LINK.sub(lambda m: f"{m.group(2)} ({m.group(1)})", text)
+    text = html.unescape(_TAG.sub("", text))
+    if len(text) > MAX_MESSAGE_CHARS:
+        text = text[: MAX_MESSAGE_CHARS - 20].rstrip() + "\n[truncated]"
+    return text
 
 
 class TelegramError(Exception):
@@ -141,7 +190,7 @@ class TelegramClient:
         text: str,
         *,
         parse_mode: str | None = "HTML",
-        disable_preview: bool = False,
+        disable_preview: bool = True,
     ) -> int | None:
         if len(text) > MAX_MESSAGE_CHARS:
             raise TelegramError(f"message is {len(text)} characters, Telegram allows {MAX_MESSAGE_CHARS}")
@@ -155,13 +204,22 @@ class TelegramClient:
             payload["parse_mode"] = parse_mode
         if disable_preview:
             payload["link_preview_options"] = {"is_disabled": True}
-        result = self.call("sendMessage", payload)
+        try:
+            result = self.call("sendMessage", payload)
+        except TelegramError as exc:
+            # A 400 means nothing was delivered, so resending as plain text cannot post twice.
+            if parse_mode != "HTML" or "can't parse entities" not in exc.description:
+                raise
+            log.warning("telegram rejected the HTML (%s), resending as plain text", exc.description)
+            payload.pop("parse_mode")
+            payload["text"] = html_to_plain(text)
+            result = self.call("sendMessage", payload)
         if isinstance(result, dict):
             return result.get("message_id")
         return None
 
     def send_messages(self, chat_id: str, texts: list[str], *, pause: float = 1.0) -> list[int | None]:
-        """Sends the one or two messages of a single recipe, one second apart."""
+        """Sends already split messages in order, one second apart."""
         ids: list[int | None] = []
         for i, text in enumerate(texts):
             if i > 0:
@@ -169,11 +227,9 @@ class TelegramClient:
             ids.append(self.send_message(chat_id, text))
         return ids
 
-    def send_plain(self, chat_id: str, text: str) -> int | None:
-        """Plain text alert (no parse mode), truncated to the Telegram limit."""
-        if len(text) > MAX_MESSAGE_CHARS:
-            text = text[: MAX_MESSAGE_CHARS - 20].rstrip() + "\n[truncated]"
-        return self.send_message(chat_id, text, parse_mode=None, disable_preview=True)
+    def send_html(self, chat_id: str, blocks: list[str], *, pause: float = 1.0) -> list[int | None]:
+        """Sends an HTML card given as blocks, split between blocks when it exceeds 4096 characters."""
+        return self.send_messages(chat_id, split_blocks(blocks), pause=pause)
 
     def get_me(self) -> dict[str, Any]:
         result = self.call("getMe", idempotent=True)

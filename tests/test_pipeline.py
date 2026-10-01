@@ -50,7 +50,8 @@ def test_happy_path_posts_and_records(settings, fixed_now):
     assert "category: high_protein\ncount: 1\nservings: 2\ntheme: post workout\nrecent_mains: none\nalready_sent:\nnone\ncandidate_pages:\nnone" in brief
 
     posts = sent_texts(tg)
-    assert len(posts) == 1 and posts[0].startswith("🍳 <b>Garlic Soy Chicken with Broccoli</b>")
+    assert len(posts) == 1 and "\n\n🍳 <b>Garlic Soy Chicken with Broccoli</b>" in posts[0]
+    assert posts[0].startswith("🍳 <b>RECIPE</b> · High protein\n\n")
     assert admin_texts(tg) == []
     assert web.gets[0]["url"] == URL
 
@@ -77,7 +78,7 @@ def test_rotation_picks_category_and_theme(settings, fixed_now):
     report = pipeline.run(day=date(2026, 10, 2))  # Week A Friday
     assert report.category == "baking_cakes" and report.theme == "weekend bake"
     assert "category: baking_cakes\n" in llm.calls[0]["user"] and "theme: weekend bake\n" in llm.calls[0]["user"]
-    assert report.status == "posted" and sent_texts(tg)[0].startswith("🧁 ")
+    assert report.status == "posted" and "\n\n🧁 <b>" in sent_texts(tg)[0]
 
 
 def test_bad_json_is_retried_once_with_error_appended(settings, fixed_now):
@@ -218,7 +219,8 @@ def test_partial_delivery_reports_counts_and_records_what_was_sent(settings, fix
     report = pipeline.run(category="high_protein", count=2)
     assert report.status == "partial" and report.posted == ["A"] and any(r.startswith("B: telegram") for r in report.rejected)
     [alert] = admin_texts(tg)
-    assert alert.startswith("RecipeBot posted 1 of 2 recipe(s), then hit a problem.")
+    assert alert.startswith("🚨 <b>RECIPEBOT</b> · posted 1 of 2\n\n🔴 <b>High protein</b> · status partial")
+    assert "RecipeBot posted 1 of 2 recipe(s), then hit a problem." in alert  # full report in the background quote
     with History(settings.db_path) as history:
         assert [r.title for r in history.recent_sent()] == ["A"]
         assert history.recent_runs()[0].status == "partial" and history.recent_runs()[0].posted == 1
@@ -258,11 +260,16 @@ def test_broken_rotation_file_is_reported_not_fatal(settings, fixed_now):
 
 
 def test_alert_carries_model_diagnosis(settings, fixed_now):
-    llm = FakeLLM([RuntimeError("api down"), "Anthropic outage. Transient, it retries tomorrow."])
+    llm = FakeLLM([RuntimeError("api down"), "Anthropic <outage>.\nTransient, it retries tomorrow."])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     pipeline.run(category="noodles")
-    [alert] = admin_texts(tg)
-    assert alert.endswith("Diagnosis: Anthropic outage. Transient, it retries tomorrow.")
+    [post] = [p["json"] for p in tg.posts if p["json"]["chat_id"] == "777"]
+    assert post["parse_mode"] == "HTML" and post["link_preview_options"] == {"is_disabled": True}
+    alert = post["text"]
+    assert alert.startswith("🚨 <b>RECIPEBOT</b> · posted nothing\n\n🔴 <b>Noodles</b> · status error\n🆔 <code>")
+    # the model's diagnosis keeps its lines but is escaped before it meets any tag
+    assert "🩺 <b>Diagnosis</b>\nAnthropic &lt;outage&gt;.\nTransient, it retries tomorrow." in alert
+    assert alert.endswith("</blockquote>") and "<blockquote expandable>⚙️ <b>Background</b>" in alert
     assert "RuntimeError: api down" in llm.calls[1]["user"] and llm.calls[1]["web_search"] is False
 
 
@@ -271,7 +278,7 @@ def test_alert_says_so_when_diagnosis_fails_too(settings, fixed_now):
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     pipeline.run(category="noodles")
     [alert] = admin_texts(tg)
-    assert "Diagnosis: unavailable" in alert and "claude setup-token" in alert
+    assert "<b>Diagnosis</b>\nunavailable" in alert and "claude setup-token" in alert
 
 
 def test_rotation_file_is_reread_each_run(settings, fixed_now):

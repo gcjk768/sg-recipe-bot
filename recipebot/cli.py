@@ -176,7 +176,8 @@ def cmd_history(settings: Settings, limit: int) -> int:
 
 
 def cmd_test_telegram(settings: Settings, admin: bool) -> int:
-    from recipebot.telegram import TelegramClient
+    from recipebot.render import header
+    from recipebot.telegram import TelegramClient, esc
 
     settings.require_telegram()
     chat_id = settings.telegram_admin_chat_id if admin else settings.telegram_chat_id
@@ -186,7 +187,8 @@ def cmd_test_telegram(settings: Settings, admin: bool) -> int:
     client = TelegramClient(settings.telegram_bot_token or "")
     me = client.get_me()
     print(f"bot: @{me.get('username', '?')} (id {me.get('id', '?')})")
-    message_id = client.send_message(chat_id, "<b>RecipeBot</b> is connected. \U0001f373", parse_mode="HTML")
+    card = [header("connected", "test message"), f"\U0001f916 <b>@{esc(me.get('username', '?'))}</b> · can post here"]  # 🤖
+    message_id = client.send_html(chat_id, card)[0]
     print(f"sent message {message_id} to {chat_id}")
     return 0
 

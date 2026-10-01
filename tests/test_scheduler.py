@@ -48,8 +48,8 @@ class StubPipeline:
     def run_daily(self, day):
         self.run(day=day)
 
-    def notify_admin(self, text):
-        self.alerts.append(text)
+    def notify_admin(self, blocks):
+        self.alerts.append("\n\n".join(blocks))
 
 
 @pytest.fixture
