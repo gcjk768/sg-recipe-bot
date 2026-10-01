@@ -153,6 +153,7 @@ def run_forever(
             "in the channel. Check the channel and `recipebot history`."
         )
         log.warning(text)
+        _vault_log(pipeline, "unfinished run", f"{day.isoformat()} started but never finished")
         _safe_notify(pipeline, render_alert(
             "unfinished", "run never finished", day.isoformat(), "started but never finished",
             ["\U0001f50d Check the channel and <code>recipebot history</code>"],  # 🔍
@@ -201,6 +202,7 @@ def run_forever(
             f"{'that day' if len(missed) == 1 else 'those days'}. Run `recipebot run` by hand if you still want one."
         )
         log.warning(text)
+        _vault_log(pipeline, "missed day", f"nothing posted for {days_text}")
         _safe_notify(pipeline, render_alert(
             "missed", "missed post", days_text, "nothing posted",
             ["<i>Run <code>recipebot run</code> by hand if you still want one.</i>"],
@@ -275,3 +277,9 @@ def _safe_notify(pipeline: Pipeline, blocks: list[str]) -> None:
         pipeline.notify_admin(blocks)
     except Exception:  # noqa: BLE001
         log.exception("could not send admin alert")
+
+
+def _vault_log(pipeline: Pipeline, what: str, detail: str) -> None:
+    vault = getattr(pipeline, "vault", None)  # Vault.log never raises; stubs may have no vault
+    if vault is not None:
+        vault.log("⚠️", what, detail)  # ⚠️

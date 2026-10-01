@@ -9,8 +9,11 @@ services:
       # TZ from .env wins; Asia/Singapore is only the fallback.
       TZ: ${TZ:-Asia/Singapore}
       RECIPEBOT_DATA_DIR: /data
+      # Obsidian vault (movement log + memory). On the NAS set VAULT_HOST_PATH in .env.
+      VAULT_DIR: /vault
     volumes:
       - ./data:/data
+      - "${VAULT_HOST_PATH:-./data/vault}:/vault"
     # init forwards SIGTERM so "docker stop" ends the sleep loop cleanly instead of waiting to be killed.
     init: true
     restart: unless-stopped

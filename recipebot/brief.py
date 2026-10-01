@@ -5,6 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 PREVIOUS_ATTEMPT_HEADER = "PREVIOUS ATTEMPT FAILED:"
+RECENT_MENU_HEADER = (
+    "recent_menu (posted in the last 14 days, newest first, from the vault): do not repeat these dishes "
+    "or close variants, and pick a cuisine that adds variety:"
+)
 
 
 @dataclass
@@ -19,6 +23,8 @@ class BriefInputs:
     candidate_pages: str | None = None
     """Pre-formatted candidate page blocks, or None for 'none'."""
     previous_error: str | None = None
+    recent_menu: list[str] = field(default_factory=list)
+    """'date meal: title (cuisine)' lines from the vault, already capped."""
 
 
 def build_brief(template: str, inputs: BriefInputs) -> str:
@@ -36,6 +42,8 @@ def build_brief(template: str, inputs: BriefInputs) -> str:
     text = template
     for key, value in values.items():
         text = text.replace("{{" + key + "}}", value)
+    if inputs.recent_menu:
+        text = text.rstrip("\n") + "\n" + RECENT_MENU_HEADER + "\n" + "\n".join(inputs.recent_menu) + "\n"
     if inputs.previous_error:
         text = text.rstrip("\n") + "\n" + PREVIOUS_ATTEMPT_HEADER + "\n" + inputs.previous_error.strip() + "\n"
     return text

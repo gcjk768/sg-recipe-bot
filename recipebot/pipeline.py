@@ -28,6 +28,7 @@ from recipebot.render import RenderError, render_alert, render_recipe
 from recipebot.rotation import Rotation, Slot, daily_plan
 from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
+from recipebot.vault import Vault
 from recipebot.web import Fetcher
 
 log = logging.getLogger(__name__)
@@ -118,6 +119,7 @@ class Pipeline:
         self.rng = rng or random.Random()
         self.system_prompt = load_system_prompt(settings.prompts_dir)
         self.brief_template = load_brief_template(settings.prompts_dir)
+        self.vault = Vault(settings.vault_dir, self.tz)
 
     # --- lazy collaborators ------------------------------------------------------------
 
@@ -299,6 +301,7 @@ class Pipeline:
             except Exception:  # noqa: BLE001
                 log.exception("could not record the run")
         if not dry_run and not report.ok:
+            self.vault.log("❌", f"run failed ({report.status})", f"{report.category} · {report.detail[:200]}", when=self.now())  # ❌
             alert = report.alert_text(count)
             diagnosis = self.diagnose(alert)
             details = [f"\U0001f194 <code>{tg.esc(report.run_id)}</code>"]  # 🆔
@@ -321,10 +324,15 @@ class Pipeline:
         """The scheduled day: one run per recipe in rotation.daily_plan, so one bad recipe or a
         truncated reply costs a single post, and each run sees the ones posted before it."""
         reports = []
-        for i, (meal, slot) in enumerate(daily_plan(day)):
+        plan = daily_plan(day)
+        self.vault.log("🚀", "daily run started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
+        for i, (meal, slot) in enumerate(plan):
             if i:
                 self.sleep(PAUSE_BETWEEN_RECIPES)
             reports.append(self.run(category=slot.category, theme=slot.theme, count=1, day=day, scheduled=True, meal=meal))
+        posted = sum(len(r.posted) for r in reports)
+        failed = sum(not r.ok for r in reports)
+        self.vault.log("🏁", "daily run finished", f"{posted} of {len(plan)} posted, {failed} failed", when=self.now())  # 🏁
         return reports
 
     def _run_inner(self, report: RunReport, slot: Slot, *, count: int, servings: int, dry_run: bool, check_pages: bool, meal: str | None = None) -> None:
@@ -340,6 +348,7 @@ class Pipeline:
             recent_mains=self.history.recent_mains(settings.recent_mains),
             already_sent=self.history.already_sent_lines(days=settings.history_days, max_lines=settings.history_max_lines),
             candidate_pages=self._candidate_pages(category.key),
+            recent_menu=self.vault.recent_menu(self.now()),
         )
         web_search = inputs.candidate_pages is None
 
@@ -414,6 +423,7 @@ class Pipeline:
                     incomplete += 1
                     if not self._record_sent(recipe, report):
                         incomplete += 1
+                    self.vault.posted(recipe, category, meal, report.run_id, self.now())
                 else:
                     report.rejected.append(f"{recipe.title}: telegram: {exc}")
                 continue
@@ -421,6 +431,7 @@ class Pipeline:
             log.info("posted %s", recipe.title)
             if not self._record_sent(recipe, report):
                 incomplete += 1
+            self.vault.posted(recipe, category, meal, report.run_id, self.now())
 
         if not report.posted:
             report.status = "nothing_posted"
