@@ -1,6 +1,6 @@
 ---
 tags: [active]
-updated: 2026-09-30
+updated: 2026-10-01
 ---
 # App Overview
 
@@ -14,5 +14,6 @@ Daily recipe curator for Singapore home cooking. Posts 15 recipes a day (5 break
 - Model call: `recipebot/llm.py` — `ClaudeCLIClient` (`claude -p --system-prompt-file ... --tools WebSearch,WebFetch`) by default, `AnthropicClient` with `LLM_PROVIDER=api`; prompts: `recipebot/prompts/`
 - Meal tags: `meals` field (`recipebot/models.py` `MEALS`) → leading #breakfast/#lunch/#dinner/#supper (`recipebot/render.py` `hashtags_line`); tap a tag in Telegram to list that meal
 - Page check: `recipebot/web.py` (`curl_cffi` Chrome impersonation, `is_bot_wall`), `recipebot/validate.py` (`check_source_page`)
-- Failure alerts: admin chat (`TELEGRAM_ADMIN_CHAT_ID`) gets the run summary + "Diagnosis:" from `recipebot/pipeline.py` `Pipeline.diagnose` (`DIAGNOSE_SYSTEM`)
+- Failure alerts: admin chat (`TELEGRAM_ADMIN_CHAT_ID`) gets a card with run id, detail and 🩺 Diagnosis from `recipebot/pipeline.py` `Pipeline.diagnose` (`DIAGNOSE_SYSTEM`), full run summary in an expandable quote (`recipebot/render.py` `render_alert`)
+- Message style: HTML "card" (header · card · ━ divider · `<blockquote expandable>` detail). Recipe card: `recipebot/render.py` `render_recipe`, titles in `SECTION_TITLES`. All sends go through `recipebot/telegram.py`: `esc`/`esc_attr` for every dynamic value, `split_blocks` splits only between blocks (≤4096), `send_html` for multi-block cards, `send_message` resends as plain text (`html_to_plain`) on a 400 "can't parse entities"; previews off
 - Deploy: `Dockerfile`, `docker-compose.yml`; state in `./data/history.sqlite`

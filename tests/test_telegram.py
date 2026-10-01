@@ -17,14 +17,14 @@ def test_send_message_payload():
     assert client.send_message("@chan", "<b>hi</b>") == 1
     post = session.posts[0]
     assert post["url"] == "https://api.telegram.org/bot123:tok/sendMessage"
-    assert post["json"] == {"chat_id": "@chan", "text": "<b>hi</b>", "parse_mode": "HTML"}
-    client.send_message("@chan", "plain", parse_mode=None, disable_preview=True)
-    assert session.posts[1]["json"] == {"chat_id": "@chan", "text": "plain", "link_preview_options": {"is_disabled": True}}
+    assert post["json"] == {"chat_id": "@chan", "text": "<b>hi</b>", "parse_mode": "HTML", "link_preview_options": {"is_disabled": True}}
+    client.send_message("@chan", "plain", parse_mode=None, disable_preview=False)
+    assert session.posts[1]["json"] == {"chat_id": "@chan", "text": "plain"}
 
 
 def test_send_message_to_forum_topic():
     session = telegram_ok_session()
-    _client(session).send_message("-1002069000031/2765", "hi", parse_mode=None)
+    _client(session).send_message("-1002069000031/2765", "hi", parse_mode=None, disable_preview=False)
     assert session.posts[0]["json"] == {"chat_id": "-1002069000031", "message_thread_id": 2765, "text": "hi"}
 
 
@@ -58,11 +58,59 @@ def test_server_error_retried_then_raises():
 
 
 def test_bad_request_raises_immediately():
-    session = FakeSession(default=lambda url: FakeResponse(400, json_body={"ok": False, "error_code": 400, "description": "Bad Request: can't parse entities"}))
+    session = FakeSession(default=lambda url: FakeResponse(400, json_body={"ok": False, "error_code": 400, "description": "Bad Request: chat not found"}))
     client = _client(session)
-    with pytest.raises(TelegramError, match="parse entities"):
+    with pytest.raises(TelegramError, match="chat not found"):
         client.send_message("@chan", "<b>oops")
     assert len(session.posts) == 1
+
+
+def test_html_parse_error_is_resent_as_plain_text():
+    def respond(url):
+        return (FakeResponse(400, json_body={"ok": False, "error_code": 400, "description": "Bad Request: can't parse entities: unclosed tag"})
+                if len(session.posts) == 1 else FakeResponse(200, json_body={"ok": True, "result": {"message_id": 7}}))
+
+    session = FakeSession(default=respond)
+    client = _client(session)
+    assert client.send_message("-100/2765", '🍳 <b>Mac &amp; Cheese</b>\n<a href="https://x.com/?a=1&amp;b=2">Recipe</a> <b>oops') == 7
+    plain = session.posts[1]["json"]
+    assert "parse_mode" not in plain and plain["message_thread_id"] == 2765  # still the same topic
+    assert plain["text"] == "🍳 Mac & Cheese\nRecipe (https://x.com/?a=1&b=2) oops"
+
+
+def test_parse_error_fallback_only_for_html():
+    session = FakeSession(default=lambda url: FakeResponse(400, json_body={"ok": False, "error_code": 400, "description": "Bad Request: can't parse entities"}))
+    with pytest.raises(TelegramError):
+        _client(session).send_message("@chan", "x", parse_mode=None)
+    assert len(session.posts) == 1
+
+
+def test_split_blocks_packs_and_never_cuts_a_block():
+    from recipebot.telegram import split_blocks
+
+    a, b, c = "<b>" + "a" * 2500 + "</b>", "<i>" + "b" * 2500 + "</i>", "<blockquote expandable>c</blockquote>"
+    assert split_blocks([a, "", c]) == [f"{a}\n\n{c}"]
+    messages = split_blocks([a, b, c])
+    assert messages == [a, f"{b}\n\n{c}"] and all(len(m) <= 4096 for m in messages)
+    with pytest.raises(ValueError):
+        split_blocks(["x" * 4097])
+
+
+def test_send_html_splits_between_blocks():
+    session = telegram_ok_session()
+    sleeps = []
+    ids = _client(session, sleeps).send_html("777", ["<b>" + "a" * 3000 + "</b>", "<i>" + "b" * 3000 + "</i>"])
+    assert ids == [1, 2] and sleeps == [1.0]
+    assert [p["json"]["text"][:3] for p in session.posts] == ["<b>", "<i>"]
+    assert all(p["json"]["parse_mode"] == "HTML" for p in session.posts)
+
+
+def test_esc_escapes_markup():
+    from recipebot.telegram import esc, esc_attr
+
+    assert esc("<b>a & b</b>") == "&lt;b&gt;a &amp; b&lt;/b&gt;"
+    assert esc(None) == ""
+    assert esc_attr('x"y') == "x&quot;y"
 
 
 def test_network_error_retried_then_raises():
@@ -77,12 +125,11 @@ def test_too_long_message_rejected_locally():
         client.send_message("@chan", "x" * 4097)
 
 
-def test_send_plain_truncates():
-    session = telegram_ok_session()
-    client = _client(session)
-    client.send_plain("777", "y" * 5000)
-    text = session.posts[0]["json"]["text"]
-    assert len(text) <= 4096 and text.endswith("[truncated]") and "parse_mode" not in session.posts[0]["json"]
+def test_plain_fallback_truncates():
+    from recipebot.telegram import html_to_plain
+
+    text = html_to_plain("<b>" + "y" * 5000 + "</b>")
+    assert len(text) <= 4096 and text.endswith("[truncated]")
 
 
 def test_get_me():

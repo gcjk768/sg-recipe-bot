@@ -95,40 +95,43 @@ Anything that fails a check is dropped, not patched. If nothing survives, the ru
 
 Send with parse_mode set to HTML. HTML is easier than MarkdownV2 because only three characters need escaping (&, <, >), and every field must be escaped before it goes into the template.
 
-One recipe per message, always. A message never carries two recipes, and a run that returns more than one recipe sends them as separate messages a couple of seconds apart. Telegram allows 4096 characters per message, and the length caps in the system prompt keep a post around 1500 to 2500 characters. If a render still exceeds 4000, send that one recipe's ingredients and steps as two consecutive messages, with the title repeated on the second.
+One recipe per message, always. A message never carries two recipes, and a run that returns more than one recipe sends them as separate messages a couple of seconds apart. Telegram allows 4096 characters per message, and the length caps in the system prompt keep a post around 1500 to 2500 characters. If a render still exceeds 4096, each detail section gets its own expandable quote and the post is split between blocks (never inside a tag), with `{title} · continued` heading each follow-up message. If Telegram still rejects the HTML (400 "can't parse entities"), the same text is resent as plain text so the post is never lost (`recipebot/telegram.py`).
 
-Template:
+Template (the "card" style shared by James's bots: header, short card, divider, detail folded into an expandable quote):
 
 ```text
-🍳 <b>{title}</b> ({title_zh})
-<i>{category_label} · {cuisine} · {total_minutes} min · {difficulty} · serves {servings}</i>
+🌙 <b>DINNER</b> · {category_label}
 
-{why_it_fits}
+🍳 <b>{title}</b> ({title_zh}) · {cuisine}
+⏱ {total_minutes} min · {difficulty} · 👥 serves {servings}
+🔥 {kcal} kcal · 💰 S${total_sgd} (S${per_serving_sgd} each)
+🔗 <a href="{source.url}">Recipe</a> · <i>{source.site}</i>
+#{meal} #{category_hashtag} #{tag} #{tag}
 
-<b>Ingredients</b>
+━━━━━━━━━━━━━━━━
+<blockquote expandable><i>{why_it_fits}</i>
+
+🛒 <b>Ingredients</b>
 • {qty} {unit} {item}, {note}
-• ...
 
-<b>Steps</b>
+📝 <b>Steps</b>
 1. {step}
-2. ...
 
 🔥 About {kcal} kcal per serving, {protein_g} g protein, {carbs_g} g carbs, {fat_g} g fat (estimate)
 💰 Ingredients about S${total_sgd} for {servings} servings, S${per_serving_sgd} each, {cost note} (estimate)
 💪 Protein: about {protein_per_serving_g} g per serving
 💡 {tip}
-🧊 {storage}
-
-🔗 <a href="{source.url}">Full recipe at {source.site}</a>
-#{category_hashtag} #{tag} #{tag}
+🧊 {storage}</blockquote>
 ```
+
+The header emoji/title comes from the meal (`SECTION_TITLES` in `recipebot/render.py`: 🌅 BREAKFAST, ☀️ LUNCH, 🌙 DINNER, 🌃 SUPPER, 🍳 RECIPE for a manual run without a meal).
 
 Rendering rules:
 
 * Category labels and hashtags come from the category list at the top of this file. Tags become hashtags with the spaces removed (#onepan, #mealprep). Hashtags make the channel searchable later. The meal hashtags (#breakfast, #lunch, #dinner, #supper, from the recipe's `meals` field) come first, so tapping one lists every recipe for that meal.
 * Drop the bracketed title_zh when it is null. Drop the protein line unless the category is high_protein. Drop the nutrition and cost lines when the estimate is missing or implausible (no calories, a negative or absurd number). Drop the ", {cost note}" part when the note is empty and the "for N servings, S$X each" part when the recipe serves one. Drop the tip and storage lines when empty. Drop the ", {note}" part when the note is empty. Print whole numbers without a decimal (400 g, not 400.0 g) and money as S$9.50 or S$10.
 * Vary the leading emoji by category if you like: 🧁 for baking_cakes and desserts_no_oven, 🍲 for soups and rice_cooker, 🍜 for noodles, 🥗 for sides and eggs_tofu_veg, 🍳 for the rest.
-* Leave link previews on. Telegram previews the first link in the message, so the recipe's own photo appears under the post without you hosting any images.
+* Link previews are off (`link_preview_options.is_disabled`), per the shared card style; the recipe photo is one tap away on the Recipe link.
 * Rate limits: one message per second per chat. When a run returns three recipes, pause two seconds between posts.
 * Channel setup: create the bot with @BotFather, add it to the channel as an administrator with permission to post, and use "@yourchannelname" as chat_id. For a private channel use its numeric chat id instead: post once in the channel after adding the bot, then call getUpdates on the bot to read the id.
 

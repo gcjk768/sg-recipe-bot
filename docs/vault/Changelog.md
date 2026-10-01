@@ -1,8 +1,12 @@
 ---
 tags: [active]
-updated: 2026-09-30
+updated: 2026-10-01
 ---
 # Changelog
+
+## 2026-10-01
+- feat: every Telegram message uses the shared HTML "card" style — meal header (`SECTION_TITLES`), short recipe card (⏱ time · 👥 serves, 🔥 kcal · 💰 cost, 🔗 Recipe link, hashtags), divider, then why/ingredients/steps/notes in an `<blockquote expandable>` (`recipebot/render.py` `render_recipe`). Admin alerts (failed run, missed day, unfinished run) and `recipebot test-telegram` are cards too, background in an expandable quote (`recipebot/render.py` `render_alert`, `recipebot/pipeline.py`, `recipebot/scheduler.py`, `recipebot/cli.py`). Same information as before
+- feat: escaping, block-safe splitting and plain-text fallback centralised in `recipebot/telegram.py` (`esc`, `split_blocks`, `send_html`, `html_to_plain`); a 400 "can't parse entities" is resent as plain text; link previews now off by default. `send_plain` removed (alerts go through `send_html`)
 
 ## 2026-09-30
 - fix: when every recipe in a reply fails validation, the run asks the model once more with the rejection reasons (`recipebot/pipeline.py` `_run_inner`); rejected dishes aren't in history, so the model kept re-picking the same one (3× shakshuka over the 20 min breakfast cap)

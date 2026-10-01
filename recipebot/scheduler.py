@@ -23,6 +23,7 @@ from typing import Callable
 
 from recipebot.config import Settings
 from recipebot.pipeline import Pipeline
+from recipebot.render import render_alert
 
 log = logging.getLogger(__name__)
 
@@ -152,7 +153,11 @@ def run_forever(
             "in the channel. Check the channel and `recipebot history`."
         )
         log.warning(text)
-        _safe_notify(pipeline, text)
+        _safe_notify(pipeline, render_alert(
+            "unfinished", "run never finished", day.isoformat(), "started but never finished",
+            ["\U0001f50d Check the channel and <code>recipebot history</code>"],  # 🔍
+            background=text,
+        ))
 
     def report_gap(upto: date) -> None:
         """Reports, once each, every date up to `upto` whose post time passed without a run. The
@@ -196,7 +201,11 @@ def run_forever(
             f"{'that day' if len(missed) == 1 else 'those days'}. Run `recipebot run` by hand if you still want one."
         )
         log.warning(text)
-        _safe_notify(pipeline, text)
+        _safe_notify(pipeline, render_alert(
+            "missed", "missed post", days_text, "nothing posted",
+            ["<i>Run <code>recipebot run</code> by hand if you still want one.</i>"],
+            background=text,
+        ))
 
     def consider(day: date, why: str) -> bool:
         """Runs `day` unless it was already attempted or recorded. Returns True when it ran."""
@@ -261,8 +270,8 @@ def _safe_run(pipeline: Pipeline, day: date) -> None:
         log.exception("scheduled run crashed")
 
 
-def _safe_notify(pipeline: Pipeline, text: str) -> None:
+def _safe_notify(pipeline: Pipeline, blocks: list[str]) -> None:
     try:
-        pipeline.notify_admin(text)
+        pipeline.notify_admin(blocks)
     except Exception:  # noqa: BLE001
         log.exception("could not send admin alert")
