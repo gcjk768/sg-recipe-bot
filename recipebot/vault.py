@@ -1,9 +1,11 @@
 """Obsidian vault: the bot's movement log and long-term memory (NAS vault standard).
 
 Layout under VAULT_DIR (the NAS folder /volume1/James/Obsidian/SG Recipes):
-* ``Activity/YYYY-MM-DD.md``: one line per event, ``- HH:MM emoji **what** · detail · [[entity]]`` (SGT)
+* ``Activity/YYYY/MM/YYYY-MM-DD.md``: one line per event, ``- HH:MM emoji **what** · detail · [[entity]]`` (SGT)
 * ``Recipes/<Title>.md``: one note per posted recipe, with an append-only ``## History``
-* ``Home.md``: map of contents, this week's menu
+* ``Home.md``: map of contents, the current month folder, this week's menu
+
+An older flat ``Activity/YYYY-MM-DD.md`` note is moved into ``YYYY/MM/`` when the vault opens (never deleted).
 
 Memory: ``recent_menu`` reads the posted lines back from the last 14 days of Activity notes, newest
 first and capped, for the brief, so the model keeps variety beyond the SQLite dedupe.
@@ -33,6 +35,7 @@ MEMORY_CHARS = 4000
 OWNER_UID = 1000  # James on the NAS, so he can edit what the root container writes
 _BAD_NAME = re.compile(r'[\\/:*?"<>|#^\[\]]+')
 _POSTED = re.compile(r"^- (\d\d:\d\d) \S+ \*\*posted (\w+)\*\* · (.+?) · (.*?) · \[\[(.+?)\]\]$")
+_DAY_NOTE = re.compile(r"^(\d{4})-(\d\d)-\d\d\.md$")
 
 
 def note_name(title: str) -> str:
@@ -49,8 +52,26 @@ class Vault:
     def __init__(self, root: Path | str | None, tz):
         self.root = Path(root) if root else None
         self.tz = tz
+        self._migrate()
 
     # --- low level -------------------------------------------------------------------
+
+    def _migrate(self) -> None:
+        """Moves flat ``Activity/YYYY-MM-DD.md`` notes into ``Activity/YYYY/MM/`` (never deletes)."""
+        if self.root is None or not (self.root / "Activity").is_dir():
+            return
+        try:
+            for old in sorted((self.root / "Activity").glob("*.md")):
+                m = _DAY_NOTE.match(old.name)
+                new = self._dir(f"Activity/{m[1]}/{m[2]}") / old.name if m else None
+                if new is not None and not new.exists():
+                    os.replace(old, new)
+                    log.info("vault: moved %s to %s", old.name, new.parent.relative_to(self.root))
+        except Exception as exc:  # noqa: BLE001 - best-effort
+            log.warning("vault: migration stopped: %s", exc)
+
+    def _day_path(self, day: date) -> Path:
+        return self.root / "Activity" / f"{day:%Y}" / f"{day:%m}" / f"{day:%Y-%m-%d}.md"
 
     def _own(self, path: Path, mode: int) -> None:
         try:
@@ -87,7 +108,8 @@ class Vault:
                 parts.append(single_line(detail).strip())
             if entity:
                 parts.append(f"[[{note_name(entity)}]]")
-            path = self._dir("Activity") / f"{when:%Y-%m-%d}.md"
+            path = self._day_path(when.date())
+            self._dir(str(path.parent.relative_to(self.root)))
             new = not path.exists()
             with path.open("a", encoding="utf-8") as fh:
                 if new:
@@ -130,8 +152,11 @@ class Vault:
                 "---", "tags: [active]", f"updated: {now:%Y-%m-%d}", "---",
                 "# SG Recipes",
                 "",
-                "Written by the SG Recipe Bot (15 recipes a day to James Channel, topic Recipe). "
-                "`Activity/` holds one note per day (the movement log), `Recipes/` one note per posted recipe.",
+                "Written by the SG Recipe Bot (daily recipes to James Channel, topic Recipe). "
+                "`Activity/YYYY/MM/` holds one note per day (the movement log), `Recipes/` one note per posted recipe.",
+                "",
+                f"- **This month:** `Activity/{now:%Y/%m}/` · today [[{now:%Y-%m-%d}]]",
+                "- **Latest notes:** " + (", ".join(f"[[{d}]]" for d in self._latest_days(now, 7)) or "-"),
                 "",
                 f"## This week's menu ({monday:%d %b} to {now:%d %b})",
             ]
@@ -148,8 +173,21 @@ class Vault:
 
     # --- read (memory) -----------------------------------------------------------------
 
+    def _latest_days(self, now: datetime, limit: int) -> list[str]:
+        """The newest day-note names (YYYY-MM-DD), newest first, walking back at most 60 days."""
+        found = []
+        for back in range(60):
+            day = now.date() - timedelta(days=back)
+            if self._day_path(day).is_file():
+                found.append(day.isoformat())
+                if len(found) == limit:
+                    break
+        return found
+
     def _posted_on(self, day: date) -> list[tuple[str, str, str, str, str]]:
-        path = self.root / "Activity" / f"{day.isoformat()}.md"
+        path = self._day_path(day)
+        if not path.is_file():
+            path = self.root / "Activity" / f"{day.isoformat()}.md"  # flat note the migration could not move
         if not path.is_file():
             return []
         rows = []
