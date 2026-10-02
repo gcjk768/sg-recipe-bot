@@ -50,8 +50,7 @@ def test_happy_path_posts_and_records(settings, fixed_now):
     assert "category: high_protein\ncount: 1\nservings: 2\ntheme: post workout\nrecent_mains: none\nalready_sent:\nnone\ncandidate_pages:\nnone" in brief
 
     posts = sent_texts(tg)
-    assert len(posts) == 1 and "\n\n🍳 <b>Garlic Soy Chicken with Broccoli</b>" in posts[0]
-    assert posts[0].startswith("🍳 <b>RECIPE</b> · High protein\n\n")
+    assert len(posts) == 1 and posts[0].startswith("🍳 <b>Garlic Soy Chicken with Broccoli</b>\nHigh protein · ")
     assert admin_texts(tg) == []
     assert web.gets[0]["url"] == URL
 
@@ -78,7 +77,7 @@ def test_rotation_picks_category_and_theme(settings, fixed_now):
     report = pipeline.run(day=date(2026, 10, 2))  # Week A Friday
     assert report.category == "baking_cakes" and report.theme == "weekend bake"
     assert "category: baking_cakes\n" in llm.calls[0]["user"] and "theme: weekend bake\n" in llm.calls[0]["user"]
-    assert report.status == "posted" and "\n\n🧁 <b>" in sent_texts(tg)[0]
+    assert report.status == "posted" and sent_texts(tg)[0].startswith("🧁 <b>")
 
 
 def test_bad_json_is_retried_once_with_error_appended(settings, fixed_now):

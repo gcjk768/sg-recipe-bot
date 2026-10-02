@@ -34,6 +34,7 @@ from recipebot.web import Fetcher
 log = logging.getLogger(__name__)
 
 PAUSE_BETWEEN_RECIPES = 2.0
+DAILY_PAUSE = 720.0  # daily batch: ~12 min between posts so ~51 posts fill 08:00-22:00
 PAUSE_BETWEEN_MESSAGES = 1.0
 MAX_MODEL_ATTEMPTS = 2
 
@@ -328,7 +329,7 @@ class Pipeline:
         self.vault.log("🚀", "daily run started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
         for i, (meal, slot) in enumerate(plan):
             if i:
-                self.sleep(PAUSE_BETWEEN_RECIPES)
+                self.sleep(DAILY_PAUSE)
             reports.append(self.run(category=slot.category, theme=slot.theme, count=1, day=day, scheduled=True, meal=meal))
         posted = sum(len(r.posted) for r in reports)
         failed = sum(not r.ok for r in reports)
@@ -413,7 +414,8 @@ class Pipeline:
                 for j, message in enumerate(messages):
                     if j > 0:
                         self.sleep(PAUSE_BETWEEN_MESSAGES)
-                    self.telegram.send_message(settings.telegram_chat_id or "", message)
+                    # link preview on for the first message so the recipe photo shows
+                    self.telegram.send_message(settings.telegram_chat_id or "", message, disable_preview=j > 0)
                     delivered += 1
             except TelegramError as exc:
                 log.error("telegram failed for %s after %d of %d message(s): %s", recipe.title, delivered, len(messages), exc)
