@@ -5,6 +5,8 @@ updated: 2026-10-02
 # Changelog
 
 ## 2026-10-02
+- feat: vault Activity log moved to a date tree, `Activity/YYYY/MM/YYYY-MM-DD.md` (`recipebot/vault.py` `_day_path`); any flat `Activity/YYYY-MM-DD.md` is moved (never deleted) into `YYYY/MM/` when the vault opens (`Vault._migrate`); `Home.md` now links the current month folder and the last 7 day notes. Memory (`recent_menu`) reads the tree, with a fallback to a flat note the migration could not move
+- feat: folded the NAS hot-fixes made through NAS Doctor on the owner's /ask requests into the repo: 51 posts a day (`recipebot/rotation.py` `PER_MEAL=17`, `recipebot/pipeline.py` `DAILY_PAUSE=720` so the batch spans 08:00–22:00), recipe posts back to the flat title + meta layout (`recipebot/render.py`), link preview on the first message so the photo shows
 - feat: NAS vault "movement log + memory" (`recipebot/vault.py` `Vault`). Writes `Activity/YYYY-MM-DD.md` (`- HH:MM emoji **what** · detail · [[entity]]`, SGT: daily run started/finished, each recipe posted per meal, failed runs, missed days, unfinished runs), one `Recipes/<Title>.md` per post (frontmatter + full recipe + append-only `## History`), and `Home.md` (this week's menu). Atomic writes, chmod 664 + chown uid 1000; best-effort, never raises
 - feat: memory — every brief gets `recent_menu`, the last 14 days of posted titles + cuisines from the vault, newest first, capped at 4,000 chars (`recipebot/brief.py` `RECENT_MENU_HEADER`, `recipebot/pipeline.py` `_run_inner`). The SQLite dedupe (`already_sent`, `recent_mains`) is unchanged
 - ops: `VAULT_DIR=/vault` in `docker-compose.yml`, host folder from `VAULT_HOST_PATH` in `.env` (NAS: `/volume1/<USER>/Obsidian/SG Recipes`, default `./data/vault`)
