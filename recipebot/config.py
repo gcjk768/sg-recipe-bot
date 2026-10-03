@@ -121,7 +121,7 @@ class Settings:
     llm_api_key: str | None
     llm_provider: str = "cli"
     """cli: `claude -p` with a signed in Claude plan. api: the Anthropic API with LLM_API_KEY."""
-    llm_model: str = "claude-opus-5-5"
+    llm_model: str = "claude-sonnet-5-5"
     llm_effort: str | None = "high"
     llm_max_tokens: int = 32000
     llm_fallbacks: str = "default"
@@ -203,7 +203,7 @@ def load_settings() -> Settings:
         telegram_admin_chat_id=_chat_id("TELEGRAM_ADMIN_CHAT_ID"),
         llm_api_key=_env("LLM_API_KEY") or _env("ANTHROPIC_API_KEY"),
         llm_provider=provider,
-        llm_model=_env("LLM_MODEL", "claude-opus-5-5") or "claude-opus-5-5",
+        llm_model=_env("LLM_MODEL", "claude-sonnet-5-5") or "claude-sonnet-5-5",
         llm_effort=effort,
         llm_max_tokens=_env_int("LLM_MAX_TOKENS", 32000),
         llm_fallbacks=fallbacks,

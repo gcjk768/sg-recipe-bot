@@ -11,7 +11,7 @@ def _block(**kw):
     return SimpleNamespace(**kw)
 
 
-def _response(content, stop_reason="end_turn", usage=None, model="claude-opus-5-5", stop_details=None):
+def _response(content, stop_reason="end_turn", usage=None, model="claude-sonnet-5-5", stop_details=None):
     return SimpleNamespace(content=content, stop_reason=stop_reason, usage=usage or SimpleNamespace(input_tokens=10, output_tokens=5, cache_read_input_tokens=3), model=model, stop_details=stop_details)
 
 
@@ -29,7 +29,7 @@ class FakeAnthropic:
 def test_request_kwargs_shape(settings):
     client = AnthropicClient(settings, client=FakeAnthropic([]))
     kwargs = client.request_kwargs("SYS", [{"role": "user", "content": "brief"}], web_search=True)
-    assert kwargs["model"] == "claude-opus-5-5" and kwargs["max_tokens"] == 32000
+    assert kwargs["model"] == "claude-sonnet-5-5" and kwargs["max_tokens"] == 32000
     assert kwargs["system"] == [{"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral"}}]
     assert kwargs["output_config"] == {"effort": "high"}
     assert kwargs["betas"] == [FALLBACK_BETA] and kwargs["fallbacks"] == "default"
@@ -99,14 +99,14 @@ def _cli(settings, stdout, returncode=0):
 
 
 def test_cli_command_and_result(settings):
-    blob = {"is_error": False, "result": '{"recipes": []}', "stop_reason": "end_turn", "modelUsage": {"claude-opus-5-5": {}}, "num_turns": 4,
+    blob = {"is_error": False, "result": '{"recipes": []}', "stop_reason": "end_turn", "modelUsage": {"claude-sonnet-5-5": {}}, "num_turns": 4,
             "usage": {"input_tokens": 9, "output_tokens": 7, "cache_read_input_tokens": 4, "server_tool_use": {"web_search_requests": 3}}}
     client, calls = _cli(settings, json.dumps(blob))
     result = client.complete("SYS", "brief", web_search=True)
     cmd, kw = calls[0]
     assert cmd[1:3] == ["-p", "--output-format"] and kw["system"] == "SYS"
     assert cmd[cmd.index("--tools") + 1] == "WebSearch,WebFetch" and cmd[cmd.index("--allowedTools") + 1] == "WebSearch,WebFetch"
-    assert cmd[cmd.index("--model") + 1] == "claude-opus-5-5" and cmd[cmd.index("--effort") + 1] == "high"
+    assert cmd[cmd.index("--model") + 1] == "claude-sonnet-5-5" and cmd[cmd.index("--effort") + 1] == "high"
     assert kw["input"] == "brief"
     assert (result.text, result.web_searches, result.output_tokens, result.truncated) == ('{"recipes": []}', 3, 7, False)
     no_search, _ = _cli(settings, "")
