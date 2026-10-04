@@ -68,21 +68,23 @@ DEFAULT_WEEKS: list[list[Slot]] = [
 
 
 PER_MEAL = 17  # 3 meals x 17 = 51 posts a day, spread over 08:00-22:00 SGT
-MAIN_CATEGORIES = (
-    "high_protein", "chinese_daily", "western_daily", "asian_daily", "local_sg", "soups",
-    "rice_cooker", "noodles", "seafood", "eggs_tofu_veg", "quick_20", "meal_prep",
-)
+MAIN_CATEGORIES = ("high_protein",)  # the owner, 2026-10-04: the bot only posts high protein meal prep
+PROTEINS = (
+    "chicken breast", "eggs", "firm tofu", "lean beef mince", "canned tuna", "prawns", "lentils",
+    "Greek yogurt", "chickpeas", "fish fillet", "minced pork", "edamame", "cottage cheese", "tau kwa",
+    "sardines", "chicken thigh", "salmon",
+)  # PER_MEAL of them, so no two posts of a meal share a main protein
 
 
 def daily_plan(day: date) -> list[tuple[str, Slot]]:
-    """The scheduled day's posts as (meal, slot): PER_MEAL breakfasts, then PER_MEAL lunches and
-    dinners from 2 * PER_MEAL different main categories, shifted by one each day."""
-    shift = day.toordinal() % len(MAIN_CATEGORIES)
-    rotated = MAIN_CATEGORIES[shift:] + MAIN_CATEGORIES[:shift]
-    mains = [rotated[i % len(rotated)] for i in range(2 * PER_MEAL)]  # cycles when more posts than categories
-    plan = [("breakfast", Slot("breakfast", "a breakfast dish"))] * PER_MEAL
-    plan += [("lunch", Slot(c, "a lunch dish")) for c in mains[:PER_MEAL]]
-    plan += [("dinner", Slot(c, "a dinner dish")) for c in mains[PER_MEAL:]]
+    """The scheduled day's posts as (meal, slot): PER_MEAL each of breakfast, lunch and dinner, all
+    high protein meal prep, each built around a different main protein (shifted by one each day)."""
+    shift = day.toordinal() % len(PROTEINS)
+    plan = []
+    for meal in ("breakfast", "lunch", "dinner"):
+        for i in range(PER_MEAL):
+            protein = PROTEINS[(shift + i) % len(PROTEINS)]
+            plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}")))
     return plan
 
 

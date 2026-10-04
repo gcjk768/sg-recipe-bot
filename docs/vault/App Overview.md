@@ -8,7 +8,7 @@ Daily recipe curator for Singapore home cooking. Posts 51 recipes a day (17 brea
 
 - Target: the owner Channel `<TELEGRAM_CHAT_ID>`, topic **2765** → `TELEGRAM_CHAT_ID=<TELEGRAM_CHAT_ID>/2765`
 - Topic parsing: `recipebot/telegram.py` (`send_message`), validated in `recipebot/config.py` (`_chat_id`)
-- Daily loop: `recipebot/scheduler.py` (`RECIPEBOT_POST_TIME`, 08:00 SGT on the NAS; `DAILY_PAUSE` 720 s between posts) → `recipebot/pipeline.py` `Pipeline.run_daily` over `recipebot/rotation.py` `daily_plan` (`PER_MEAL`, `MAIN_CATEGORIES` rotated daily; slot's meal tag forced first); one run: `recipebot/pipeline.py` `Pipeline.run`
+- Daily loop: `recipebot/scheduler.py` (`RECIPEBOT_POST_TIME`, 08:00 SGT on the NAS; `DAILY_PAUSE` 720 s between posts) → `recipebot/pipeline.py` `Pipeline.run_daily` over `recipebot/rotation.py` `daily_plan` (`PER_MEAL`, `MAIN_CATEGORIES` is now only `high_protein`, theme names a main protein from `PROTEINS`; slot's meal tag forced first); one run: `recipebot/pipeline.py` `Pipeline.run`
 - Missed days: one attempt per date per process, catch-up within `RECIPEBOT_CATCH_UP_HOURS` (0–23), every missed date reported once to `TELEGRAM_ADMIN_CHAT_ID` (`recipebot/scheduler.py` `report_gap`)
 - Bot: @owner_sgrecipe_bot (token in `.env`, never committed)
 - Model call: `recipebot/llm.py` — `ClaudeCLIClient` (`claude -p --system-prompt-file ... --tools WebSearch,WebFetch`) by default, `AnthropicClient` with `LLM_PROVIDER=api`; prompts: `recipebot/prompts/`

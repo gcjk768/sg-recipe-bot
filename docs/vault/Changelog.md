@@ -5,6 +5,7 @@ updated: 2026-10-04
 # Changelog
 
 ## 2026-10-04
+- feat: the bot now posts **only high protein meal prep** (the owner's request). `recipebot/rotation.py` `daily_plan`: all 51 daily slots (17 breakfast, 17 lunch, 17 dinner) are `high_protein`, each built around a different main protein from `PROTEINS` (shifted daily) via the slot theme. Other categories stay in `recipebot/categories.py` for `recipebot run --category` and `data/rotation.json`, but the daily loop no longer uses them. Test updated (`tests/test_pipeline.py`)
 - feat: `high_protein` prompt block (`recipebot/prompts/system_prompt.txt` section 2) now targets training-day meal prep from an Agent Reach (Exa) search of EatingWell, BBC Good Food and Myprotein: lean protein + refuel carb + veg, dishes that keep 3 to 4 days, protein per serving stated, protein boosted with everyday ingredients (Greek yogurt, cottage cheese, beans), no powder. No category or code change
 
 ## 2026-10-02
