@@ -1,8 +1,11 @@
 ---
 tags: [active]
-updated: 2026-10-02
+updated: 2026-10-04
 ---
 # Changelog
+
+## 2026-10-04
+- feat: `high_protein` prompt block (`recipebot/prompts/system_prompt.txt` section 2) now targets training-day meal prep from an Agent Reach (Exa) search of EatingWell, BBC Good Food and Myprotein: lean protein + refuel carb + veg, dishes that keep 3 to 4 days, protein per serving stated, protein boosted with everyday ingredients (Greek yogurt, cottage cheese, beans), no powder. No category or code change
 
 ## 2026-10-02
 - feat: vault Activity log moved to a date tree, `Activity/YYYY/MM/YYYY-MM-DD.md` (`recipebot/vault.py` `_day_path`); any flat `Activity/YYYY-MM-DD.md` is moved (never deleted) into `YYYY/MM/` when the vault opens (`Vault._migrate`); `Home.md` now links the current month folder and the last 7 day notes. Memory (`recent_menu`) reads the tree, with a fallback to a flat note the migration could not move

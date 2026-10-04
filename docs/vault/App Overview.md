@@ -1,6 +1,6 @@
 ---
 tags: [active]
-updated: 2026-10-02
+updated: 2026-10-04
 ---
 # App Overview
 
@@ -17,4 +17,5 @@ Daily recipe curator for Singapore home cooking. Posts 51 recipes a day (17 brea
 - Failure alerts: admin chat (`TELEGRAM_ADMIN_CHAT_ID`) gets a card with run id, detail and 🩺 Diagnosis from `recipebot/pipeline.py` `Pipeline.diagnose` (`DIAGNOSE_SYSTEM`), full run summary in an expandable quote (`recipebot/render.py` `render_alert`)
 - Message style: recipe posts are the flat layout the owner asked for on 2026-10-02 (title line, meta line, why, ingredients, steps, extras, link, hashtags; `recipebot/render.py` `render_recipe`), link preview on for the first message so the photo shows. Alerts stay HTML cards (`render_alert`, `SECTION_TITLES`). All sends go through `recipebot/telegram.py`: `esc`/`esc_attr` for every dynamic value, `split_blocks` splits only between blocks (≤4096), `send_html` for multi-block cards, `send_message` resends as plain text (`html_to_plain`) on a 400 "can't parse entities"; previews off
 - Obsidian vault (movement log + memory): `recipebot/vault.py` `Vault`, root `VAULT_DIR` (`/vault`, NAS host `/volume1/<USER>/Obsidian/SG Recipes` via `VAULT_HOST_PATH`). `Activity/YYYY/MM/YYYY-MM-DD.md` event lines (flat `Activity/YYYY-MM-DD.md` notes are moved into the date tree on start, `Vault._migrate`), `Recipes/<Title>.md` per post (`recipe_note`), `Home.md` with the current month folder, latest day notes and this week's menu (`write_home`). Events from `recipebot/pipeline.py` (`run_daily`, `run`, `_run_inner`) and `recipebot/scheduler.py` (`_vault_log`: missed/unfinished days). Memory: `Vault.recent_menu` (14 days, newest first, ≤4,000 chars) → `BriefInputs.recent_menu` → appended to the brief (`recipebot/brief.py`). Best-effort, off when `VAULT_DIR` is unset
+- High protein category: `recipebot/categories.py` `high_protein`, prompt rules in `recipebot/prompts/system_prompt.txt` (training-day meal prep, 30 g+ protein, keeps 3 to 4 days)
 - Deploy: `Dockerfile`, `docker-compose.yml`; state in `./data/history.sqlite`
