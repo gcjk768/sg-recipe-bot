@@ -45,26 +45,7 @@ class ScheduledSlot:
     override: bool = False
 
 
-DEFAULT_WEEKS: list[list[Slot]] = [
-    [  # Week A, Monday to Sunday
-        Slot("high_protein"),
-        Slot("chinese_daily"),
-        Slot("western_daily"),
-        Slot("asian_daily"),
-        Slot("baking_cakes", "weekend bake"),
-        Slot("meal_prep", "lunchbox for the week"),
-        Slot("soups"),
-    ],
-    [  # Week B
-        Slot("quick_20"),
-        Slot("local_sg"),
-        Slot("rice_cooker"),
-        Slot("noodles"),
-        Slot("desserts_no_oven"),
-        Slot("seafood"),
-        Slot("eggs_tofu_veg"),
-    ],
-]
+DEFAULT_WEEKS: list[list[Slot]] = [[Slot("high_protein")] * 7]  # one week, Monday to Sunday
 
 
 PER_MEAL = 17  # 3 meals x 17 = 51 posts a day, spread over 08:00-22:00 SGT

@@ -191,14 +191,8 @@ def soft_warnings(recipe: Recipe, brief_category: str) -> list[str]:
         warnings.append(f"{label}: title is {len(recipe.title)} characters (prompt asks for under 60)")
     if brief_category == "high_protein" and recipe.protein_per_serving_g is None:
         warnings.append(f"{label}: high_protein recipe without protein_per_serving_g")
-    if brief_category != "high_protein" and recipe.protein_per_serving_g is not None:
-        warnings.append(f"{label}: protein_per_serving_g set outside high_protein (not rendered)")
-    if brief_category == "chinese_daily" and not recipe.title_zh:
-        warnings.append(f"{label}: chinese_daily recipe without title_zh")
-    if brief_category in {"meal_prep", "sauces_basics"} and not recipe.storage:
+    if not recipe.storage:  # every post is meal prep, so say how long it keeps
         warnings.append(f"{label}: {brief_category} recipe without storage")
-    if brief_category == "meal_prep" and recipe.servings != 4:
-        warnings.append(f"{label}: meal_prep recipe with servings {recipe.servings} (prompt says 4)")
     if recipe.total_minutes < recipe.prep_minutes or recipe.total_minutes < recipe.cook_minutes:
         warnings.append(f"{label}: total_minutes is smaller than prep or cook minutes")
     if recipe.nutrition_per_serving is None:

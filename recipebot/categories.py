@@ -29,38 +29,12 @@ class Category:
         return ", ".join(parts)
 
 
-_CAKE = "\U0001f9c1"  # 🧁
-_POT = "\U0001f372"  # 🍲
-_NOODLE = "\U0001f35c"  # 🍜
-_SALAD = "\U0001f957"  # 🥗
-_PAN = "\U0001f373"  # 🍳
+_PAN = "🍳"  # 🍳
 
+# the owner, 2026-10-04: the bot only posts high protein meal prep, so this is the only category.
 CATEGORIES: dict[str, Category] = {
-    c.key: c
-    for c in [
-        Category("high_protein", "High protein", "highprotein", total_cap=45, emoji=_PAN),
-        Category("chinese_daily", "Chinese daily", "chinese", total_cap=45, emoji=_PAN),
-        Category("western_daily", "Western daily", "western", total_cap=45, emoji=_PAN),
-        Category("asian_daily", "Asian daily", "asian", total_cap=45, emoji=_PAN),
-        Category("local_sg", "Singapore favourites", "localsg", total_cap=45, emoji=_PAN),
-        Category("soups", "Soups", "soups", total_cap=90, hands_on_cap=15, emoji=_POT),
-        Category("rice_cooker", "Rice cooker meals", "ricecooker", total_cap=60, emoji=_POT),
-        Category("noodles", "Noodles", "noodles", total_cap=30, emoji=_NOODLE),
-        Category("seafood", "Seafood", "seafood", total_cap=30, emoji=_PAN),
-        Category("eggs_tofu_veg", "Eggs, tofu and vegetables", "meatfree", total_cap=30, emoji=_SALAD),
-        Category("sides", "Vegetable sides", "sides", total_cap=15, emoji=_SALAD),
-        Category("quick_20", "Under 20 minutes", "quick", total_cap=20, emoji=_PAN),
-        Category("meal_prep", "Meal prep and lunchbox", "mealprep", total_cap=60, emoji=_PAN),
-        Category("breakfast", "Breakfast and brunch", "breakfast", total_cap=20, emoji=_PAN),
-        Category("use_it_up", "Use it up", "useitup", total_cap=30, emoji=_PAN),
-        Category("desserts_no_oven", "No oven desserts", "desserts", hands_on_cap=20, emoji=_CAKE),
-        Category("baking_cakes", "Baking and cakes", "baking", hands_on_cap=30, emoji=_CAKE),
-        Category("sauces_basics", "Sauces and basics", "basics", total_cap=30, emoji=_PAN),
-        Category("custom", "Custom", "custom", total_cap=45, emoji=_PAN),
-    ]
+    "high_protein": Category("high_protein", "High protein", "highprotein", total_cap=45, emoji=_PAN),
 }
-
-DAILY_CORE = ["high_protein", "chinese_daily", "western_daily", "asian_daily", "local_sg"]
 
 
 def get_category(key: str) -> Category:

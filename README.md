@@ -6,7 +6,7 @@ A self-hosted daily bot that has Claude find one simple, budget-friendly recipe 
 ![Docker](https://img.shields.io/badge/docker-compose-2496ED?logo=docker&logoColor=white)
 ![Claude](https://img.shields.io/badge/LLM-Claude%20(claude%20--p)-D97757?logo=claude&logoColor=white)
 ![Telegram](https://img.shields.io/badge/Telegram-Bot%20API-26A5E4?logo=telegram&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-439%20pytest-brightgreen?logo=pytest&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-0%20pytest-brightgreen?logo=pytest&logoColor=white)
 
 ![Architecture](docs/architecture.drawio.svg)
 
@@ -63,7 +63,7 @@ dropped, not patched, so nothing reaches the channel unless it passed.
 The numbers match the diagram.
 
 1. **Pick today's slot.** `scheduler.py` wakes at `RECIPEBOT_POST_TIME` (16:00 SGT) and
-   `rotation.py` maps the date to a category and theme (Week A / Week B, 19 categories, optional
+   `rotation.py` maps the date to a category and theme (every slot is high protein meal prep, optional
    `data/rotation.json` overrides).
 2. **Category and theme** go to the brief builder.
 3. **Build the brief.** `brief.py` fills `prompts/run_brief.txt` with the category, servings,
@@ -150,7 +150,7 @@ For a forum topic, the link `t.me/c/2069000031/2765` becomes `TELEGRAM_CHAT_ID=<
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
 export RECIPEBOT_DATA_DIR=./data
-recipebot run --dry-run --category noodles
+recipebot run --dry-run --category high_protein
 pytest
 ```
 
@@ -193,12 +193,10 @@ configuration error.
 | `RECIPEBOT_SOURCE_MODE` | `search` | `search` (model searches) or `candidates` (your URL lists in `data/candidates/`). |
 | `RECIPEBOT_COUNT` | `1` | Recipes per run, 1 to 3. |
 | `RECIPEBOT_CATCH_UP_HOURS` | `6` | How long after the post time a missed day can still post, 0 to 23. `0` disables catch-up. |
-| `RECIPEBOT_ROTATION_EPOCH` | `2026-09-28` | A date in Week A. |
+| `RECIPEBOT_ROTATION_EPOCH` | `2026-09-28` | A Monday; aligns `data/rotation.json` weeks. |
 | `RECIPEBOT_PROMPTS_DIR` | unset | Overrides the packaged `system_prompt.txt` / `run_brief.txt`. |
 
-**Rotation.** Week A: high_protein, chinese_daily, western_daily, asian_daily, baking_cakes,
-meal_prep, soups. Week B: quick_20, local_sg, rice_cooker, noodles, desserts_no_oven, seafood,
-eggs_tofu_veg. To change it, copy `data/rotation.example.json` to `data/rotation.json`. The file is
+**Rotation.** The daily loop posts 51 recipes (17 breakfast, 17 lunch, 17 dinner), all `high_protein` meal prep, each built around a different main protein (`PROTEINS` in `recipebot/rotation.py`). To override single days, copy `data/rotation.example.json` to `data/rotation.json`. The file is
 re-read on every run, so no restart is needed.
 
 **Adding a category.** Add a block to section 2 of `recipebot/prompts/system_prompt.txt`, a row to
@@ -235,7 +233,7 @@ recipebot/
   cli.py           commands (run, loop, preview, rotation, history, ...)
   scheduler.py     daily loop, catch-up, one attempt per date
   pipeline.py      one run end to end
-  rotation.py      Week A/B + rotation.json overrides
+  rotation.py      all-high-protein daily plan + rotation.json overrides
   categories.py    category table (labels, hashtags, time caps)
   brief.py         fills the run brief from history
   llm.py           ClaudeCLIClient (claude -p) and AnthropicClient

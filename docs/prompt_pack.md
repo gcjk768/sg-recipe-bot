@@ -7,27 +7,9 @@ Categories use these keys everywhere (brief, JSON, history table, hashtags). The
 ```text
 key                label                       hashtag         time cap
 high_protein       High protein                #highprotein    45 min
-chinese_daily      Chinese daily               #chinese        45 min
-western_daily      Western daily               #western        45 min
-asian_daily        Asian daily                 #asian          45 min
-local_sg           Singapore favourites        #localsg        45 min
-soups              Soups                       #soups          15 min hands on, 90 min total
-rice_cooker        Rice cooker meals           #ricecooker     60 min
-noodles            Noodles                     #noodles        30 min
-seafood            Seafood                     #seafood        30 min
-eggs_tofu_veg      Eggs, tofu and vegetables   #meatfree       30 min
-sides              Vegetable sides             #sides          15 min
-quick_20           Under 20 minutes            #quick          20 min
-meal_prep          Meal prep and lunchbox      #mealprep       60 min
-breakfast          Breakfast and brunch        #breakfast      20 min
-use_it_up          Use it up                   #useitup        30 min
-desserts_no_oven   No oven desserts            #desserts       20 min hands on
-baking_cakes       Baking and cakes            #baking         30 min hands on
-sauces_basics      Sauces and basics           #basics         30 min
-custom             Custom                      #custom         45 min
 ```
 
-The first five are the daily core. Everything else is optional: the rotation in section 5 decides how often each appears, and use_it_up and custom take their scope from the theme line, so nothing is limited to this list. To add a key of your own, add a matching block to section 2 of the system prompt and a row here.
+High protein meal prep is the only category. Every post, breakfast, lunch or dinner, uses it, and the theme line names the meal and the main protein.
 
 ## 1. System prompt (load verbatim, send on every call)
 
@@ -130,36 +112,14 @@ Rendering rules:
 
 * Category labels and hashtags come from the category list at the top of this file. Tags become hashtags with the spaces removed (#onepan, #mealprep). Hashtags make the channel searchable later. The meal hashtags (#breakfast, #lunch, #dinner, #supper, from the recipe's `meals` field) come first, so tapping one lists every recipe for that meal.
 * Drop the bracketed title_zh when it is null. Drop the protein line unless the category is high_protein. Drop the nutrition and cost lines when the estimate is missing or implausible (no calories, a negative or absurd number). Drop the ", {cost note}" part when the note is empty and the "for N servings, S$X each" part when the recipe serves one. Drop the tip and storage lines when empty. Drop the ", {note}" part when the note is empty. Print whole numbers without a decimal (400 g, not 400.0 g) and money as S$9.50 or S$10.
-* Vary the leading emoji by category if you like: 🧁 for baking_cakes and desserts_no_oven, 🍲 for soups and rice_cooker, 🍜 for noodles, 🥗 for sides and eggs_tofu_veg, 🍳 for the rest.
+* The leading emoji is 🍳.
 * Link previews are off (`link_preview_options.is_disabled`), per the shared card style; the recipe photo is one tap away on the Recipe link.
 * Rate limits: one message per second per chat. When a run returns three recipes, pause two seconds between posts.
 * Channel setup: create the bot with @BotFather, add it to the channel as an administrator with permission to post, and use "@yourchannelname" as chat_id. For a private channel use its numeric chat id instead: post once in the channel after adding the bot, then call getUpdates on the bot to read the id.
 
 ## 5. Pipeline notes for the NAS
 
-Suggested rotation, Singapore time, one recipe per day so the channel gets one recipe at a time. Posting around 4 pm lands before anyone decides dinner. Two weeks cover the categories people cook most; the rest are slotted in by hand or on a third week.
-
-Week A
-
-* Monday: high_protein
-* Tuesday: chinese_daily
-* Wednesday: western_daily
-* Thursday: asian_daily
-* Friday: baking_cakes, theme "weekend bake"
-* Saturday: meal_prep, theme "lunchbox for the week"
-* Sunday: soups
-
-Week B
-
-* Monday: quick_20
-* Tuesday: local_sg
-* Wednesday: rice_cooker
-* Thursday: noodles
-* Friday: desserts_no_oven
-* Saturday: seafood
-* Sunday: eggs_tofu_veg
-
-Occasional, or a Week C: breakfast, sides, sauces_basics, use_it_up (the theme names the leftover) and custom (the theme names the scope). The rotation is just a list in the app, so reorder it as you learn which posts you actually cook.
+Rotation: the bot posts 51 recipes a day (17 breakfast, 17 lunch, 17 dinner), all high_protein, each built around a different main protein (`PROTEINS` in `recipebot/rotation.py`, shifted by one each day). `data/rotation.json` can still override single days for `recipebot run`.
 
 Flow per run:
 

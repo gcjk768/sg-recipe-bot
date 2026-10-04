@@ -63,11 +63,10 @@ def test_full_template():
     assert render() == [EXPECTED]
 
 
-def test_title_zh_and_category_label_and_no_protein_line_outside_high_protein():
-    [text] = render(category="chinese_daily", title_zh="蒜香豆豉鸡", protein_per_serving_g=40, meals=["dinner"])
-    assert text.startswith("🍳 <b>Garlic Soy Chicken with Broccoli</b> (蒜香豆豉鸡)\nChinese daily · Chinese inspired · ")
-    assert "💪" not in text
-    assert "#chinese " in text
+def test_title_zh_and_category_label():
+    [text] = render(title_zh="蒜香豆豉鸡", meals=["dinner"])
+    assert text.startswith("🍳 <b>Garlic Soy Chicken with Broccoli</b> (蒜香豆豉鸡)\nHigh protein · ")
+    assert "#highprotein" in text
 
 
 def test_escaping():
@@ -177,8 +176,8 @@ def test_meal_hashtags_lead_and_bad_meals_are_dropped():
     [text] = render_recipe(recipe, get_category("high_protein"))
     assert "\n#dinner #supper #highprotein" in text 
     assert Recipe.model_validate(make_recipe(meals=None)).meals == []
-    toast = Recipe.model_validate(make_recipe(category="breakfast", meals=["breakfast"], tags=["sweet"], protein_per_serving_g=None))
-    assert "\n#breakfast #sweet" in render_recipe(toast, get_category("breakfast"))[0]
+    toast = Recipe.model_validate(make_recipe(meals=["breakfast"], tags=["sweet"]))
+    assert "\n#breakfast #highprotein" in render_recipe(toast, get_category("high_protein"))[0]
 
 
 def test_alert_card_escapes_and_truncates_background():

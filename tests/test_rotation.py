@@ -1,46 +1,40 @@
 import json
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 
 from recipebot.rotation import DEFAULT_WEEKS, Rotation, RotationError
 
 
-def test_default_two_week_rotation():
+def test_default_rotation_is_all_high_protein():
     rotation = Rotation.default(date(2026, 9, 28))  # a Monday
-    assert rotation.for_date(date(2026, 9, 28)).slot.category == "high_protein"
-    assert rotation.for_date(date(2026, 10, 2)).slot.theme == "weekend bake"
-    assert rotation.for_date(date(2026, 10, 3)).slot == DEFAULT_WEEKS[0][5]
-    assert rotation.for_date(date(2026, 10, 4)).slot.category == "soups"
-    assert rotation.for_date(date(2026, 10, 5)).slot.category == "quick_20"
-    assert rotation.for_date(date(2026, 10, 5)).week == "B"
-    assert rotation.for_date(date(2026, 10, 11)).slot.category == "eggs_tofu_veg"
-    assert rotation.for_date(date(2026, 10, 12)).slot.category == "high_protein"
+    assert len(DEFAULT_WEEKS) == 1 and len(DEFAULT_WEEKS[0]) == 7
+    for i in range(21):
+        item = rotation.for_date(date(2026, 9, 28) + timedelta(days=i))
+        assert item.slot.category == "high_protein" and item.week == "A"
 
 
 def test_epoch_is_aligned_to_its_monday_and_dates_before_epoch_work():
     rotation = Rotation.default(date(2026, 9, 30))  # a Wednesday
     assert rotation.for_date(date(2026, 9, 28)).slot.category == "high_protein"
-    assert rotation.for_date(date(2026, 9, 21)).slot.category == "quick_20"  # the week before is week B
     assert rotation.for_date(date(2026, 9, 14)).slot.category == "high_protein"
 
 
 def test_upcoming_lists_consecutive_days():
     items = Rotation.default(date(2026, 9, 28)).upcoming(date(2026, 9, 28), 3)
-    assert [i.slot.category for i in items] == ["high_protein", "chinese_daily", "western_daily"]
+    assert [i.slot.category for i in items] == ["high_protein"] * 3
 
 
 def test_load_json_with_weeks_overrides_and_epoch(tmp_path):
     path = tmp_path / "rotation.json"
     path.write_text(json.dumps({
         "epoch": "2026-10-05",
-        "weeks": [["breakfast", "sides", "sauces_basics", {"category": "use_it_up", "theme": "leftover rice"}, "custom", "soups", "noodles"]],
-        "overrides": {"2026-10-08": {"category": "seafood", "theme": "prawns"}},
+        "weeks": [["high_protein"] * 3 + [{"category": "high_protein", "theme": "leftover rice"}] + ["high_protein"] * 3],
+        "overrides": {"2026-10-08": {"category": "high_protein", "theme": "prawns"}},
     }))
     rotation = Rotation.load(path, date(2026, 9, 28))
     assert rotation.epoch == date(2026, 10, 5)
-    assert rotation.for_date(date(2026, 10, 5)).slot.category == "breakfast"
-    assert rotation.for_date(date(2026, 10, 8)).slot.category == "seafood"
+    assert rotation.for_date(date(2026, 10, 8)).slot.theme == "prawns"
     assert rotation.for_date(date(2026, 10, 8)).override is True
     assert rotation.for_date(date(2026, 10, 15)).slot.theme == "leftover rice"
     assert rotation.for_date(date(2026, 10, 12)).week == "A"

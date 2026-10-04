@@ -72,12 +72,12 @@ def test_second_run_sees_history_in_brief(settings, fixed_now):
 
 
 def test_rotation_picks_category_and_theme(settings, fixed_now):
-    llm = FakeLLM([reply_text([make_recipe(category="baking_cakes", prep_minutes=20, protein_per_serving_g=None)], category="baking_cakes")])
+    llm = FakeLLM([reply_text([make_recipe()])])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    report = pipeline.run(day=date(2026, 10, 2))  # Week A Friday
-    assert report.category == "baking_cakes" and report.theme == "weekend bake"
-    assert "category: baking_cakes\n" in llm.calls[0]["user"] and "theme: weekend bake\n" in llm.calls[0]["user"]
-    assert report.status == "posted" and sent_texts(tg)[0].startswith("🧁 <b>")
+    report = pipeline.run(day=date(2026, 10, 2))
+    assert report.category == "high_protein" and report.theme is None
+    assert "category: high_protein\n" in llm.calls[0]["user"] and "theme: none\n" in llm.calls[0]["user"]
+    assert report.status == "posted" and sent_texts(tg)[0].startswith("🍳 <b>")
 
 
 def test_bad_json_is_retried_once_with_error_appended(settings, fixed_now):
@@ -102,7 +102,7 @@ def test_truncated_reply_counts_as_a_failure(settings, fixed_now):
 def test_two_json_failures_alert_admin_and_post_nothing(settings, fixed_now):
     llm = FakeLLM(["nope", "still nope"])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    report = pipeline.run(category="soups")
+    report = pipeline.run(category="high_protein")
     assert report.status == "failed" and report.posted == [] and report.model_calls == 2
     assert sent_texts(tg) == []
     [alert] = admin_texts(tg)
@@ -112,9 +112,9 @@ def test_two_json_failures_alert_admin_and_post_nothing(settings, fixed_now):
 
 
 def test_model_error_object(settings, fixed_now):
-    llm = FakeLLM([json.dumps({"error": "no web access", "run": {"category": "soups", "count_requested": 1, "count_returned": 0, "notes": "search tool unavailable"}, "recipes": []})])
+    llm = FakeLLM([json.dumps({"error": "no web access", "run": {"category": "high_protein", "count_requested": 1, "count_returned": 0, "notes": "search tool unavailable"}, "recipes": []})])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    report = pipeline.run(category="soups")
+    report = pipeline.run(category="high_protein")
     assert report.status == "model_error" and "no web access" in report.detail and report.notes == "search tool unavailable"
     assert sent_texts(tg) == [] and len(admin_texts(tg)) == 1
 
@@ -176,7 +176,7 @@ def test_dry_run_touches_nothing(settings, fixed_now):
 def test_llm_exception_is_contained(settings, fixed_now):
     llm = FakeLLM([RuntimeError("api down")])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    report = pipeline.run(category="noodles")
+    report = pipeline.run(category="high_protein")
     assert report.status == "error" and "api down" in report.detail
     assert "RuntimeError: api down" in admin_texts(tg)[0]
     with History(settings.db_path) as history:
@@ -261,11 +261,11 @@ def test_broken_rotation_file_is_reported_not_fatal(settings, fixed_now):
 def test_alert_carries_model_diagnosis(settings, fixed_now):
     llm = FakeLLM([RuntimeError("api down"), "Anthropic <outage>.\nTransient, it retries tomorrow."])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    pipeline.run(category="noodles")
+    pipeline.run(category="high_protein")
     [post] = [p["json"] for p in tg.posts if p["json"]["chat_id"] == "777"]
     assert post["parse_mode"] == "HTML" and post["link_preview_options"] == {"is_disabled": True}
     alert = post["text"]
-    assert alert.startswith("🚨 <b>RECIPEBOT</b> · posted nothing\n\n🔴 <b>Noodles</b> · status error\n🆔 <code>")
+    assert alert.startswith("🚨 <b>RECIPEBOT</b> · posted nothing\n\n🔴 <b>High protein</b> · status error\n🆔 <code>")
     # the model's diagnosis keeps its lines but is escaped before it meets any tag
     assert "🩺 <b>Diagnosis</b>\nAnthropic &lt;outage&gt;.\nTransient, it retries tomorrow." in alert
     assert alert.endswith("</blockquote>") and "<blockquote expandable>⚙️ <b>Background</b>" in alert
@@ -275,7 +275,7 @@ def test_alert_carries_model_diagnosis(settings, fixed_now):
 def test_alert_says_so_when_diagnosis_fails_too(settings, fixed_now):
     llm = FakeLLM([RuntimeError("claude -p failed (auth)")])  # the queue is empty for the triage call
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    pipeline.run(category="noodles")
+    pipeline.run(category="high_protein")
     [alert] = admin_texts(tg)
     assert "<b>Diagnosis</b>\nunavailable" in alert and "claude setup-token" in alert
 
@@ -284,13 +284,13 @@ def test_rotation_file_is_reread_each_run(settings, fixed_now):
     import json as _json
 
     settings.data_dir.mkdir(parents=True, exist_ok=True)
-    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups"),
-                   reply_text([make_recipe(title="Second", category="noodles", protein_per_serving_g=None, source={"site": "s", "url": "https://x.com/2"})], category="noodles")])
+    llm = FakeLLM([reply_text([make_recipe(category="high_protein", protein_per_serving_g=None)], category="high_protein"),
+                   reply_text([make_recipe(title="Second", category="high_protein", protein_per_serving_g=None, source={"site": "s", "url": "https://x.com/2"})], category="high_protein")])
     pipeline, tg, _, _ = build(settings, llm, fixed_now, web_routes={URL: FakeResponse(200, body=RECIPE_HTML), "https://x.com/2": FakeResponse(200, body=RECIPE_HTML)})
-    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "soups"}}}))
-    assert pipeline.run().category == "soups"
-    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "noodles"}}}))
-    assert pipeline.run().category == "noodles"
+    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "high_protein", "theme": "eggs"}}}))
+    assert pipeline.run().theme == "eggs"
+    settings.rotation_path.write_text(_json.dumps({"overrides": {"2026-09-29": {"category": "high_protein", "theme": "tofu"}}}))
+    assert pipeline.run().theme == "tofu"
 
 
 def test_missing_telegram_config_raises_before_the_model_is_called(settings, fixed_now):
@@ -306,22 +306,22 @@ def test_missing_telegram_config_raises_before_the_model_is_called(settings, fix
 
 
 def test_scheduled_run_row_carries_the_rotation_day(settings, fixed_now):
-    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups")])
+    llm = FakeLLM([reply_text([make_recipe(category="high_protein", protein_per_serving_g=None)], category="high_protein")])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     pipeline.run(day=date(2026, 10, 4), scheduled=True)
     with History(settings.db_path) as history:
         runs = history.runs_for_day(date(2026, 10, 4))
-        assert len(runs) == 1 and runs[0].status == "posted" and runs[0].category == "soups"
+        assert len(runs) == 1 and runs[0].status == "posted" and runs[0].category == "high_protein"
         assert history.runs_for_day(date(2026, 9, 29)) == []
 
 
 def test_manual_run_with_a_date_counts_for_today_not_that_date(settings, fixed_now):
-    llm = FakeLLM([reply_text([make_recipe(category="soups", protein_per_serving_g=None)], category="soups")])
+    llm = FakeLLM([reply_text([make_recipe(category="high_protein", protein_per_serving_g=None)], category="high_protein")])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     pipeline.run(day=date(2026, 10, 4))
     with History(settings.db_path) as history:
         assert history.runs_for_day(date(2026, 10, 4)) == []
-        assert history.runs_for_day(date(2026, 9, 29))[0].category == "soups"
+        assert history.runs_for_day(date(2026, 9, 29))[0].category == "high_protein"
 
 
 def test_early_failure_still_leaves_a_run_row(settings, fixed_now):
@@ -362,7 +362,7 @@ def test_stop_signal_passes_through_and_leaves_the_row_unfinished(settings, fixe
 
     pipeline, tg, _, _ = build(settings, Stopper(), fixed_now)
     with pytest.raises(Shutdown):
-        pipeline.run(category="soups", scheduled=True)
+        pipeline.run(category="high_protein", scheduled=True)
     with History(settings.db_path) as history:
         runs = history.runs_for_day(date(2026, 9, 29))
         assert len(runs) == 1 and runs[0].unfinished
@@ -375,7 +375,7 @@ def test_admin_alert_failure_does_not_crash(settings, fixed_now):
 
     llm = FakeLLM(["nope", "nope"])
     pipeline, tg, _, _ = build(settings, llm, fixed_now, tg_session=FakeSession(default=respond))
-    report = pipeline.run(category="soups")
+    report = pipeline.run(category="high_protein")
     assert report.status == "failed"
 
 
@@ -389,21 +389,21 @@ def test_no_page_check_skips_fetch(settings, fixed_now):
 def test_candidates_mode_disables_search_and_pastes_pages(settings, fixed_now):
     settings.source_mode = "candidates"
     settings.candidates_dir.mkdir(parents=True)
-    (settings.candidates_dir / "noodles.txt").write_text("https://c.com/1\nhttps://c.com/2\n")
+    (settings.candidates_dir / "high_protein.txt").write_text("https://c.com/1\nhttps://c.com/2\n")
     node = {"@type": "Recipe", "name": "Fried Bee Hoon", "recipeIngredient": ["bee hoon"], "recipeInstructions": ["Fry."]}
     page = f'<html><script type="application/ld+json">{json.dumps(node)}</script><body>Ingredients</body></html>'
     routes = {"https://c.com/1": FakeResponse(200, body=page), "https://c.com/2": FakeResponse(200, body=page)}
-    recipe = make_recipe(category="noodles", protein_per_serving_g=None, source={"site": "C", "url": "https://c.com/1"})
-    llm = FakeLLM([reply_text([recipe], category="noodles")])
+    recipe = make_recipe(category="high_protein", protein_per_serving_g=None, source={"site": "C", "url": "https://c.com/1"})
+    llm = FakeLLM([reply_text([recipe], category="high_protein")])
     pipeline, tg, web, _ = build(settings, llm, fixed_now, web_routes=routes)
-    report = pipeline.run(category="noodles")
+    report = pipeline.run(category="high_protein")
     assert report.status == "posted"
     assert llm.calls[0]["web_search"] is False
     brief = llm.calls[0]["user"]
     assert "candidate_pages:\nURL: https://c.com/" in brief and "TITLE: Fried Bee Hoon\nCONTENT: Name: Fried Bee Hoon" in brief
     # second run: the posted url is excluded from the candidates
-    llm.queue.append(reply_text([make_recipe(title="Other", category="noodles", protein_per_serving_g=None, source={"site": "C", "url": "https://c.com/2"})], category="noodles"))
-    pipeline.run(category="noodles")
+    llm.queue.append(reply_text([make_recipe(title="Other", category="high_protein", protein_per_serving_g=None, source={"site": "C", "url": "https://c.com/2"})], category="high_protein"))
+    pipeline.run(category="high_protein")
     assert "URL: https://c.com/1" not in llm.calls[1]["user"] and "URL: https://c.com/2" in llm.calls[1]["user"]
 
 
@@ -425,7 +425,7 @@ def test_no_admin_chat_means_no_alert(settings, fixed_now):
     settings.telegram_admin_chat_id = None
     llm = FakeLLM(["nope", "nope"])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
-    report = pipeline.run(category="soups")
+    report = pipeline.run(category="high_protein")
     assert report.status == "failed" and tg.posts == []
 
 

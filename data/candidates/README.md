@@ -1,7 +1,7 @@
 # Candidate pages
 
 Used when `RECIPEBOT_SOURCE_MODE=candidates`. Keep one file per category key, named
-`<category>.txt`, for example `high_protein.txt` or `noodles.txt`, with one recipe page URL per
+`<category>.txt`, for example `high_protein.txt`, with one recipe page URL per
 line. Blank lines and lines starting with `#` are ignored.
 
 Each run picks a handful of URLs at random (skipping any already posted), fetches them, pulls the

@@ -65,7 +65,7 @@ def test_recent_menu_newest_first_14_days_and_capped(tmp_path):
 
 def test_vault_memory_reaches_the_prompt_and_posts_are_written(settings, fixed_now, tmp_path):
     settings.vault_dir = tmp_path / "vault"
-    Vault(settings.vault_dir, SGT).posted(recipe(title="Laksa Yesterday", cuisine="Peranakan"), get_category("soups"),
+    Vault(settings.vault_dir, SGT).posted(recipe(title="Laksa Yesterday", cuisine="Peranakan"), get_category("high_protein"),
                                           "lunch", "r0", fixed_now() - timedelta(days=1))
     llm = FakeLLM([reply_text([make_recipe()])])
     pipeline, tg, _, _ = build(settings, llm, fixed_now)

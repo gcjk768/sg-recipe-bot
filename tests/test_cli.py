@@ -35,7 +35,7 @@ def test_rotation_command(monkeypatch, tmp_path, capsys):
     monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
     assert main(ENV_ARGS + ["rotation", "--from", "2026-09-28", "--days", "2"]) == 0
     out = capsys.readouterr().out
-    assert out.startswith("2026-09-28 Mon  week A  high_protein\n2026-09-29 Tue  week A  chinese_daily\n")
+    assert out.startswith("2026-09-28 Mon  week A  high_protein\n2026-09-29 Tue  week A  high_protein\n")
 
 
 def test_check_config_reports_missing(monkeypatch, capsys):
@@ -97,7 +97,7 @@ def test_run_requires_llm_key_when_not_configured(monkeypatch, tmp_path, capsys)
     for var in ("LLM_API_KEY", "ANTHROPIC_API_KEY"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
-    code = main(ENV_ARGS + ["run", "--category", "soups", "--dry-run"])
+    code = main(ENV_ARGS + ["run", "--category", "high_protein", "--dry-run"])
     assert code == 2
     assert "missing required setting: LLM_API_KEY" in capsys.readouterr().err
 
@@ -107,7 +107,7 @@ def test_run_requires_telegram_unless_dry_run(monkeypatch, tmp_path, capsys):
     for var in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("RECIPEBOT_DATA_DIR", str(tmp_path))
-    assert main(ENV_ARGS + ["run", "--category", "soups"]) == 2
+    assert main(ENV_ARGS + ["run", "--category", "high_protein"]) == 2
     assert "TELEGRAM_BOT_TOKEN" in capsys.readouterr().err
 
 

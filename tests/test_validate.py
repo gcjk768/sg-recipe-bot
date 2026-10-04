@@ -76,15 +76,6 @@ def test_ingredient_cap_ignores_free_items():
     "category,prep,total,ok",
     [
         ("high_protein", 10, 45, True), ("high_protein", 10, 46, False),
-        ("soups", 15, 90, True), ("soups", 16, 60, False), ("soups", 10, 91, False),
-        ("rice_cooker", 20, 60, True), ("rice_cooker", 20, 61, False),
-        ("noodles", 5, 30, True), ("noodles", 5, 31, False),
-        ("sides", 5, 15, True), ("sides", 5, 16, False),
-        ("quick_20", 5, 20, True), ("quick_20", 5, 21, False),
-        ("meal_prep", 20, 60, True), ("breakfast", 5, 21, False), ("use_it_up", 5, 31, False),
-        ("desserts_no_oven", 20, 240, True), ("desserts_no_oven", 21, 30, False),
-        ("baking_cakes", 30, 120, True), ("baking_cakes", 31, 60, False),
-        ("sauces_basics", 5, 30, True), ("custom", 5, 45, True), ("custom", 5, 46, False),
     ],
 )
 def test_time_caps(category, prep, total, ok):
@@ -245,13 +236,13 @@ def test_error_reply_and_unknown_category():
 
 def test_soft_warnings():
     recipe = Recipe.model_validate(make_recipe(
-        category="meal_prep", servings=2, storage=None, tips=["a", "b", "c"], tags=["one pan", "made up"],
+        category="high_protein", servings=2, storage=None, tips=["a", "b", "c"], tags=["one pan", "made up"],
         nutrition_per_serving={"kcal": -5}, cost_estimate=None,
     ))
     recipe.ingredients[0].unit = "cup"
-    warnings = soft_warnings(recipe, "meal_prep")
+    warnings = soft_warnings(recipe, "high_protein")
     joined = "\n".join(warnings)
-    for fragment in ("units outside", "tags outside", "3 tips", "without storage", "servings 2", "implausible nutrition", "no cost_estimate", "protein_per_serving_g set outside"):
+    for fragment in ("units outside", "tags outside", "3 tips", "without storage", "implausible nutrition", "no cost_estimate"):
         assert fragment in joined, fragment
     assert soft_warnings(Recipe.model_validate(make_recipe()), "high_protein") == []
 
