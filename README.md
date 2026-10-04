@@ -6,7 +6,7 @@ A self-hosted daily bot that has Claude find one simple, budget-friendly recipe 
 ![Docker](https://img.shields.io/badge/docker-compose-2496ED?logo=docker&logoColor=white)
 ![Claude](https://img.shields.io/badge/LLM-Claude%20(claude%20--p)-D97757?logo=claude&logoColor=white)
 ![Telegram](https://img.shields.io/badge/Telegram-Bot%20API-26A5E4?logo=telegram&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-0%20pytest-brightgreen?logo=pytest&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-431%20pytest-brightgreen?logo=pytest&logoColor=white)
 
 ![Architecture](docs/architecture.drawio.svg)
 
