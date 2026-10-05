@@ -34,7 +34,7 @@ from recipebot.web import Fetcher
 log = logging.getLogger(__name__)
 
 PAUSE_BETWEEN_RECIPES = 2.0
-DAILY_PAUSE = 720.0  # daily batch: ~12 min between posts so ~51 posts fill 08:00-22:00
+DAILY_PAUSE = 14400.0  # daily batch: 4 h between the 3 posts (08:00, 12:00, 16:00)
 PAUSE_BETWEEN_MESSAGES = 1.0
 MAX_MODEL_ATTEMPTS = 2
 

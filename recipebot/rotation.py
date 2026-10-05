@@ -48,7 +48,7 @@ class ScheduledSlot:
 DEFAULT_WEEKS: list[list[Slot]] = [[Slot("high_protein")] * 7]  # one week, Monday to Sunday
 
 
-PER_MEAL = 17  # 3 meals x 17 = 51 posts a day, spread over 08:00-22:00 SGT
+PER_MEAL = 1  # 3 meals x 1 = 3 posts a day (the owner, 2026-10-05: keep the API cost under $1 a day)
 MAIN_CATEGORIES = ("high_protein",)  # the owner, 2026-10-04: the bot only posts high protein meal prep
 PROTEINS = (
     "chicken breast", "eggs", "firm tofu", "lean beef mince", "canned tuna", "prawns", "lentils",
