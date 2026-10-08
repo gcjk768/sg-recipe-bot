@@ -98,7 +98,7 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .filters { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); padding: 1rem 0; border-bottom: 1px solid var(--rule); }
 .chips { display: flex; gap: .6rem; overflow-x: auto; scrollbar-width: none; padding: .2rem .2rem .5rem; }
 .chips::-webkit-scrollbar { display: none; }
-@media (min-width: 861px) { .chips { flex-wrap: wrap; overflow: visible; } }
+@media (min-width: 861px) { .chips { flex-wrap: wrap; overflow: visible; } .chips .chipbreak { display: block; flex-basis: 100%; height: 0; } }
 .chip {
   flex: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 54px; padding: 0 1.2rem;
   border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--ink);
@@ -108,6 +108,9 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .chip:hover { transform: translateY(-2px); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .chip.quick[aria-pressed="true"] { background: var(--jade); border-color: var(--jade); }
+.chip.topic { background: #fbefd9; }
+.chip.topic[aria-pressed="true"] { background: var(--seal); border-color: var(--seal); color: #fff; }
+.chipbreak { display: none; }
 .search { display: flex; gap: .8rem; align-items: center; margin-top: .6rem; }
 .search input {
   flex: 1; min-height: 56px; padding: 0 1.2rem; font: 400 1em var(--body); color: var(--ink);
@@ -283,6 +286,21 @@ const KITCHENS = [
   ["others", "Around the world", "其他", "🌏"],
 ];
 const QUICK = 30;
+// Topics cut across cuisines. "tags" come from the data (bot categories, seed column);
+// the rest are keyword guesses on the title. ponytail: keyword rules, add a tag in seed.txt when one guesses wrong.
+const has = (r, t) => (r.tags || []).includes(t);
+const text = r => `${r.title} ${r.zh}`;
+const MEAT = /chicken|pork|beef|lamb|mutton|bacon|\bham\b|prosciutto|sausage|fish|salmon|tuna|prawn|shrimp|anchov|squid|crab|clam|mussel|oyster sauce|dashi|bonito|gelatin|lard|duck|turkey|ikan|udang|belacan|ayam|daging|鸡|猪|牛|肉|鱼|虾|蟹/i;
+const TOPICS = [
+  ["protein", "High protein", "高蛋白", "💪", r => has(r, "protein")],
+  ["pbreakfast", "Protein breakfast", "高蛋白早餐", "🍳", r => has(r, "protein") && has(r, "breakfast")],
+  ["breakfast", "Breakfast", "早餐", "🌅", r => has(r, "breakfast")],
+  ["baking", "Cakes & baking", "蛋糕烘焙", "🎂", r => has(r, "baking") || /(?<!pan)cake|cookie|muffin|scone|brownie|chiffon|kuih|castella|dorayaki|banana bread|\bloaf\b|\btarts?\b|蛋糕|饼干|烘焙/i.test(text(r)) && !/rice cake|fish ?cake/i.test(text(r))],
+  ["soup", "Soups", "汤", "🍲", r => /soup|stew|jjigae|broth|汤|羹/i.test(text(r))],
+  ["noodles", "Noodles & pasta", "面", "🍜", r => /noodle|pasta|spaghetti|penne|fettuccine|lasagn|\bmee\b|udon|ramen|soba|pad thai|chow fun|hor fun|japchae|laksa|bee hoon|面|米粉|河粉/i.test(text(r))],
+  ["rice", "Rice dishes", "饭", "🍚", r => /\brice\b|nasi|bibimbap|bokkeumbap|gohan|donburi|\w+don\b|risotto|biryani|饭|丼/i.test(text(r)) && !/rice paper|rice cake|rice flour/i.test(text(r))],
+  ["veg", "Vegetarian", "素食", "🥬", r => (r.ingredients || []).length > 0 && !MEAT.test(text(r) + " " + r.ingredients.join(" "))],
+];
 const PAGE = 24; // cards per section before "Show more"; the bot adds ~51 recipes a day
 const $ = s => document.querySelector(s);
 const https = u => /^https:\/\//.test(u || "");
@@ -411,7 +429,7 @@ function card(r) {
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -40px" });
 
 // ---- filters ----
-let active = "all", quick = false;
+let active = "all", quick = false, topic = null;
 const shown = {}; // section key -> how many cards are rendered
 const chips = $("#chips"), main = $("#kitchens");
 const chip = (label, zh, emoji, on, extra = "") =>
@@ -422,6 +440,7 @@ function matches(r) {
   const q = $("#q").value.trim().toLowerCase();
   return (!q || `${r.zh} ${r.title} ${r.blurb || ""}`.toLowerCase().includes(q))
     && (!quick || (r.minutes > 0 && r.minutes <= QUICK))
+    && (!topic || TOPICS.find(t => t[0] === topic)[4](r))
     && (active === "all" || r.cuisine === active);
 }
 
@@ -451,14 +470,16 @@ function render() {
   allChip.setAttribute("aria-pressed", active === "all");
   kitchenChips.forEach(c => c.setAttribute("aria-pressed", c.dataset.key === active));
   quickChip.setAttribute("aria-pressed", quick);
+  topicChips.forEach(c => c.setAttribute("aria-pressed", c.dataset.topic === topic));
   $("#count").textContent = `${hits.length} recipes 道菜`;
   $("#empty").hidden = hits.length > 0;
 }
 
 const allChip = chip("All", "全部", "✨", () => setKitchen("all"));
 const kitchenChips = KITCHENS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => setKitchen(key)); c.dataset.key = key; return c; });
+const topicChips = TOPICS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => { topic = topic === key ? null : key; for (const k in shown) delete shown[k]; render(); main.scrollIntoView({ behavior: "smooth", block: "start" }); }, "topic"); c.dataset.topic = key; return c; });
 const quickChip = chip(`Under ${QUICK} min`, `${QUICK}分钟内`, "⚡", () => { quick = !quick; render(); }, "quick");
-chips.append(allChip, ...kitchenChips, quickChip);
+chips.append(allChip, ...kitchenChips, h("span", { class: "chipbreak", "aria-hidden": "true" }), ...topicChips, quickChip);
 $("#q").addEventListener("input", () => { for (const k in shown) delete shown[k]; render(); });
 
 // 🎲 jumps to a random dish on the page and makes it glow

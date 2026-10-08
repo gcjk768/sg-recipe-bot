@@ -1,6 +1,9 @@
 window.RECIPES = [
  {
   "cuisine": "chinese",
+  "tags": [
+   "protein"
+  ],
   "zh": "西兰花炒鸡片",
   "title": "Chicken Broccoli Stir Fry (extra sauce!)",
   "url": "https://www.recipetineats.com/chicken-broccoli-stir-fry/",
@@ -28,6 +31,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "炒米粉",
   "title": "Singapore Noodles",
   "url": "https://www.recipetineats.com/singapore-noodles/",
@@ -56,6 +60,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "番茄炒蛋",
   "title": "Tomato Egg Stir-Fry (番茄炒蛋)",
   "url": "https://redhousespice.com/tomato-egg-stir-fry/",
@@ -76,6 +81,10 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [
+   "breakfast",
+   "protein"
+  ],
   "zh": "蒸水蛋",
   "title": "Chinese Steamed Eggs (鸡蛋羹)",
   "url": "https://omnivorescookbook.com/chinese-steamed-egg/",
@@ -95,6 +104,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "小白菜炒豆泡",
   "title": "Stir Fried Bok Choy with Tofu Puffs",
   "url": "https://omnivorescookbook.com/stir-fried-bok-choy/",
@@ -114,6 +124,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "宫保鸡丁",
   "title": "Kung Pao Chicken Recipe (The Best!)",
   "url": "https://rasamalaysia.com/kung-pao-chicken-recipe/",
@@ -144,6 +155,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "虾仁炒饭",
   "title": "Chinese Fried Rice with Shrimp / Prawns",
   "url": "https://www.recipetineats.com/chinese-fried-rice/",
@@ -171,6 +183,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "麻婆豆腐",
   "title": "Mapo Tofu",
   "url": "https://www.recipetineats.com/mapo-tofu/",
@@ -207,6 +220,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "鸡肉玉米羹",
   "title": "Chinese Chicken and Corn Soup",
   "url": "https://www.recipetineats.com/chinese-chicken-corn-soup/",
@@ -231,6 +245,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "chinese",
+  "tags": [],
   "zh": "蚝油芥兰",
   "title": "Restaurant Style Chinese Broccoli with Oyster Sauce",
   "url": "https://www.recipetineats.com/chinese-broccoli-with-oyster-sauce/",
@@ -254,7 +269,37 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "chinese",
+  "tags": [
+   "baking"
+  ],
+  "zh": "杏仁饼",
+  "title": "Chinese Almond Cookies",
+  "url": "https://omnivorescookbook.com/chinese-almond-cookies/",
+  "site": "omnivorescookbook.com",
+  "image": "https://omnivorescookbook.com/wp-content/uploads/2019/12/1912_Chinese-Almond-Cookies_550.jpg",
+  "minutes": 65,
+  "serves": "28",
+  "blurb": "These cookies are not your traditional Chinese almond cookies. They have a fluffier and cakier texture, browned edges that are light and crispy, with a slightly",
+  "ingredients": [
+   "3/4 cup (120 g) all-purpose flour",
+   "1/2 cup (115 g) sugar",
+   "6 tablespoons almond flour",
+   "1/2 teaspoon baking soda",
+   "Pinch of salt",
+   "1/2 cup (115 g) unsalted butter",
+   "1 egg",
+   "1/2 teaspoon almond extract",
+   "28 raw whole almonds",
+   "1 egg yolk",
+   "1/4 teaspoon sugar"
+  ]
+ },
+ {
   "cuisine": "western",
+  "tags": [
+   "protein"
+  ],
   "zh": "蒜香黄油虾",
   "title": "Garlic Prawns (Shrimp!)",
   "url": "https://www.recipetineats.com/garlic-prawns/",
@@ -279,6 +324,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [],
   "zh": "肉酱意面",
   "title": "Spaghetti Bolognese",
   "url": "https://www.recipetineats.com/spaghetti-bolognese/",
@@ -308,6 +354,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [],
   "zh": "牧羊人派",
   "title": "Shepherd's Pie",
   "url": "https://www.recipetineats.com/shepherds-pie/",
@@ -344,6 +391,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [],
   "zh": "土豆泥",
   "title": "Creamy Mashed Potato",
   "url": "https://www.recipetineats.com/mashed-potato/",
@@ -364,6 +412,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [
+   "protein"
+  ],
   "zh": "烤鸡胸",
   "title": "Oven Baked Chicken Breast",
   "url": "https://www.recipetineats.com/oven-baked-chicken-breast/",
@@ -385,6 +436,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [],
   "zh": "蘑菇汤",
   "title": "Mushroom Soup",
   "url": "https://www.recipetineats.com/mushroom-soup/",
@@ -411,6 +463,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "western",
+  "tags": [],
   "zh": "牛肉汉堡",
   "title": "Hamburger Recipe",
   "url": "https://www.recipetineats.com/hamburger/",
@@ -433,7 +486,280 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "巧克力蛋糕",
+  "title": "Chocolate Cake",
+  "url": "https://www.recipetineats.com/chocolate-cake/",
+  "site": "recipetineats.com",
+  "image": "https://www.recipetineats.com/tachyon/2018/03/Chocolate-Cake_9-SQ.jpg",
+  "minutes": 45,
+  "serves": "8",
+  "blurb": "Recipe VIDEO above. This is the everyday Chocolate Cake I make over and over again. The crumb is tender and moist, it truly tastes of chocolate (rarer than you ",
+  "ingredients": [
+   "1 3/4 cups plain / all purpose flour",
+   "3/4 cup cocoa powder (, unsweetened (Note 2))",
+   "1 1/2 tsp baking powder",
+   "1 1/2 tsp baking soda (bi-carb soda)",
+   "2 cups white sugar ((Note 1))",
+   "1 tsp salt",
+   "2 eggs ((~55-65g / 2 oz each))",
+   "1 cup milk ((low or full fat))",
+   "1/2 cup vegetable oil ((or canola))",
+   "2 tsp vanilla extract",
+   "1 cup boiling water",
+   "1 1/2 batches Chocolate Buttercream Frosting ((slide scaler on recipe))"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "胡萝卜蛋糕",
+  "title": "Carrot Cake (Easy and ultra moist!)",
+  "url": "https://www.recipetineats.com/carrot-cake/",
+  "site": "recipetineats.com",
+  "image": "https://www.recipetineats.com/tachyon/2016/04/Carrot-Cake_4.jpg",
+  "minutes": 45,
+  "serves": "12",
+  "blurb": "Recipe video above. A fabulously easy, moist Carrot Cake with lots of fluffy cream cheese frosting! Perfect flavour and texture, with a hint of cinnamon, subtle",
+  "ingredients": [
+   "440g / 20 oz can crushed pineapple (, drained but RESERVE juice (Note 1))",
+   "1/4 cup (65 ml) reserved canned pineapple juice ((from canned pineapple above))",
+   "3/4 cup (185 ml) milk (, at room temperature (full or low fat) )",
+   "1 tsp white vinegar ((or lemon juice or other clear vinegar, (Note 2))",
+   "3 eggs ((55g/2oz each))",
+   "1 1/2 cups (265g) brown sugar ((loosely packed))",
+   "1/2 cup (125 ml) vegetable oil ((or canola))",
+   "2 cups (300g) flour (, plain / all purpose)",
+   "2 tsp baking soda ((aka bi carb soda, Note 3) (NOT BAKING POWDER))",
+   "1/2 tsp salt",
+   "2 tsp cinnamon powder",
+   "2 cups grated carrot (, about 2 carrots, peeled (Note 4))",
+   "1/4 cup coconut (, shredded or desiccated (plain / unsweetened))",
+   "1/2 cup walnuts or pecans (, roughly chopped)",
+   "180g / 6oz cream cheese (, at room temperature (Note 5))",
+   "225g / 1 cup unsalted butter (, softened)",
+   "1 tsp vanilla extract",
+   "4 cups (480g) icing sugar / powdered sugar (, sifted if clumpy (Note 6))"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "巧克力豆饼干",
+  "title": "Soft Easy Chocolate Chip Cookies",
+  "url": "https://www.recipetineats.com/chocolate-chip-cookies/",
+  "site": "recipetineats.com",
+  "image": "https://www.recipetineats.com/tachyon/2017/06/Soft-Chocolate-Chip-Cookies-3.jpg",
+  "minutes": 32,
+  "serves": "13",
+  "blurb": "RECIPE VIDEO ABOVE. This is my I need chocolate chip cookies now recipe that makes soft, buttery cookies. No waiting for butter to soften, no electric beater, n",
+  "ingredients": [
+   "1 3/4 cups plain / all purpose flour",
+   "1 tsp salt",
+   "½ tsp baking soda ((bi carb soda))",
+   "175g / 12 tbsp unsalted butter (, cut into 2 cm/ 4/5\" cubes (1.5 US sticks / 6 oz))",
+   "1/2 cup brown sugar (, packed (light or dark) (Note 1))",
+   "1/2 cup caster sugar ((US: granulated sugar))",
+   "1 egg",
+   "1 egg yolk",
+   "2 tsp vanilla extract",
+   "1 1/4 cups chocolate chips (, separated (US: semi sweet chocolate chips or chunks))"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "苹果酥",
+  "title": "Apple Crumble",
+  "url": "https://www.recipetineats.com/apple-crumble/",
+  "site": "recipetineats.com",
+  "image": "https://www.recipetineats.com/tachyon/2016/05/Apple-Crumble_1a-1.jpg",
+  "minutes": 55,
+  "serves": "6",
+  "blurb": "Recipe video above. A filling of tender, cinnamon laced apples topped with a nubbly crunchy, golden topping. You'll love how this Apple Crumble isn't overly swe",
+  "ingredients": [
+   "2 lb / 1kg Granny Smith Apples( green apples) (, weight before peeling)",
+   "1 tbsp flour (, plain / all-purpose)",
+   "1/2 cup white sugar ((sub brown sugar))",
+   "2 tbsp lemon juice ((or water))",
+   "1/2 tsp ground cinnamon",
+   "1 cup rolled oats / oatmeal ((quick cooking is ok))",
+   "1 cup flour (, plain / all-purpose)",
+   "1 cup (loosely packed) brown sugar ((sub white sugar))",
+   "1/2 tsp baking powder",
+   "1 tsp cinnamon powder",
+   "125g / 1/2 cup unsalted butter (, melted)",
+   "Pinch of salt",
+   "Vanilla ice cream"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "无面粉布朗尼",
+  "title": "Flourless Chocolate Brownies (gluten free)",
+  "url": "https://www.recipetineats.com/brownies/",
+  "site": "recipetineats.com",
+  "image": "https://www.recipetineats.com/tachyon/2014/05/Flourless-Chocolate-Brownies-Gluten-Free_SQ.jpg",
+  "minutes": 40,
+  "serves": "16",
+  "blurb": "Recipe video above. Like my flourless chocolate cake, I make these Flourless Chocolate Brownies even when I’m not after a gluten free dessert because they’re th",
+  "ingredients": [
+   "1 cup dark chocolate chips or melts / semi-sweet chocolate ((Note 1))",
+   "85 g / 6 tbsp unsalted butter (, cut into 1 cm / 1/2\" cubes)",
+   "1/4 tsp cooking/kosher salt",
+   "3/4 cup brown sugar ((sub white))",
+   "1 tsp vanilla extract",
+   "2 large eggs ((55-60g / 2 oz each))",
+   "2/3 cup almond meal / ground almonds ((or almond flour, Note 2))",
+   "1/3 cup rice flour ((Note 3))"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "简易巧克力蛋糕",
+  "title": "Easy chocolate cake",
+  "url": "https://www.bbcgoodfood.com/recipes/easy-chocolate-cake",
+  "site": "bbcgoodfood.com",
+  "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/easy_chocolate_cake-b62f92c.jpg?resize=440,400",
+  "minutes": 55,
+  "serves": "14",
+  "blurb": "Master the chocolate cake with an airy, light sponge and rich buttercream filling. It's simple enough for an afternoon tea but special enough for a party too",
+  "ingredients": [
+   "200g golden caster sugar",
+   "200g unsalted butter softened plus extra for the tins",
+   "4 large eggs",
+   "200g self-raising flour",
+   "2 tbsp cocoa powder",
+   "1 tsp baking powder",
+   "½ tsp vanilla extract",
+   "2 tbsp milk",
+   "100g milk chocolate chopped",
+   "200g butter softened",
+   "400g icing sugar",
+   "5 tbsp cocoa powder",
+   "2 tbsp milk",
+   "50g dark chocolate",
+   "25g milk chocolate",
+   "25g white chocolate"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "布朗尼",
+  "title": "Best ever chocolate brownies recipe",
+  "url": "https://www.bbcgoodfood.com/recipes/best-ever-chocolate-brownies-recipe",
+  "site": "bbcgoodfood.com",
+  "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001464_11-ed687dd.jpg?resize=440,400",
+  "minutes": 60,
+  "serves": "Cuts into 16 squares",
+  "blurb": "A super easy brownie recipe for a squidgy chocolate bake. Watch our foolproof recipe video to help you get a perfect traybake every time.",
+  "ingredients": [
+   "185g unsalted butter",
+   "185g best dark chocolate",
+   "85g plain flour",
+   "40g cocoa powder",
+   "50g white chocolate",
+   "50g milk chocolate",
+   "3 large eggs",
+   "275g golden caster sugar"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "维多利亚海绵蛋糕",
+  "title": "Classic Victoria sandwich recipe",
+  "url": "https://www.bbcgoodfood.com/recipes/classic-victoria-sandwich-recipe",
+  "site": "bbcgoodfood.com",
+  "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001468_10-81b47f5.jpg?resize=440,400",
+  "minutes": 60,
+  "serves": "Cuts into 10 slices",
+  "blurb": "The perfect party cake, a Victoria sponge is a traditional bake everyone will love. Makes an easy wedding cake, too",
+  "ingredients": [
+   "200g caster sugar",
+   "200g softened butter",
+   "4 eggs beaten",
+   "200g self-raising flour",
+   "1 tsp baking powder",
+   "2 tbsp milk",
+   "100g butter softened",
+   "140g icing sugar sifted",
+   "drop vanilla extract (optional)",
+   "half a 340g jar good-quality strawberry jam",
+   "icing sugar to decorate"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking"
+  ],
+  "zh": "柠檬糖霜蛋糕",
+  "title": "Lemon drizzle cake",
+  "url": "https://www.bbcgoodfood.com/recipes/lemon-drizzle-cake",
+  "site": "bbcgoodfood.com",
+  "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1238452_7-35e4911.jpg?resize=440,400",
+  "minutes": 45,
+  "serves": "Cuts into 10 slices",
+  "blurb": "It's difficult not to demolish this classic lemon drizzle in just one sitting, so why not make two at once?",
+  "ingredients": [
+   "225g unsalted butter softened",
+   "225g caster sugar",
+   "4 eggs",
+   "225g self-raising flour",
+   "1 lemon zested",
+   "1½ lemons juiced",
+   "85g caster sugar"
+  ]
+ },
+ {
+  "cuisine": "western",
+  "tags": [
+   "baking",
+   "breakfast"
+  ],
+  "zh": "香蕉蛋糕",
+  "title": "Banana bread",
+  "url": "https://www.bbcgoodfood.com/recipes/banana-bread",
+  "site": "bbcgoodfood.com",
+  "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/06/recipe-image-legacy-id-1273522_8-a6b9246.jpg?resize=440,400",
+  "minutes": 65,
+  "serves": "Cuts into 8-10 slice",
+  "blurb": "A cross between banana bread and a drizzle cake, this easy banana loaf recipe is a quick bake that can be frozen. It's great for using up overripe bananas, too.",
+  "ingredients": [
+   "140g butter softened, plus extra for the tin",
+   "140g caster sugar",
+   "2 large eggs beaten",
+   "140g self-raising flour",
+   "1 tsp baking powder",
+   "2 very ripe bananas mashed",
+   "50g icing sugar",
+   "handful dried banana chips for decoration"
+  ]
+ },
+ {
   "cuisine": "malay",
+  "tags": [],
   "zh": "甜酱油焖鸡",
   "title": "Ayam Masak Kicap 2.0 | Kicap Manis Braised Chicken Stir Fry",
   "url": "https://nomadette.com/ayam-kicap-manis/",
@@ -462,6 +788,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "椰浆饭",
   "title": "Nasi Lemak Recipe",
   "url": "https://rasamalaysia.com/nasi-lemak-recipe/",
@@ -495,6 +822,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "仁当牛肉",
   "title": "Beef Rendang (The Best!)",
   "url": "https://rasamalaysia.com/beef-rendang-recipe-rendang-daging/",
@@ -528,6 +856,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "红酱鸡",
   "title": "Ayam Masak Merah (Chicken in Spicy Tomato Sauce)",
   "url": "https://rasamalaysia.com/ayam-masak-merah/",
@@ -557,6 +886,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "印尼炒饭",
   "title": "Nasi Goreng (Indonesian Fried Rice)",
   "url": "https://www.recipetineats.com/nasi-goreng-indonesian-fried-rice/",
@@ -585,6 +915,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "沙爹鸡",
   "title": "Satay Chicken Curry (Malaysian)",
   "url": "https://www.recipetineats.com/chicken-satay/",
@@ -624,6 +955,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "参巴虾",
   "title": "Sambal Udang (Prawn Sambal)",
   "url": "https://rasamalaysia.com/sambal-udang-prawn-sambal/",
@@ -647,6 +979,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "马来炒饭",
   "title": "Nasi Goreng Kampung",
   "url": "https://nomadette.com/nasi-goreng-kampung/",
@@ -674,6 +1007,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "嘛嘛炒面",
   "title": "Mee Goreng Mamak (Singapore-Style)",
   "url": "https://nomadette.com/mee-goreng-mamak/",
@@ -702,6 +1036,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "malay",
+  "tags": [],
   "zh": "香料炸鸡",
   "title": "Ayam Goreng Berempah (Malaysian Spiced Fried Chicken)",
   "url": "https://nomadette.com/ayam-goreng-berempah/",
@@ -730,7 +1065,84 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "malay",
+  "tags": [
+   "baking"
+  ],
+  "zh": "班兰戚风蛋糕",
+  "title": "Pandan Chiffon Cake",
+  "url": "https://rasamalaysia.com/pandan-chiffon-cake/",
+  "site": "rasamalaysia.com",
+  "image": "https://rasamalaysia.com/wp-content/uploads/2021/06/pandan-chiffon-cake-thumbs.jpg",
+  "minutes": 70,
+  "serves": "4",
+  "blurb": "Pandan leaf (screwpine leaf) is widely used in Malaysia, and this chiffon cake is infused with the sweet fragrance of fresh Pandan juice.",
+  "ingredients": [
+   "8 medium egg yolks",
+   "2 oz fine sugar",
+   "2 oz Pandan Juice (made from blending 6 Pandan leaves with 2oz (60g) - 3 oz (90g). (90 ml) water)",
+   "3 oz corn oil or olive oil",
+   "5 oz self raising flour",
+   "8 egg whites",
+   "5 oz fine sugar",
+   "1 pinch salt"
+  ]
+ },
+ {
+  "cuisine": "malay",
+  "tags": [
+   "baking"
+  ],
+  "zh": "鸡蛋糕(Kuih Bahulu)",
+  "title": "Kuih Bahulu",
+  "url": "https://rasamalaysia.com/kuih-bahulu/",
+  "site": "rasamalaysia.com",
+  "image": "https://rasamalaysia.com/wp-content/uploads/2008/08/kuih-bahulu-thumb.jpg",
+  "minutes": 25,
+  "serves": "4",
+  "blurb": "Kuih Bahulu is a classic Malaysian egg cake that’s light, sweet, and full of that perfect eggy flavor. It’s a must-have during festive seasons! If you’re lookin",
+  "ingredients": [
+   "3 large eggs",
+   "1 cup sugar",
+   "1 teaspoon vanilla extract",
+   "1¼ cups all-purpose flour (sifted)",
+   "¼ teaspoon baking powder",
+   "3 tablespoons cooking oil ( or unsalted butter melted)"
+  ]
+ },
+ {
+  "cuisine": "malay",
+  "tags": [
+   "baking"
+  ],
+  "zh": "椰丝班兰卷",
+  "title": "Kuih Dadar (Kuih Ketayap)",
+  "url": "https://rasamalaysia.com/kuih-dadar/",
+  "site": "rasamalaysia.com",
+  "image": "https://rasamalaysia.com/wp-content/uploads/2024/12/kuih-dadar-kuih-ketayap.jpg",
+  "minutes": 30,
+  "serves": "15",
+  "blurb": "Kuih Dadar, also known as Kuih Ketayap, is one of my favorite Nyonya kuih! Imagine pandan-flavored crepes paired with a sweet coconut filling made with Gula Mel",
+  "ingredients": [
+   "5 pandan leaves (chopped)",
+   "3-4 tablespoons water",
+   "120 g all purpose flour",
+   "1 egg",
+   "300 ml coconut milk",
+   "¼ teaspoon salt",
+   "3 tablespoon pandan juice",
+   "oil (for greasing)",
+   "90 g Gula Melaka (Malaysian palm sugar)",
+   "1 tablespoon sugar",
+   "1 pandan leaf (knotted)",
+   "50 ml water",
+   "120 g grated coconut",
+   "1 teaspoon cornstarch"
+  ]
+ },
+ {
   "cuisine": "indian",
+  "tags": [],
   "zh": "扁豆汤",
   "title": "Dal Tadka Recipe (Restaurant Style)",
   "url": "https://www.indianhealthyrecipes.com/dal-tadka/",
@@ -769,6 +1181,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "鹰嘴豆咖喱",
   "title": "Authentic Chana Masala (Chickpea Masala)",
   "url": "https://www.indianhealthyrecipes.com/chana-masala/",
@@ -802,6 +1215,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "孜然饭",
   "title": "Jeera Rice Recipe",
   "url": "https://www.indianhealthyrecipes.com/jeera-rice/",
@@ -826,6 +1240,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "土豆花菜",
   "title": "Aloo Gobi Recipe (Cauliflower Potato Curry)",
   "url": "https://www.indianhealthyrecipes.com/aloo-gobi/",
@@ -858,6 +1273,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "印度咖喱鸡",
   "title": "Chicken Curry Recipe",
   "url": "https://www.indianhealthyrecipes.com/chicken-curry/",
@@ -889,6 +1305,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [
+   "breakfast"
+  ],
   "zh": "印度煎饼",
   "title": "Chapati Recipe (Indian Flatbread)",
   "url": "https://www.indianhealthyrecipes.com/chapati/",
@@ -907,6 +1326,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "菠菜奶酪",
   "title": "Palak Paneer Recipe (Spinach Paneer)",
   "url": "https://www.indianhealthyrecipes.com/palak-paneer-recipe/",
@@ -938,6 +1358,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [],
   "zh": "黄油鸡(简易)",
   "title": "Butter Chicken",
   "url": "https://www.recipetineats.com/butter-chicken/",
@@ -968,6 +1389,10 @@ window.RECIPES = [
  },
  {
   "cuisine": "indian",
+  "tags": [
+   "breakfast",
+   "protein"
+  ],
   "zh": "印度鸡蛋炒",
   "title": "Egg Bhurji Recipe (Indian Anda Bhurji)",
   "url": "https://www.indianhealthyrecipes.com/egg-bhurji/",
@@ -993,7 +1418,67 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "indian",
+  "tags": [
+   "baking"
+  ],
+  "zh": "印度酥饼",
+  "title": "Nankhatai Recipe",
+  "url": "https://www.indianhealthyrecipes.com/nankhatai-recipe/",
+  "site": "indianhealthyrecipes.com",
+  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2018/08/nankhatai-recipe.jpg",
+  "minutes": 25,
+  "serves": "12",
+  "blurb": "Traditional Indian eggless cookies known as Nankhatai, made with flour, sugar, cardamoms and ghee. This recipe works with different combinations of flour and tu",
+  "ingredients": [
+   "¾ cup (75 grams) wheat flour ((or all-purpose flour))",
+   "¼ cup (25 grams) besan ((gram flour ))",
+   "1 tablespoon semolina (suji (optional))",
+   "¼ teaspoon baking powder ((or 1 pinch baking soda for 1x recipe))",
+   "3 green cardamoms (powdered (or ½ tsp powder for 1x recipe))",
+   "½ cup (65 grams) powdered sugar",
+   "⅓ cup (75 grams) ghee (or soft butter (use only as needed))"
+  ]
+ },
+ {
+  "cuisine": "indian",
+  "tags": [
+   "baking"
+  ],
+  "zh": "无蛋巧克力蛋糕",
+  "title": "Eggless Chocolate Cake Recipe",
+  "url": "https://www.indianhealthyrecipes.com/eggless-chocolate-cake/",
+  "site": "indianhealthyrecipes.com",
+  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2012/05/eggless-chocolate-cake-recipe.jpg",
+  "minutes": 45,
+  "serves": "8",
+  "blurb": "Eggless chocolate cake that's vegan, called as wacky cake or depression cake. It turns out soft and moist. To make the cake rich use milk and melted butter. Egg",
+  "ingredients": [
+   "1½ cups (180 grams) all-purpose flour ((organic maida or wheat flour) )",
+   "¼ cup cocoa powder ((use good quality cocoa))",
+   "1 teaspoon (5 grams) Baking soda ((check expiry date))",
+   "⅓ teaspoon (2 grams) salt (( I use pink salt))",
+   "1 cup (200 grams) sugar ((organic))",
+   "1 cup (240 ml) Water (( use milk to make rich cake))",
+   "⅓ cup (80 ml) oil ((coconut, canola, light olive oil or melted butter))",
+   "1 tablespoon (15 ml) white vinegar ((Minimum 5% Acidity) )",
+   "1 tablespoon (15 ml) Vanilla extract ((or vanilla powder or essence as needed))",
+   "¾ cup (180 ml) milk ((or almond or cashew milk, refer notes))",
+   "2 tablespoons (10 grams) cocoa powder",
+   "4 to 6 tablespoon sugar ((or powdered jaggery as needed))",
+   "1 teaspoon (5 ml) vanilla extract",
+   "¼ cup unsalted butter ((soft but cold))",
+   "3 tablespoons cocoa powder ((good quality))",
+   "1 ½ cups powdered sugar ((or icing sugar))",
+   "1 teaspoon vanilla extract",
+   "2 to 2 ½ tablespoons milk ((or whipping cream))"
+  ]
+ },
+ {
   "cuisine": "french",
+  "tags": [
+   "breakfast"
+  ],
   "zh": "法式吐司",
   "title": "French Toast",
   "url": "https://www.recipetineats.com/french-toast/",
@@ -1016,6 +1501,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [],
   "zh": "法式洋葱汤",
   "title": "French Onion Soup",
   "url": "https://www.recipetineats.com/french-onion-soup/",
@@ -1040,6 +1526,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [],
   "zh": "法式咸派",
   "title": "Quiche Lorraine",
   "url": "https://www.recipetineats.com/quiche-lorraine/",
@@ -1065,6 +1552,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [],
   "zh": "普罗旺斯炖菜",
   "title": "Ratatouille (French Vegetable Stew)",
   "url": "https://www.recipetineats.com/ratatouille/",
@@ -1092,6 +1580,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [
+   "breakfast"
+  ],
   "zh": "法式薄饼",
   "title": "JB's Crêpes",
   "url": "https://www.recipetineats.com/crepes/",
@@ -1116,6 +1607,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [],
   "zh": "法式火腿芝士三明治",
   "title": "Croque Monsieur (French hot ham and cheese sandwich)",
   "url": "https://www.recipetineats.com/croque-monsieur/",
@@ -1143,6 +1635,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "french",
+  "tags": [],
   "zh": "猎人烩鸡",
   "title": "JB's Chicken Chasseur",
   "url": "https://www.recipetineats.com/chicken-chasseur/",
@@ -1175,6 +1668,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "奶油蘑菇意面",
   "title": "Creamy Mushroom Pasta",
   "url": "https://www.recipetineats.com/creamy-mushroom-pasta/",
@@ -1200,6 +1694,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "意大利蔬菜汤",
   "title": "Minestrone Soup",
   "url": "https://www.recipetineats.com/minestrone-soup/",
@@ -1235,6 +1730,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "蘑菇烩饭",
   "title": "Mushroom Risotto",
   "url": "https://www.recipetineats.com/mushroom-risotto/",
@@ -1266,6 +1762,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "帕玛森鸡排",
   "title": "Chicken Parmigiana",
   "url": "https://www.recipetineats.com/chicken-parmigiana/",
@@ -1307,6 +1804,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "培根蛋意面",
   "title": "Carbonara (real)",
   "url": "https://www.recipetineats.com/carbonara/",
@@ -1331,6 +1829,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "青酱意面",
   "title": "JUICY Pesto Pasta!",
   "url": "https://www.recipetineats.com/pesto-pasta/",
@@ -1349,6 +1848,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "italian",
+  "tags": [],
   "zh": "蒜香橄榄油意面",
   "title": "Spaghetti aglio e olio",
   "url": "https://www.bbcgoodfood.com/recipes/spaghetti-aglio-e-olio",
@@ -1367,6 +1867,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "辣炖豆腐",
   "title": "Dubu Jorim (Korean Braised Tofu)",
   "url": "https://www.beyondkimchee.com/braised-tofu/",
@@ -1391,6 +1892,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "泡菜汤",
   "title": "Kimchi stew (Kimchi-jjigae)",
   "url": "https://www.maangchi.com/recipe/kimchi-jjigae",
@@ -1414,6 +1916,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "杂菜",
   "title": "Japchae (Sweet potato starch noodles stir fried with vegetables)",
   "url": "https://www.maangchi.com/recipe/japchae",
@@ -1437,6 +1940,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "石锅拌饭",
   "title": "Bibimbap (Mixed rice with vegetables)",
   "url": "https://www.maangchi.com/recipe/bibimbap",
@@ -1460,6 +1964,10 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [
+   "breakfast",
+   "protein"
+  ],
   "zh": "韩式蒸蛋",
   "title": "Steamed egg side dish (Gyeranjjim)",
   "url": "https://www.maangchi.com/recipe/gyeranjjim",
@@ -1472,6 +1980,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [
+   "protein"
+  ],
   "zh": "韩式烤牛肉",
   "title": "Bulgogi Korean beef BBQ",
   "url": "https://www.maangchi.com/recipe/bulgogi",
@@ -1495,6 +2006,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "泡菜炒饭",
   "title": "Kimchi fried rice (Kimchi-bokkeumbap)",
   "url": "https://www.maangchi.com/recipe/kimchi-bokkeumbap",
@@ -1518,6 +2030,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "辣炒年糕",
   "title": "Tteokbokki (Hot and spicy rice cakes)",
   "url": "https://www.maangchi.com/recipe/tteokbokki",
@@ -1541,6 +2054,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "大酱汤",
   "title": "Doenjang-jjigae (Fermented soybean paste stew)",
   "url": "https://www.maangchi.com/recipe/doenjang-jjigae",
@@ -1564,6 +2078,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "凉拌豆芽",
   "title": "Soybean sprout side dish (Kongnamul-muchim)",
   "url": "https://www.maangchi.com/recipe/kongnamul-muchim",
@@ -1576,6 +2091,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "韩式煎饼",
   "title": "Pajeon (Green onion pancake)",
   "url": "https://www.maangchi.com/recipe/pajeon",
@@ -1588,6 +2104,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "korean",
+  "tags": [],
   "zh": "韩式紫菜饭卷",
   "title": "Classic gimbap",
   "url": "https://www.maangchi.com/recipe/gimbap",
@@ -1610,7 +2127,33 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "korean",
+  "tags": [
+   "baking"
+  ],
+  "zh": "韩式糖饼",
+  "title": "Sweet pancakes with brown sugar syrup filling (Hotteok)",
+  "url": "https://www.maangchi.com/recipe/hotteok",
+  "site": "maangchi.com",
+  "image": "https://i.ytimg.com/vi/R_MPEq53QFs/maxresdefault.jpg?meta=og:image",
+  "minutes": 120,
+  "serves": "Makes 8 hotteok",
+  "blurb": "Hotteok is a flour dough pancake filled with sugar syrup inside. It’s one of the most popular street snacks in Korea. Ok, now it’s time for me to release my hot",
+  "ingredients": [
+   "water",
+   "2 tbs white sugar",
+   "2 ts dry yeast",
+   "½ ts kosher salt",
+   "1 tbs vegetable oil",
+   "2 cups and ½ cup of all purpose flour",
+   "½ cup turbinado sugar (or brown sugar)",
+   "1 ts cinnamon powder",
+   "2 tbs chopped walnuts"
+  ]
+ },
+ {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "姜汁烧肉",
   "title": "Ginger Pork (Shogayaki)",
   "url": "https://www.justonecookbook.com/ginger-pork-shogayaki/",
@@ -1636,6 +2179,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "日式咖喱鸡",
   "title": "Easy Japanese Curry",
   "url": "https://www.justonecookbook.com/10-minute-meal-japanese-curry/",
@@ -1660,6 +2204,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "三文鱼炊饭",
   "title": "Salmon Takikomi Gohan (Salmon Rice)",
   "url": "https://japanesecooking101.com/salmon-takikomi-gohan-recipe/",
@@ -1683,6 +2228,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [
+   "protein"
+  ],
   "zh": "亲子丼",
   "title": "Oyakodon (Chicken and Egg Rice Bowl)",
   "url": "https://www.justonecookbook.com/oyakodon/",
@@ -1708,6 +2256,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "黄油酱油鸡",
   "title": "Butter Shoyu Chicken",
   "url": "https://www.justonecookbook.com/teriyaki-chicken/",
@@ -1731,6 +2280,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "味噌汤",
   "title": "Homemade Miso Soup with Tofu",
   "url": "https://www.justonecookbook.com/homemade-miso-soup/",
@@ -1751,6 +2301,10 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [
+   "breakfast",
+   "protein"
+  ],
   "zh": "高汤玉子烧",
   "title": "Dashimaki Tamago (Japanese Dashi Rolled Omelette)",
   "url": "https://www.justonecookbook.com/tamagoyaki-japanese-rolled-omelette/",
@@ -1771,6 +2325,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "牛肉饭",
   "title": "Gyudon (Japanese Beef Rice Bowl)",
   "url": "https://www.justonecookbook.com/gyudon/",
@@ -1794,6 +2349,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "日式炸鸡排",
   "title": "Chicken Katsu",
   "url": "https://www.justonecookbook.com/chicken-katsu/",
@@ -1819,6 +2375,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "土豆炖肉",
   "title": "Nikujaga (Japanese Meat and Potato Stew)",
   "url": "https://www.justonecookbook.com/nikujaga/",
@@ -1844,6 +2401,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "日式炒饭",
   "title": "Japanese Fried Rice with Edamame, Tofu and Hijiki Seaweed",
   "url": "https://www.justonecookbook.com/japanese-fried-rice/",
@@ -1867,6 +2425,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "japanese",
+  "tags": [],
   "zh": "日式炸鸡",
   "title": "Karaage (Japanese Fried Chicken)",
   "url": "https://www.justonecookbook.com/karaage/",
@@ -1893,7 +2452,106 @@ window.RECIPES = [
   ]
  },
  {
+  "cuisine": "japanese",
+  "tags": [
+   "baking"
+  ],
+  "zh": "日式芝士蛋糕",
+  "title": "Japanese Cheesecake",
+  "url": "https://www.justonecookbook.com/japanese-cheesecake/",
+  "site": "justonecookbook.com",
+  "image": "https://www.justonecookbook.com/wp-content/uploads/2026/05/Japanese-Cheesecake-4631-I-1.jpg",
+  "minutes": 110,
+  "serves": "1",
+  "blurb": "Japanese Cheesecake is unlike any other—light and cottony, with a signature jiggle. This soufflé cheesecake melts on your tongue: It's creamy and rich, yet airy",
+  "ingredients": [
+   "10.6 oz cream cheese ((full fat; see end Notes))",
+   "200 ml heavy (whipping) cream ((¾ cup + 4 tsp; or use whole milk))",
+   "6 large eggs (50 g each w/o shell) ((10.6 oz, 300 g w/o shells))",
+   "4 Tbsp unsalted butter ((plus 1 Tbsp to grease the pan and parchment paper))",
+   "4½ Tbsp sugar ((for the cream cheese mixture))",
+   "½ cup sugar ((for the egg whites))",
+   "⅔ cup cake flour",
+   "½ large lemon ((for the zest + 2 Tbsp juice))",
+   "2 Tbsp apricot jam",
+   "2 tsp hot water"
+  ]
+ },
+ {
+  "cuisine": "japanese",
+  "tags": [
+   "baking"
+  ],
+  "zh": "长崎蛋糕",
+  "title": "Japanese Castella Cake",
+  "url": "https://www.justonecookbook.com/castella/",
+  "site": "justonecookbook.com",
+  "image": "https://www.justonecookbook.com/wp-content/uploads/2024/04/Castella-Cake-8335-I-1.jpg",
+  "minutes": 60,
+  "serves": "1",
+  "blurb": "Treat yourself to this moist and bouncy Japanese honey sponge cake called Castella. Prized for its delicate crumb and lightly sweet flavor, it's a beloved tea s",
+  "ingredients": [
+   "2 Tbsp water",
+   "3 Tbsp honey",
+   "1 Tbsp mizuame syrup (glutinous starch syrup)",
+   "100 g bread flour",
+   "3 large eggs (50 g each w/o shell) ((at room temperature—very important!))",
+   "100 g sugar ((½ cup))",
+   "½ Tbsp white sparkling sugar"
+  ]
+ },
+ {
+  "cuisine": "japanese",
+  "tags": [
+   "baking"
+  ],
+  "zh": "铜锣烧",
+  "title": "Dorayaki (Japanese Red Bean Pancake)",
+  "url": "https://www.justonecookbook.com/dorayaki/",
+  "site": "justonecookbook.com",
+  "image": "https://www.justonecookbook.com/wp-content/uploads/2027/03/Dorayaki-Japanese-Red-Bean-Pancake-3716-I.jpg",
+  "minutes": 30,
+  "serves": "6",
+  "blurb": "Dorayaki (Japanese Red Bean Pancake) is one of Japan’s most loved sweets. Soft, fluffy honey pancakes are sandwiched with sweet anko paste for a treat that feel",
+  "ingredients": [
+   "17.6 oz sweet red bean paste (anko) ((see end Notes))",
+   "4 large eggs (50 g each w/o shell)",
+   "2 Tbsp honey",
+   "⅔ cup sugar",
+   "1⅓ cups all-purpose flour (plain flour)",
+   "1 tsp baking powder ((see Notes))",
+   "1–2 Tbsp water",
+   "neutral oil ((for greasing the pan))"
+  ]
+ },
+ {
+  "cuisine": "japanese",
+  "tags": [
+   "baking"
+  ],
+  "zh": "抹茶蛋糕卷",
+  "title": "Matcha Swiss Roll (Roll Cake)",
+  "url": "https://www.justonecookbook.com/matcha-swiss-roll/",
+  "site": "justonecookbook.com",
+  "image": "https://www.justonecookbook.com/wp-content/uploads/2021/12/Matcha-Swiss-Roll-5916-I.jpg",
+  "minutes": 102,
+  "serves": "1",
+  "blurb": "Matcha Swiss Roll is a fluffy sponge cake with a swirl of fresh matcha cream filling. Light, creamy, and mildly sweet, it‘s a delicious afternoon snack or post-",
+  "ingredients": [
+   "4 large eggs (50 g each w/o shell)",
+   "¾ cup cake flour",
+   "½ tsp baking powder",
+   "2 Tbsp matcha (ceremonial or culinary grade) ((1 Tbsp matcha is 6 g))",
+   "½ cup sugar ((divided))",
+   "2 Tbsp whole milk ((microwave until warm to the touch))",
+   "¾ cup heavy (whipping) cream ((chilled))",
+   "1½ Tbsp sugar",
+   "2 tsp matcha (ceremonial or culinary grade)"
+  ]
+ },
+ {
   "cuisine": "others",
+  "tags": [],
   "zh": "泰式炒河粉",
   "title": "Pad Thai",
   "url": "https://www.recipetineats.com/chicken-pad-thai/",
@@ -1924,6 +2582,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [],
   "zh": "泰式红咖喱",
   "title": "Thai Red Curry with Chicken",
   "url": "https://www.recipetineats.com/thai-red-curry-with-chicken/",
@@ -1955,6 +2614,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [],
   "zh": "希腊沙拉",
   "title": "Greek Salad with Homemade Greek Salad Dressing",
   "url": "https://www.recipetineats.com/greek-salad/",
@@ -1981,6 +2641,10 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [
+   "breakfast",
+   "protein"
+  ],
   "zh": "番茄烩蛋(中东)",
   "title": "Shakshuka (Middle Eastern Poached or Baked Eggs)",
   "url": "https://www.recipetineats.com/shakshuka/",
@@ -2008,6 +2672,9 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [
+   "protein"
+  ],
   "zh": "希腊烤鸡",
   "title": "Greek Chicken",
   "url": "https://www.recipetineats.com/greek-chicken/",
@@ -2032,6 +2699,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [],
   "zh": "越南虾春卷",
   "title": "Vietnamese Rice Paper Rolls (Spring Rolls)",
   "url": "https://www.recipetineats.com/vietnamese-rice-paper-rolls/",
@@ -2057,6 +2725,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [],
   "zh": "泰式打抛",
   "title": "Thai Holy Basil Stir Fry Recipe for Any Meat (Pad Kra Pao)",
   "url": "https://hot-thai-kitchen.com/pad-kra-pao/",
@@ -2087,6 +2756,7 @@ window.RECIPES = [
  },
  {
   "cuisine": "others",
+  "tags": [],
   "zh": "烤三文鱼卷饼",
   "title": "12 Minute Baked Salmon Fajitas",
   "url": "https://www.recipetineats.com/baked-salmon/",

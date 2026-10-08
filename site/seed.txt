@@ -1,21 +1,33 @@
-# cuisine | 中文名 | recipe URL      (build.py checks every URL and reads title, photo, time from the page)
-chinese  | 西兰花炒鸡片 | https://www.recipetineats.com/chicken-broccoli-stir-fry/
+# cuisine | 中文名 | recipe URL | optional tags: baking, breakfast, protein (comma separated)
+# build.py checks every URL and reads title, photo, time and ingredients from the page
+chinese  | 西兰花炒鸡片 | https://www.recipetineats.com/chicken-broccoli-stir-fry/ | protein
 chinese  | 炒米粉       | https://www.recipetineats.com/singapore-noodles/
 chinese  | 番茄炒蛋     | https://redhousespice.com/tomato-egg-stir-fry/
-chinese  | 蒸水蛋       | https://omnivorescookbook.com/chinese-steamed-egg/
+chinese  | 蒸水蛋       | https://omnivorescookbook.com/chinese-steamed-egg/ | breakfast, protein
 chinese  | 小白菜炒豆泡 | https://omnivorescookbook.com/stir-fried-bok-choy/
 chinese  | 宫保鸡丁     | https://rasamalaysia.com/kung-pao-chicken-recipe/
 chinese  | 虾仁炒饭     | https://www.recipetineats.com/chinese-fried-rice/
 chinese  | 麻婆豆腐     | https://www.recipetineats.com/mapo-tofu/
 chinese  | 鸡肉玉米羹   | https://www.recipetineats.com/chinese-chicken-corn-soup/
 chinese  | 蚝油芥兰     | https://www.recipetineats.com/chinese-broccoli-with-oyster-sauce/
-western  | 蒜香黄油虾   | https://www.recipetineats.com/garlic-prawns/
+chinese  | 杏仁饼       | https://omnivorescookbook.com/chinese-almond-cookies/ | baking
+western  | 蒜香黄油虾   | https://www.recipetineats.com/garlic-prawns/ | protein
 western  | 肉酱意面     | https://www.recipetineats.com/spaghetti-bolognese/
 western  | 牧羊人派     | https://www.recipetineats.com/shepherds-pie/
 western  | 土豆泥       | https://www.recipetineats.com/mashed-potato/
-western  | 烤鸡胸       | https://www.recipetineats.com/oven-baked-chicken-breast/
+western  | 烤鸡胸       | https://www.recipetineats.com/oven-baked-chicken-breast/ | protein
 western  | 蘑菇汤       | https://www.recipetineats.com/mushroom-soup/
 western  | 牛肉汉堡     | https://www.recipetineats.com/hamburger/
+western  | 巧克力蛋糕   | https://www.recipetineats.com/chocolate-cake/ | baking
+western  | 胡萝卜蛋糕   | https://www.recipetineats.com/carrot-cake/ | baking
+western  | 巧克力豆饼干 | https://www.recipetineats.com/chocolate-chip-cookies/ | baking
+western  | 苹果酥       | https://www.recipetineats.com/apple-crumble/ | baking
+western  | 无面粉布朗尼 | https://www.recipetineats.com/brownies/ | baking
+western  | 简易巧克力蛋糕 | https://www.bbcgoodfood.com/recipes/easy-chocolate-cake | baking
+western  | 布朗尼       | https://www.bbcgoodfood.com/recipes/best-ever-chocolate-brownies-recipe | baking
+western  | 维多利亚海绵蛋糕 | https://www.bbcgoodfood.com/recipes/classic-victoria-sandwich-recipe | baking
+western  | 柠檬糖霜蛋糕 | https://www.bbcgoodfood.com/recipes/lemon-drizzle-cake | baking
+western  | 香蕉蛋糕     | https://www.bbcgoodfood.com/recipes/banana-bread | baking, breakfast
 malay    | 甜酱油焖鸡   | https://nomadette.com/ayam-kicap-manis/
 malay    | 椰浆饭       | https://rasamalaysia.com/nasi-lemak-recipe/
 malay    | 仁当牛肉     | https://rasamalaysia.com/beef-rendang-recipe-rendang-daging/
@@ -26,20 +38,25 @@ malay    | 参巴虾       | https://rasamalaysia.com/sambal-udang-prawn-sambal/
 malay    | 马来炒饭     | https://nomadette.com/nasi-goreng-kampung/
 malay    | 嘛嘛炒面     | https://nomadette.com/mee-goreng-mamak/
 malay    | 香料炸鸡     | https://nomadette.com/ayam-goreng-berempah/
+malay    | 班兰戚风蛋糕 | https://rasamalaysia.com/pandan-chiffon-cake/ | baking
+malay    | 鸡蛋糕(Kuih Bahulu) | https://rasamalaysia.com/kuih-bahulu/ | baking
+malay    | 椰丝班兰卷   | https://rasamalaysia.com/kuih-dadar/ | baking
 indian   | 扁豆汤       | https://www.indianhealthyrecipes.com/dal-tadka/
 indian   | 鹰嘴豆咖喱   | https://www.indianhealthyrecipes.com/chana-masala/
 indian   | 孜然饭       | https://www.indianhealthyrecipes.com/jeera-rice/
 indian   | 土豆花菜     | https://www.indianhealthyrecipes.com/aloo-gobi/
 indian   | 印度咖喱鸡   | https://www.indianhealthyrecipes.com/chicken-curry/
-indian   | 印度煎饼     | https://www.indianhealthyrecipes.com/chapati/
+indian   | 印度煎饼     | https://www.indianhealthyrecipes.com/chapati/ | breakfast
 indian   | 菠菜奶酪     | https://www.indianhealthyrecipes.com/palak-paneer-recipe/
 indian   | 黄油鸡(简易) | https://www.recipetineats.com/butter-chicken/
-indian   | 印度鸡蛋炒   | https://www.indianhealthyrecipes.com/egg-bhurji/
-french   | 法式吐司     | https://www.recipetineats.com/french-toast/
+indian   | 印度鸡蛋炒   | https://www.indianhealthyrecipes.com/egg-bhurji/ | breakfast, protein
+indian   | 印度酥饼     | https://www.indianhealthyrecipes.com/nankhatai-recipe/ | baking
+indian   | 无蛋巧克力蛋糕 | https://www.indianhealthyrecipes.com/eggless-chocolate-cake/ | baking
+french   | 法式吐司     | https://www.recipetineats.com/french-toast/ | breakfast
 french   | 法式洋葱汤   | https://www.recipetineats.com/french-onion-soup/
 french   | 法式咸派     | https://www.recipetineats.com/quiche-lorraine/
 french   | 普罗旺斯炖菜 | https://www.recipetineats.com/ratatouille/
-french   | 法式薄饼     | https://www.recipetineats.com/crepes/
+french   | 法式薄饼     | https://www.recipetineats.com/crepes/ | breakfast
 french   | 法式火腿芝士三明治 | https://www.recipetineats.com/croque-monsieur/
 french   | 猎人烩鸡     | https://www.recipetineats.com/chicken-chasseur/
 italian  | 奶油蘑菇意面 | https://www.recipetineats.com/creamy-mushroom-pasta/
@@ -53,31 +70,36 @@ korean   | 辣炖豆腐     | https://www.beyondkimchee.com/braised-tofu/
 korean   | 泡菜汤       | https://www.maangchi.com/recipe/kimchi-jjigae
 korean   | 杂菜         | https://www.maangchi.com/recipe/japchae
 korean   | 石锅拌饭     | https://www.maangchi.com/recipe/bibimbap
-korean   | 韩式蒸蛋     | https://www.maangchi.com/recipe/gyeranjjim
-korean   | 韩式烤牛肉   | https://www.maangchi.com/recipe/bulgogi
+korean   | 韩式蒸蛋     | https://www.maangchi.com/recipe/gyeranjjim | breakfast, protein
+korean   | 韩式烤牛肉   | https://www.maangchi.com/recipe/bulgogi | protein
 korean   | 泡菜炒饭     | https://www.maangchi.com/recipe/kimchi-bokkeumbap
 korean   | 辣炒年糕     | https://www.maangchi.com/recipe/tteokbokki
 korean   | 大酱汤       | https://www.maangchi.com/recipe/doenjang-jjigae
 korean   | 凉拌豆芽     | https://www.maangchi.com/recipe/kongnamul-muchim
 korean   | 韩式煎饼     | https://www.maangchi.com/recipe/pajeon
 korean   | 韩式紫菜饭卷 | https://www.maangchi.com/recipe/gimbap
+korean   | 韩式糖饼     | https://www.maangchi.com/recipe/hotteok | baking
 japanese | 姜汁烧肉     | https://www.justonecookbook.com/ginger-pork-shogayaki/
 japanese | 日式咖喱鸡   | https://www.justonecookbook.com/10-minute-meal-japanese-curry/
 japanese | 三文鱼炊饭   | https://japanesecooking101.com/salmon-takikomi-gohan-recipe/
-japanese | 亲子丼       | https://www.justonecookbook.com/oyakodon/
+japanese | 亲子丼       | https://www.justonecookbook.com/oyakodon/ | protein
 japanese | 黄油酱油鸡   | https://www.justonecookbook.com/teriyaki-chicken/
 japanese | 味噌汤       | https://www.justonecookbook.com/homemade-miso-soup/
-japanese | 高汤玉子烧       | https://www.justonecookbook.com/tamagoyaki-japanese-rolled-omelette/
+japanese | 高汤玉子烧       | https://www.justonecookbook.com/tamagoyaki-japanese-rolled-omelette/ | breakfast, protein
 japanese | 牛肉饭       | https://www.justonecookbook.com/gyudon/
 japanese | 日式炸鸡排   | https://www.justonecookbook.com/chicken-katsu/
 japanese | 土豆炖肉     | https://www.justonecookbook.com/nikujaga/
 japanese | 日式炒饭     | https://www.justonecookbook.com/japanese-fried-rice/
 japanese | 日式炸鸡     | https://www.justonecookbook.com/karaage/
+japanese | 日式芝士蛋糕 | https://www.justonecookbook.com/japanese-cheesecake/ | baking
+japanese | 长崎蛋糕     | https://www.justonecookbook.com/castella/ | baking
+japanese | 铜锣烧       | https://www.justonecookbook.com/dorayaki/ | baking
+japanese | 抹茶蛋糕卷   | https://www.justonecookbook.com/matcha-swiss-roll/ | baking
 others   | 泰式炒河粉   | https://www.recipetineats.com/chicken-pad-thai/
 others   | 泰式红咖喱   | https://www.recipetineats.com/thai-red-curry-with-chicken/
 others   | 希腊沙拉     | https://www.recipetineats.com/greek-salad/
-others   | 番茄烩蛋(中东) | https://www.recipetineats.com/shakshuka/
-others   | 希腊烤鸡     | https://www.recipetineats.com/greek-chicken/
+others   | 番茄烩蛋(中东) | https://www.recipetineats.com/shakshuka/ | breakfast, protein
+others   | 希腊烤鸡     | https://www.recipetineats.com/greek-chicken/ | protein
 others   | 越南虾春卷   | https://www.recipetineats.com/vietnamese-rice-paper-rolls/
 others   | 泰式打抛     | https://hot-thai-kitchen.com/pad-kra-pao/
 others   | 烤三文鱼卷饼 | https://www.recipetineats.com/baked-salmon/

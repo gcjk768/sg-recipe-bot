@@ -61,3 +61,13 @@ def test_ingredient_lines():
          "pantry_staples": ["salt"]}
     assert ingredient_lines(r) == ["400 g chicken thigh, sliced", "0.5 egg", "salt (pantry)"]
     assert ingredient_lines({}) == []
+
+
+def test_recipe_tags():
+    from recipebot.site_export import recipe_tags
+    assert recipe_tags("high_protein", {"meals": ["breakfast"]}) == ["protein", "breakfast"]
+    assert recipe_tags("high_protein", {"meals": ["dinner"]}) == ["protein"]
+    assert recipe_tags("soups", {"protein_per_serving_g": 31}) == ["protein"]
+    assert recipe_tags("soups", {"nutrition_per_serving": {"protein_g": "12"}}) == []
+    assert recipe_tags("breakfast", {}) == ["breakfast"]
+    assert recipe_tags("baking_cakes", {}) == ["baking"]

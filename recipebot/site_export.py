@@ -83,6 +83,24 @@ def ingredient_lines(recipe: dict) -> list[str]:
     return lines
 
 
+def recipe_tags(category: str, recipe: dict) -> list[str]:
+    """Website topics the bot knows for sure: protein (its high_protein category or 25 g+ a
+    serving), breakfast (meal tag or category) and baking. Keyword topics are added by the page."""
+    tags = []
+    protein = recipe.get("protein_per_serving_g") or (recipe.get("nutrition_per_serving") or {}).get("protein_g") or 0
+    try:
+        protein = float(protein)
+    except (TypeError, ValueError):
+        protein = 0
+    if category == "high_protein" or protein >= 25:
+        tags.append("protein")
+    if category == "breakfast" or "breakfast" in (recipe.get("meals") or []):
+        tags.append("breakfast")
+    if category.startswith("baking"):
+        tags.append("baking")
+    return tags
+
+
 def _write_json(path: Path, data: Any) -> None:
     tmp = path.with_name(path.name + ".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
@@ -99,10 +117,10 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
     except (OSError, ValueError):
         images = {}
     rows = history.conn.execute(
-        "SELECT sent_at, title, url, recipe_json FROM sent_recipes ORDER BY sent_at DESC, id DESC"
+        "SELECT sent_at, title, url, recipe_json, category FROM sent_recipes ORDER BY sent_at DESC, id DESC"
     ).fetchall()
     items, seen, fetched = [], set(), False
-    for sent_at, title, url, recipe_json in rows:
+    for sent_at, title, url, recipe_json, category in rows:
         if url in seen or not url.startswith("https://"):
             continue
         seen.add(url)
@@ -116,6 +134,7 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
             r = {}
         items.append({
             "cuisine": kitchen(r.get("cuisine", "")),
+            "tags": recipe_tags(category or "", r),
             "zh": r.get("title_zh") or "",
             "title": title,
             "url": url,

@@ -34,8 +34,10 @@ def parse_seed(text: str) -> list[dict]:
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        cuisine, zh, url = (part.strip() for part in line.split("|"))
-        rows.append({"cuisine": cuisine, "zh": zh, "url": url})
+        parts = [part.strip() for part in line.split("|")]
+        cuisine, zh, url = parts[:3]
+        tags = [t.strip() for t in parts[3].split(",") if t.strip()] if len(parts) > 3 else []
+        rows.append({"cuisine": cuisine, "zh": zh, "url": url, "tags": tags})
     return rows
 
 
@@ -74,6 +76,7 @@ def card(row: dict, fetcher: Fetcher) -> tuple[dict | None, str]:
         return None, f"too long ({minutes} min)"
     return {
         "cuisine": row["cuisine"],
+        "tags": row["tags"],
         "zh": row["zh"],
         "title": recipe_node_title(node) or row["zh"],
         "url": row["url"],
@@ -106,7 +109,8 @@ def main() -> int:
 
 
 def _selftest() -> None:
-    assert parse_seed("# c\nchinese | 蛋 | https://x.com/a/\n") == [{"cuisine": "chinese", "zh": "蛋", "url": "https://x.com/a/"}]
+    assert parse_seed("# c\nchinese | 蛋 | https://x.com/a/\n") == [{"cuisine": "chinese", "zh": "蛋", "url": "https://x.com/a/", "tags": []}]
+    assert parse_seed("western | 糕 | https://x.com/b/ | baking, breakfast\n")[0]["tags"] == ["baking", "breakfast"]
     assert _minutes({"prepTime": "PT10M", "cookTime": "PT20M"}) == 30
     assert _servings(["4", "4 servings"]) == "4"
     assert _as_list("1 egg") == ["1 egg"] and _as_list(None) == []
