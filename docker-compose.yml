@@ -1,5 +1,6 @@
 services:
   recipebot:
+    networks: [default, scrape-net]   # shared Playwright server ws://playwright:3000/
     build: .
     # Dockge Update/Start then rebuilds from the code on disk instead of reusing the old image.
     pull_policy: build
@@ -49,3 +50,7 @@ services:
 
 volumes:
   claude-home:
+
+networks:
+  scrape-net:
+    external: true
