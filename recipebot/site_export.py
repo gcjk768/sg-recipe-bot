@@ -11,7 +11,7 @@ import json
 import logging
 import os
 import re
-from datetime import datetime, tzinfo
+from datetime import datetime, timedelta, tzinfo
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -117,7 +117,10 @@ def _write_json(path: Path, data: Any) -> None:
     os.replace(tmp, path)
 
 
-def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
+KEEP_DAYS = 90  # the owner, 2026-10-09: older recipes leave the website unless saved (saved ones live in the browser)
+
+
+def export_site(history, out_dir: Path, fetcher, tz: tzinfo, now: datetime | None = None) -> int:
     """Writes daily.json from the history table; returns the number of recipes written."""
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_path = out_dir / "images.json"
@@ -128,10 +131,13 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
     rows = history.conn.execute(
         "SELECT sent_at, title, url, recipe_json, category FROM sent_recipes ORDER BY sent_at DESC, id DESC"
     ).fetchall()
+    cutoff = ((now or datetime.now(tz)) - timedelta(days=KEEP_DAYS)).date().isoformat()
     items, seen, fetched = [], set(), False
     for sent_at, title, url, recipe_json, category in rows:
         if url in seen or not url.startswith("https://"):
             continue
+        if datetime.fromisoformat(sent_at).astimezone(tz).date().isoformat() < cutoff:
+            continue  # older than KEEP_DAYS: off the website (still in history, so never posted again)
         seen.add(url)
         if not isinstance(images.get(url), dict):  # str entries are the older photo-only cache
             result = fetcher.fetch(url)

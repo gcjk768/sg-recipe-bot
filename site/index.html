@@ -656,7 +656,9 @@ async function load() {
     minutes: null, ingredients: v.ingredients || [], serves: v.servings ? String(v.servings) : null }));
   const curated = (window.RECIPES || []);
   const seen = new Set(curated.map(r => r.url));
-  recipes = [...daily.filter(r => !seen.has(r.url)), ...curated, ...videos].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
+  // saved dishes stay even after they leave the feed (older than 3 months): they live in this browser
+  const live = new Set([...daily, ...curated, ...videos].map(r => r.url));
+  recipes = [...daily.filter(r => !seen.has(r.url)), ...curated, ...videos, ...saved.filter(r => !live.has(r.url))].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
   const kitchens = new Set(recipes.map(r => r.cuisine)).size;
   const nVideos = recipes.filter(r => r.video).length;
   $("#lede").textContent = `${recipes.length - nVideos} simple recipes and ${nVideos} cooking videos from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;

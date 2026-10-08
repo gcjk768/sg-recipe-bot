@@ -39,7 +39,7 @@ def test_export_newest_first_and_images_cached(tmp_path):
         new = Recipe.model_validate(make_recipe(title="New Dish", cuisine="Italian", source={"site": "b", "url": "https://www.b.com/new/"}))
         history.add_sent(old, main_ingredient="tofu", run_id="r1", sent_at=datetime(2026, 10, 7, 1, tzinfo=timezone.utc))
         history.add_sent(new, main_ingredient="beef", run_id="r2", sent_at=datetime(2026, 10, 8, 17, tzinfo=timezone.utc))
-        assert export_site(history, out, fetcher, SGT) == 2
+        assert export_site(history, out, fetcher, SGT, now=datetime(2026, 10, 9, tzinfo=SGT)) == 2
         items = json.loads((out / "daily.json").read_text(encoding="utf-8"))
         assert [i["title"] for i in items] == ["New Dish", "Old Dish"]
         assert items[0]["cuisine"] == "italian" and items[0]["site"] == "b.com"
@@ -47,7 +47,7 @@ def test_export_newest_first_and_images_cached(tmp_path):
         assert items[0]["image"] == "https://img/a.jpg"
         assert (items[0]["rating"], items[0]["ratings"]) == (4.9, 812)
         assert items[0]["ingredients"] and all(isinstance(line, str) and line for line in items[0]["ingredients"])
-        export_site(history, out, fetcher, SGT)
+        export_site(history, out, fetcher, SGT, now=datetime(2026, 10, 9, tzinfo=SGT))
         assert len(fetcher.calls) == 2  # second export reads photos from images.json
 
 
@@ -79,3 +79,13 @@ def test_recipe_tags():
     assert recipe_tags("soups", {"nutrition_per_serving": {"protein_g": "12"}}) == []
     assert recipe_tags("breakfast", {}) == ["breakfast"]
     assert recipe_tags("baking_cakes", {}) == ["baking"]
+
+
+
+def test_export_leaves_out_recipes_older_than_three_months(tmp_path):
+    with History(tmp_path / "h.sqlite") as history:
+        for title, url, when in (("Old", "https://a.com/old/", datetime(2026, 6, 1, tzinfo=timezone.utc)),
+                                 ("New", "https://a.com/new/", datetime(2026, 10, 1, tzinfo=timezone.utc))):
+            history.add_sent(Recipe.model_validate(make_recipe(title=title, source={"site": "a", "url": url})), main_ingredient=None, run_id="r", sent_at=when)
+        assert export_site(history, tmp_path / "site", FakeFetcher(), SGT, now=datetime(2026, 10, 9, tzinfo=SGT)) == 1
+        assert [i["title"] for i in json.loads((tmp_path / "site" / "daily.json").read_text(encoding="utf-8"))] == ["New"]

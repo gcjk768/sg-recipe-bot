@@ -329,11 +329,11 @@ class Pipeline:
         reports = []
         plan = daily_plan(day)
         self.vault.log("🚀", "daily run started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
-        refresh_videos(self.settings.site_export_dir, day, self.llm, self.fetcher)  # YouTube + Bilibili video recipes for the website
         for i, (meal, slot) in enumerate(plan):
             if i:
                 self.sleep(DAILY_PAUSE)
             reports.append(self.run(category=slot.category, theme=slot.theme, count=1, day=day, scheduled=True, meal=meal))
+        refresh_videos(self.settings.site_export_dir, day, self.llm, self.fetcher)  # videos last (the owner): recipes first
         posted = sum(len(r.posted) for r in reports)
         failed = sum(not r.ok for r in reports)
         self.vault.log("🏁", "daily run finished", f"{posted} of {len(plan)} posted, {failed} failed", when=self.now())  # 🏁

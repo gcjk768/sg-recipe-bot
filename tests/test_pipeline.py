@@ -431,9 +431,9 @@ def test_no_admin_chat_means_no_alert(settings, fixed_now):
 
 def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch):
     monkeypatch.setattr("recipebot.rotation.PER_MEAL", 2)
-    plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 29))
+    monkeypatch.setattr("recipebot.rotation.MEALS_PER_DAY", 3)  # all three meals; 2026-09-28 starts at breakfast
     monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
-    plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 29))
+    plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 28))
     assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2
     assert {s.category for _, s in plan} == {"high_protein"}
     urls = [f"https://x.com/{i}" for i in range(len(plan))]
@@ -441,13 +441,13 @@ def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch
                                            cook_minutes=10, total_minutes=15, source={"site": "s", "url": urls[i]})],
                                 category=s.category) for i, (_, s) in enumerate(plan)])
     pipeline, tg, _, _ = build(settings, llm, fixed_now, web_routes={u: FakeResponse(200, body=RECIPE_HTML) for u in urls})
-    reports = pipeline.run_daily(date(2026, 9, 29))
+    reports = pipeline.run_daily(date(2026, 9, 28))
     assert [r.status for r in reports] == ["posted"] * len(plan)
     assert "theme: lunch meal prep for workouts" in llm.calls[2]["user"]
     posts = sent_texts(tg)
     assert len(posts) == len(plan) and "#breakfast" in posts[0] and "#dinner" in posts[-1]
     with History(settings.db_path) as history:  # recorded against the scheduled date, so the loop won't rerun it
-        assert len(history.runs_for_day(date(2026, 9, 29))) == len(plan)
+        assert len(history.runs_for_day(date(2026, 9, 28))) == len(plan)
 
 
 def test_all_rejected_then_second_pick_posts(settings, fixed_now):
@@ -472,3 +472,11 @@ def test_telegram_off_sends_no_alerts(settings, fixed_now):
     settings.telegram_enabled = False
     pipeline, tg, _, _ = build(settings, FakeLLM(["nope", "nope"]), fixed_now)
     assert pipeline.run(category="high_protein").status == "failed" and tg.posts == []
+
+
+
+def test_one_meal_a_day_rotates_breakfast_lunch_dinner(monkeypatch):
+    from recipebot.rotation import daily_plan
+    monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
+    meals = [daily_plan(date(2026, 9, 28 + i))[0][0] for i in range(3)]
+    assert meals == ["breakfast", "lunch", "dinner"] and all(len(daily_plan(date(2026, 9, 28 + i))) == 1 for i in range(3))

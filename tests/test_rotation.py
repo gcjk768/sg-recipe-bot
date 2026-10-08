@@ -68,17 +68,13 @@ def test_invalid_json(tmp_path):
         Rotation.load(path, date(2026, 9, 28))
 
 
-def test_daily_plan_adds_one_to_five_bakes_both_sides():
+def test_one_bake_a_day_alternating_western_and_eastern():
     from recipebot.rotation import bake_slots, daily_plan
-    counts = set()
-    for i in range(60):
+    sides = []
+    for i in range(6):
         day = date(2026, 10, 1) + timedelta(days=i)
         bakes = bake_slots(day)
-        counts.add(len(bakes))
-        assert bake_slots(day) == bakes  # same day, same plan after a restart
-        assert all(s.category == "baking_cakes" for s in bakes)
-        plan = daily_plan(day)
-        assert plan[-len(bakes):] == [(None, s) for s in bakes]
-        if len(bakes) >= 2:
-            assert {s.theme.split()[0] for s in bakes} == {"Western", "Eastern"}
-    assert counts == {1, 2, 3, 4, 5}
+        assert len(bakes) == 1 and bakes[0].category == "baking_cakes" and bake_slots(day) == bakes
+        assert daily_plan(day)[-1] == (None, bakes[0])  # the bake comes after the meal
+        sides.append(bakes[0].theme.split()[0])
+    assert set(sides) == {"Western", "Eastern"}

@@ -20,7 +20,7 @@ def test_keep_needs_views_and_a_normal_length():
 
 def test_queries_rotate_daily():
     a, b = queries_for(date(2026, 10, 9)), queries_for(date(2026, 10, 10))
-    assert len(a) == 4 and a != b and all(q in QUERIES for q in a + b)
+    assert len(a) == 1 and a != b and all(q in QUERIES for q in a + b)
 
 
 def test_refresh_merges_dedupes_and_survives_a_failing_platform(tmp_path):
@@ -94,3 +94,12 @@ def test_write_up_checks_each_video_once_and_retries_a_failed_call(tmp_path):
     assert stored["2"]["recipe_checked"] is False                             # model failed: try another day
     llm2 = _LLM([recipe])
     assert write_up(tmp_path, llm2, None, limit=5, texts=texts) == 1 and llm2.calls == 1
+
+
+
+def test_refresh_drops_videos_older_than_three_months(tmp_path):
+    old = {"platform": "youtube", "url": "https://www.youtube.com/watch?v=old", "title": "Old", "added": "2026-06-01"}
+    recent = {**old, "url": "https://www.youtube.com/watch?v=new", "added": "2026-10-01"}
+    (tmp_path / "videos.json").write_text(json.dumps([recent, old]), encoding="utf-8")
+    refresh(tmp_path, date(2026, 10, 9), {"youtube": lambda q: []})
+    assert [v["url"][-3:] for v in json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))] == ["new"]

@@ -26,7 +26,8 @@ log = logging.getLogger(__name__)
 MIN_VIEWS = 20_000            # well watched: a rough "this recipe works for people" signal
 MIN_SECONDS, MAX_SECONDS = 60, 40 * 60  # no shorts, no hour-long streams
 PER_SEARCH = 6                # results asked for per platform per dish
-QUERIES_PER_DAY = 4
+QUERIES_PER_DAY = 1  # the owner, 2026-10-09: one dish a day; videos come last
+KEEP_DAYS = 90       # older videos leave the website (saved ones stay in the family's browser)
 MAX_VIDEOS = 3000
 
 # (English search, Chinese search, cuisine key on the website, extra tags). The Chinese term goes
@@ -161,8 +162,10 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
                     seen.add(v["url"])
                     added.append({**v, "dish": en.replace(" recipe", ""), "dish_zh": zh.replace(" 做法", ""),
                                   "cuisine": cuisine, "tags": list(tags), "added": day.isoformat()})
-    if added:
-        videos = (added + videos)[:MAX_VIDEOS]
+    cutoff = date.fromordinal(day.toordinal() - KEEP_DAYS).isoformat()
+    kept = [v for v in videos if v.get("added", "") >= cutoff]
+    if added or len(kept) < len(videos):
+        videos = (added + kept)[:MAX_VIDEOS]
         tmp = path.with_name(path.name + ".tmp")
         tmp.write_text(json.dumps(videos, ensure_ascii=False), encoding="utf-8")
         os.chmod(tmp, 0o644)
@@ -173,7 +176,7 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
 
 # ---- the recipe inside a video: description + subtitles -> ingredients and steps ----------------
 
-RECIPES_PER_DAY = 10  # model calls a day for writing up video recipes, most watched first
+RECIPES_PER_DAY = 1  # model calls a day for writing up video recipes, most watched first (the owner, 2026-10-09)
 RECIPE_SYSTEM = """You turn a cooking video's title, description and transcript into a written recipe for home cooks.
 Use only what the text says. Do not invent ingredients, quantities or steps; leave a quantity out if the text has none.
 Write in the video's main language (Chinese for a Chinese video, English for an English one).

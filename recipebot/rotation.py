@@ -49,7 +49,8 @@ class ScheduledSlot:
 DEFAULT_WEEKS: list[list[Slot]] = [[Slot("high_protein")] * 7]  # one week, Monday to Sunday
 
 
-PER_MEAL = 1  # 3 meals x 1 = 3 posts a day (the owner, 2026-10-05: keep the API cost under $1 a day)
+PER_MEAL = 1  # recipes per meal slot
+MEALS_PER_DAY = 1  # the owner, 2026-10-09: one high protein meal a day (rotating breakfast, lunch, dinner) is enough
 MAIN_CATEGORIES = ("high_protein",)  # the owner, 2026-10-04: the bot only posts high protein meal prep
 PROTEINS = (
     "chicken breast", "eggs", "firm tofu", "lean beef mince", "canned tuna", "prawns", "lentils",
@@ -65,7 +66,7 @@ STYLES = (
 )  # the owner, 2026-10-08: more cuisines, Chinese broken down by dialect
 
 
-BAKES_PER_DAY = (1, 5)  # the owner, 2026-10-08: 1 to 5 cakes and bakes a day for the family website
+BAKES_PER_DAY = (1, 1)  # the owner, 2026-10-09: one bake a day (was 1 to 5); themes alternate Western and Eastern
 BAKES = (
     ("Western", "banana bread"), ("Eastern", "pandan chiffon cake"), ("Western", "brownies"),
     ("Eastern", "kuih bahulu"), ("Western", "butter cake"), ("Eastern", "huat kueh or ma lai gao (steamed cake)"),
@@ -88,12 +89,14 @@ def bake_slots(day: date) -> list[Slot]:
 
 
 def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
-    """The scheduled day's posts as (meal, slot): PER_MEAL each of breakfast, lunch and dinner, all
+    """The scheduled day's posts as (meal, slot): MEALS_PER_DAY meals (rotating breakfast, lunch, dinner), PER_MEAL each, all
     high protein meal prep, each built around a different main protein (shifted by one each day),
     then the day's bakes, which carry no forced meal tag."""
     shift = day.toordinal() % len(PROTEINS)
     plan: list[tuple[str | None, Slot]] = []
-    for meal in ("breakfast", "lunch", "dinner"):
+    meals = ("breakfast", "lunch", "dinner")
+    start = day.toordinal() % len(meals)
+    for meal in (meals[(start + m) % len(meals)] for m in range(MEALS_PER_DAY)):
         for i in range(PER_MEAL):
             protein = PROTEINS[(shift + i) % len(PROTEINS)]
             style = STYLES[(day.toordinal() * 3 + len(plan)) % len(STYLES)]
