@@ -13,6 +13,8 @@ dependencies = [
     "anthropic>=1.9,<2",
     "curl_cffi>=0.7",
     "playwright==1.63.0",  # client for the NAS Playwright server (same version as its image)
+    "yt-dlp",              # YouTube video recipes (Agent Reach backend)
+    "bilibili-cli",        # Bilibili video recipe search (Agent Reach backend, no login)
     "pydantic>=2.6,<3",
     "requests>=2.31,<3",
     "tzdata>=2024.1",

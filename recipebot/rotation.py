@@ -58,6 +58,13 @@ PROTEINS = (
 )  # PER_MEAL of them, so no two posts of a meal share a main protein
 
 
+STYLES = (
+    "Cantonese", "Hokkien", "Teochew", "Hakka", "Hainanese", "Sichuan", "Shanghainese", "Taiwanese",
+    "Hong Kong", "Peranakan", "Malay", "Japanese", "Korean", "Thai", "Vietnamese", "Western",
+    "Italian", "French", "Mexican", "Middle Eastern", "Mediterranean",
+)  # the owner, 2026-10-08: more cuisines, Chinese broken down by dialect
+
+
 BAKES_PER_DAY = (1, 5)  # the owner, 2026-10-08: 1 to 5 cakes and bakes a day for the family website
 BAKES = (
     ("Western", "banana bread"), ("Eastern", "pandan chiffon cake"), ("Western", "brownies"),
@@ -89,7 +96,8 @@ def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
     for meal in ("breakfast", "lunch", "dinner"):
         for i in range(PER_MEAL):
             protein = PROTEINS[(shift + i) % len(PROTEINS)]
-            plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}")))
+            style = STYLES[(day.toordinal() * 3 + len(plan)) % len(STYLES)]
+            plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}, {style} style")))
     plan += [(None, slot) for slot in bake_slots(day)]
     return plan
 

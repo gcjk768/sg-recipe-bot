@@ -146,6 +146,7 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
             r = {}
         items.append({
             "cuisine": kitchen(r.get("cuisine", "")),
+            "origin": (r.get("cuisine") or "")[:60],
             "tags": recipe_tags(category or "", r),
             "kcal": _kcal(r),
             "zh": r.get("title_zh") or "",
@@ -159,6 +160,7 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
             "serves": str(r["servings"]) if r.get("servings") else None,
             "blurb": (r.get("why_it_fits") or "")[:160],
             "ingredients": ingredient_lines(r),
+            "steps": [str(st) for st in r.get("steps") or []][:12],
             "added": datetime.fromisoformat(sent_at).astimezone(tz).date().isoformat(),
         })
     if fetched:

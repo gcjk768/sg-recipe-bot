@@ -27,6 +27,7 @@ from recipebot import telegram as tg
 from recipebot.render import RenderError, render_alert, render_recipe
 from recipebot.rotation import Rotation, Slot, daily_plan
 from recipebot.site_export import safe_export
+from recipebot.videos import safe_refresh as refresh_videos
 from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
 from recipebot.vault import Vault
@@ -328,6 +329,7 @@ class Pipeline:
         reports = []
         plan = daily_plan(day)
         self.vault.log("🚀", "daily run started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
+        refresh_videos(self.settings.site_export_dir, day, self.llm, self.fetcher)  # YouTube + Bilibili video recipes for the website
         for i, (meal, slot) in enumerate(plan):
             if i:
                 self.sleep(DAILY_PAUSE)

@@ -90,7 +90,7 @@ def browser_fetch(url: str, ws_url: str, timeout: float = 45) -> "FetchResult":
             return FetchResult(url=url, final_url=url, status=None, text="", error=f"browser: {type(exc).__name__}: {exc}")
         finally:
             _browser_last = time.monotonic()
-    if _BROWSER_CHALLENGE.search(seen) or status in (403, 429):
+    if _BROWSER_CHALLENGE.search(seen) or status in (403, 412, 429):
         log.info("browser fallback: %s still blocked (HTTP %s); not working around it", url, status)
         return FetchResult(url=url, final_url=final_url, status=status or 403, text=html, error=None)
     return FetchResult(url=url, final_url=final_url, status=status, text=html)
@@ -115,7 +115,7 @@ class Fetcher:
 
     def fetch(self, url: str) -> FetchResult:
         result = self._fetch(url)
-        if self.browser_ws and (result.status == 403 or is_bot_wall(result)):
+        if self.browser_ws and (result.status in (403, 412) or is_bot_wall(result)):  # 412: Bilibili's block
             browsed = browser_fetch(url, self.browser_ws)
             if browsed.error is None:
                 log.info("browser fallback for %s: HTTP %s", url, browsed.status)

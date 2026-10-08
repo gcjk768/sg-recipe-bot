@@ -142,11 +142,6 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .pagebar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.6rem; }
 .pagebar .btn { min-height: 58px; }
 #page .khead { margin-bottom: 1.6rem; }
-.vlinks { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 0 0 1.6rem; }
-.dbody .vlinks { margin: 1.2rem 0 0; }
-.vlabel { font-weight: 700; color: var(--ink-soft); margin-right: .2rem; }
-.vlink { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.1rem; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--ink); font-weight: 700; text-decoration: none; }
-.vlink:hover { background: var(--ink); color: var(--paper); }
 .pager { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin: 2.2rem 0 1rem; }
 .pager button { min-width: 56px; min-height: 56px; padding: 0 1rem; border: 2px solid var(--ink); border-radius: 14px; background: var(--card); color: var(--ink); font: 700 1.05em var(--body); cursor: pointer; }
 .pager button[aria-current="page"] { background: var(--ink); color: var(--paper); }
@@ -188,6 +183,14 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
   position: absolute; left: .8rem; bottom: .8rem; background: var(--paper); color: var(--ink); border-radius: 999px;
   padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
+.photo.bilibili { background: linear-gradient(135deg, #fb7299, #23ade5); }
+.photo.youtube { background: linear-gradient(135deg, #ff4e45, #8a1c14); }
+.photo .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 1.6rem; padding-left: 4px; }
+.vframe { position: relative; aspect-ratio: 16/9; margin-bottom: 1rem; border-radius: 14px; overflow: hidden; background: #000; }
+.vframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.steps { padding-left: 1.6rem; display: grid; gap: .7rem; }
+.steps li { padding-left: .3rem; line-height: 1.5; }
+.steps li::marker { font-weight: 800; color: var(--seal); }
 .rate { position: absolute; right: .8rem; bottom: .8rem; background: var(--ink); color: #ffd877; border-radius: 999px; padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
 .time.fast { background: var(--jade); color: #fff; }
 .cbody { padding: 1.1rem 1.2rem .6rem; flex: 1; }
@@ -296,6 +299,8 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   <div class="tiles" id="tilesK"></div>
   <h2 class="homeh">Categories <span>类别</span></h2>
   <div class="tiles" id="tilesT"></div>
+  <h2 class="homeh">Chinese dialects <span>中华方言菜</span></h2>
+  <div class="tiles" id="tilesD"></div>
 </section>
 
 <section class="wrap" id="page" hidden>
@@ -304,7 +309,6 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
     <button class="chip quick" id="quick" aria-pressed="false">⚡ Under 30 min <span class="z">30分钟内</span></button>
   </div>
   <div class="khead"><span class="knum" id="pemoji"></span><h2 id="ptitle"></h2><span class="kzh" id="pzh"></span><span class="kemoji" id="pcount"></span></div>
-  <div id="pvideo"></div>
   <div class="grid" id="pgrid"></div>
   <div class="empty" id="empty" hidden>No recipes here yet. 这里还没有菜谱。</div>
   <nav class="pager" id="pager" aria-label="Pages"></nav>
@@ -337,6 +341,29 @@ const has = (r, t) => (r.tags || []).includes(t);
 const text = r => `${r.title} ${r.zh}`;
 const LOW_KCAL = 500; // per serving, for "High protein, low calorie" (the owner: high protein, no calories)
 const MEAT = /chicken|pork|beef|lamb|mutton|bacon|\bham\b|prosciutto|sausage|fish|salmon|tuna|prawn|shrimp|anchov|squid|crab|clam|mussel|oyster sauce|dashi|bonito|gelatin|lard|duck|turkey|ikan|udang|belacan|ayam|daging|鸡|猪|牛|肉|鱼|虾|蟹/i;
+// Where a dish comes from, read from the bot's cuisine text (origin), the dish a video was found for,
+// and the titles. A dish can sit in more than one (Taiwanese and Hokkien share dishes).
+const where = r => `${r.origin || ""} ${r.dish || ""} ${r.dish_zh || ""} ${r.title} ${r.zh}`;
+const DIALECTS = [
+  ["cantonese", "Cantonese", "粤菜", "🦐", /cantonese|guangdong|粤|广东|广式|豉油鸡|白切鸡|叉烧|char siu|煲仔|claypot|清蒸鱼|steamed fish|老火汤|chow fun|干炒牛河|白灼|蚝油/i],
+  ["hongkong", "Hong Kong", "港式", "🏙️", /hong kong|港式|香港|西多士|egg tarts?|蛋挞|菠萝包/i],
+  ["taiwanese", "Taiwanese", "台湾菜", "🧋", /taiwan|台湾|台式|卤肉饭|lu rou|三杯|three cup|蚵仔煎/i],
+  ["hokkien", "Hokkien", "福建菜", "🍜", /hokkien|fujian|福建|闽南|焢肉|kong bak|卤肉|lor bak|popiah|薄饼|bak kut teh|肉骨茶|hae mee|虾面|蚵仔/i],
+  ["teochew", "Teochew", "潮州菜", "🦆", /teochew|chaozhou|潮州|潮汕|卤鸭|braised duck|菜脯|chai poh|pomfret|鲳鱼|粿/i],
+  ["hakka", "Hakka", "客家菜", "🥟", /hakka|客家|酿豆腐|yong tau foo|擂茶|thunder tea|梅菜扣肉|盐焗鸡|salt baked|算盘子|abacus/i],
+  ["hainanese", "Hainanese", "海南菜", "🍗", /hainan|海南|chicken rice|鸡饭/i],
+  ["sichuan", "Sichuan", "川菜", "🌶️", /sichuan|szechuan|川菜|川味|麻婆|mapo|宫保|kung pao|麻辣|\bmala\b|口水鸡|鱼香|回锅|dan ?dan|担担/i],
+  ["shanghai", "Shanghainese", "上海菜", "🏮", /shanghai|上海|本帮|红烧肉|hong shao|小笼|xiao long|葱油拌面|scallion oil noodle/i],
+  ["peranakan", "Peranakan", "娘惹菜", "🌺", /peranakan|nyonya|娘惹|pongteh|buah keluak|pie tee|laksa/i],
+];
+const REGIONS = [
+  ["thai", "Thai", "泰国", "🐘", /\bthai|泰式|泰国|pad kra pao|pad thai|tom yum|冬阴功|green curry/i],
+  ["vietnamese", "Vietnamese", "越南", "🍲", /vietnam|越南|\bpho\b|banh mi|rice paper roll/i],
+  ["indonesian", "Indonesian", "印尼", "🏝️", /indonesia|印尼|nasi goreng|rendang|gado/i],
+  ["mexican", "Mexican", "墨西哥", "🌮", /mexic|墨西哥|taco|quesadilla|burrito|fajita|enchilada/i],
+  ["mideast", "Middle Eastern", "中东", "🧆", /middle east|中东|shakshuka|hummus|falafel|shawarma|lebanese|turkish/i],
+  ["mediterranean", "Mediterranean", "地中海", "🫒", /mediterranean|greek|希腊|spanish|西班牙|paella|地中海/i],
+];
 const TOPICS = [
   ["protein", "High protein, low calorie", "高蛋白低卡", "💪", r => has(r, "protein") && r.kcal > 0 && r.kcal <= LOW_KCAL],
   ["chicken", "Chicken breast", "鸡胸肉", "🐔", r => /chicken breasts?|鸡胸/i.test(text(r) + " " + (r.ingredients || []).join(" "))],
@@ -381,18 +408,7 @@ const NEW_DAYS = 7;
 const weekAgo = (() => { const d = new Date(); d.setDate(d.getDate() - (NEW_DAYS - 1)); return d.toLocaleDateString("en-CA"); })(); // YYYY-MM-DD
 const isNew = r => !!r.added && r.added >= weekAgo;
 
-// ---- search the same dish on video and social sites (opens their own search page) ----
-const VIDEO_SITES = [
-  ["📺 Bilibili 哔哩哔哩", zh => `https://search.bilibili.com/all?keyword=${encodeURIComponent(zh + " 做法")}`, "zh"],
-  ["🎵 Douyin 抖音", zh => `https://www.douyin.com/search/${encodeURIComponent(zh + " 做法")}`, "zh"],
-  ["🎬 TikTok", en => `https://www.tiktok.com/search?q=${encodeURIComponent(en + " recipe")}`, "en"],
-  ["𝕏 X", en => `https://x.com/search?q=${encodeURIComponent(en + " recipe")}`, "en"],
-];
-function videoLinks(en, zh, label = "Watch it on 看视频:") {
-  return h("div", { class: "vlinks" }, h("span", { class: "vlabel", text: label }),
-    ...VIDEO_SITES.map(([name, url, lang]) => h("a", { class: "vlink", href: url(lang === "zh" ? (zh || en) : (en || zh)), target: "_blank", rel: "noopener noreferrer", text: name })));
-}
-
+ (kept in this browser: localStorage) ----
 // ---- saved list (kept in this browser: localStorage) ----
 const store = {
   get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } },
@@ -429,20 +445,35 @@ function ingredientList(r, tickable) {
   }));
 }
 
+// The video plays inside the page: YouTube's privacy-enhanced player and Bilibili's official embed.
+function embedUrl(r) {
+  if (r.platform === "youtube") { const id = new URL(r.url).searchParams.get("v"); return id && `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`; }
+  if (r.platform === "bilibili") { const bv = (r.url.match(/\/video\/(BV[0-9A-Za-z]+)/) || [])[1]; return bv && `https://player.bilibili.com/player.html?bvid=${bv}&autoplay=0&high_quality=1`; }
+  return null;
+}
+
 function showDetail(r) {
   const d = $("#detail");
-  const meta = [mins(r), r.serves && `serves ${r.serves}`, r.site].filter(Boolean).join("  ·  ");
+  const meta = r.video
+    ? [r.platform === "bilibili" ? "📺 Bilibili" : "▶ YouTube", r.channel, r.serves && `serves ${r.serves}`, r.minutes && `⏱ about ${r.minutes} min`].filter(Boolean).join("  ·  ")
+    : [mins(r), r.serves && `serves ${r.serves}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site].filter(Boolean).join("  ·  ");
+  const embed = r.video && embedUrl(r);
+  const steps = r.steps || [];
   d.replaceChildren(
     h("div", { class: "dhead" }, h("h3", { text: r.zh || r.title }), h("button", { class: "dclose", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
     h("div", { class: "dbody" },
-      https(r.image) ? h("img", { class: "dimg", src: r.image, alt: "", referrerpolicy: "no-referrer" }) : null,
-      r.zh ? h("div", { class: "cen", text: r.title }) : null,
+      embed ? h("div", { class: "vframe" }, h("iframe", { src: embed, title: r.title, allow: "encrypted-media; fullscreen; picture-in-picture", allowfullscreen: "", referrerpolicy: "strict-origin-when-cross-origin" }))
+        : https(r.image) ? h("img", { class: "dimg", src: r.image, alt: "", referrerpolicy: "no-referrer" }) : null,
+      r.zh && r.title !== r.zh ? h("div", { class: "cen", text: r.title }) : null,
       h("div", { class: "csite", text: meta }),
-      h("h4", { text: "Ingredients 材料" }), ingredientList(r, false),
-      videoLinks(r.title, r.zh, "Watch how to cook it 看做法视频:"),
+      h("h4", { text: "Ingredients 材料" }),
+      r.video && !(r.ingredients || []).length ? h("p", { text: "This video doesn't list the recipe in writing yet. Watch above. 这个视频还没有文字食谱，请看上面的视频。" }) : ingredientList(r, false),
+      steps.length ? h("h4", { text: "Steps 做法" }) : null,
+      steps.length ? h("ol", { class: "steps" }, ...steps.map(t => h("li", { text: t }))) : null,
       h("div", { class: "dacts" },
-        h("a", { class: "btn btn-main", href: r.url, target: "_blank", rel: "noopener noreferrer", text: "Open recipe 看食谱 →" }),
-        saveBtn(r, "btn btn-ghost"),
+        h("a", { class: r.video ? "btn btn-ghost" : "btn btn-main", href: r.url, target: "_blank", rel: "noopener noreferrer",
+          text: r.video ? (r.platform === "bilibili" ? "Open on Bilibili ↗" : "Open on YouTube ↗") : "Open recipe 看食谱 →" }),
+        saveBtn(r, r.video ? "btn btn-main" : "btn btn-ghost"),
         h("a", { class: "btn btn-ghost", href: shareUrl(r), target: "_blank", rel: "noopener noreferrer", text: "💬 WhatsApp" }))));
   updateSaveUI();
   d.showModal();
@@ -471,6 +502,7 @@ function showList() {
 $("#openlist").addEventListener("click", showList);
 // a click on the dark backdrop closes a dialog
 document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if (e.target === d) d.close(); }));
+$("#detail").addEventListener("close", () => $("#detail").querySelectorAll("iframe").forEach(f => f.remove())); // stop the video
 
 function card(r) {
   const emoji = emojiOf(r.cuisine);
@@ -479,25 +511,35 @@ function card(r) {
     const img = h("img", { src: r.image, alt: "", loading: "lazy", referrerpolicy: "no-referrer", decoding: "async" });
     img.addEventListener("error", () => img.replaceWith(h("div", { class: "fallback", text: emoji })));
     box.append(img);
-  } else box.append(h("div", { class: "fallback", text: emoji }));
-  box.append(h("span", { class: "time" + (r.minutes && r.minutes <= QUICK ? " fast" : ""), text: mins(r) }));
+  } else if (!r.video) box.append(h("div", { class: "fallback", text: emoji }));
+  if (r.video) {
+    box.classList.add(r.platform);
+    box.append(h("span", { class: "play", text: "▶", "aria-hidden": "true" }));
+    box.append(h("span", { class: "time", text: `▶ ${Math.floor(r.seconds / 60)}:${String(r.seconds % 60).padStart(2, "0")}` }));
+    box.append(h("span", { class: "rate", text: r.platform === "bilibili" ? "📺 Bilibili" : "▶ YouTube" }));
+  } else box.append(h("span", { class: "time" + (r.minutes && r.minutes <= QUICK ? " fast" : ""), text: mins(r) }));
   if (isNew(r)) box.append(h("span", { class: "new", text: "🆕 New 新" }));
   if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
   const main = r.zh || r.title;
-  const k = KITCHENS.find(x => x[0] === r.cuisine);
-  const meta = [k && `${k[3]} ${k[1]} ${k[2]}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
+  const k = DIALECTS.find(d => (r.cuisine === "chinese" || r.cuisine === "malay") && d[4].test(where(r))) || REGIONS.find(d => d[4].test(where(r))) || KITCHENS.find(x => x[0] === r.cuisine);
+  const views = n => n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n >= 1e3 ? Math.round(n / 1e3) + "k" : String(n);
+  const meta = r.video
+    ? [k && `${k[3]} ${k[1]} ${k[2]}`, `👁 ${views(r.views || 0)} views`, r.channel, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ")
+    : [k && `${k[3]} ${k[1]} ${k[2]}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
   const link = { href: r.url, target: "_blank", rel: "noopener noreferrer" };
   const c = h("article", { class: "card" },
-    h("a", { class: "cardlink", ...link, "aria-label": `${main}, open recipe` },
+    h("a", { class: "cardlink", ...link, "aria-label": `${main}, open recipe`, ...(r.video ? { onclick: e => { e.preventDefault(); showDetail(r); } } : {}) },
       box,
       h("div", { class: "cbody" },
         h("div", { class: r.zh ? "czh" : "czh latin", text: main }),
         r.zh ? h("div", { class: "cen", text: r.title }) : null,
         h("div", { class: "csite", text: meta }))),
     h("div", { class: "acts" },
-      h("button", { class: "act", text: "🧾 Ingredients 材料", onclick: () => showDetail(r) }),
+      h("button", { class: "act", text: r.video ? ((r.ingredients || []).length ? "🧾 Recipe 做法" : "▶ Watch 看视频") : "🧾 Ingredients 材料", onclick: () => showDetail(r) }),
       saveBtn(r, "act")),
-    h("a", { class: "open", ...link, tabindex: "-1" }, h("span", { text: "Open recipe 看食谱" }), h("span", { class: "arrow", text: "→" })));
+    h("a", { class: "open", ...link, tabindex: "-1", ...(r.video ? { onclick: e => { e.preventDefault(); showDetail(r); } } : {}) },
+      h("span", { text: r.video ? "▶ Watch & cook here 在这里看做法" : "Open recipe 看食谱" }),
+      h("span", { class: "arrow", text: "→" })));
   return c;
 }
 
@@ -508,6 +550,9 @@ let quick = false, currentKey = null;
 const CATS = () => [
   ...(recipes.some(isNew) ? [{ k: "new", en: "New this week", zh: "本周新菜", e: "🆕", test: isNew, group: "t", fresh: true }] : []),
   ...KITCHENS.map(([k, en, zh, e]) => ({ k, en, zh, e, test: r => r.cuisine === k, group: "k" })),
+  ...REGIONS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => re.test(where(r)), group: "k" })),
+  ...DIALECTS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => r.cuisine === "chinese" || r.cuisine === "malay" ? re.test(where(r)) : false, group: "d" })),
+  { k: "videos", en: "Video recipes", zh: "视频食谱", e: "🎥", test: r => !!r.video, group: "t" },
   ...TOPICS.map(([k, en, zh, e, test]) => ({ k, en, zh, e, test, group: "t" })),
   { k: "quick", en: `Under ${QUICK} min`, zh: `${QUICK}分钟内`, e: "⚡", test: r => r.minutes > 0 && r.minutes <= QUICK, group: "t" },
 ];
@@ -530,8 +575,10 @@ function showHome() {
   currentKey = null;
   $("#hero").hidden = false; $("#home").hidden = false; $("#page").hidden = true;
   const cats = CATS();
-  $("#tilesK").replaceChildren(...cats.filter(c => c.group === "k").map(tile));
-  $("#tilesT").replaceChildren(...cats.filter(c => c.group === "t").map(tile));
+  const shown = g => cats.filter(c => c.group === g && (c.k === "saved" || recipes.some(c.test))); // hide empty tiles
+  $("#tilesK").replaceChildren(...shown("k").map(tile));
+  $("#tilesD").replaceChildren(...shown("d").map(tile));
+  $("#tilesT").replaceChildren(...shown("t").map(tile));
 }
 
 function showPage(key, pageNo, words) {
@@ -544,15 +591,13 @@ function showPage(key, pageNo, words) {
   let list = recipes.filter(cat.test);
   if (quick && key !== "quick") list = list.filter(r => r.minutes > 0 && r.minutes <= QUICK);
   if (key === "baking") list.sort((a, b) => proven(b) - proven(a));
+  if (key === "videos") list.sort((a, b) => (b.views || 0) - (a.views || 0)); // most watched first
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const p = Math.min(Math.max(1, pageNo || 1), pages);
   $("#pemoji").textContent = cat.e; $("#ptitle").textContent = cat.en; $("#pzh").textContent = cat.zh;
   $("#pcount").textContent = `${list.length} 道`;
   $("#quick").hidden = key === "quick";
   $("#quick").setAttribute("aria-pressed", quick);
-  // search pages use the words typed; category pages search the category name (not for My saved / New)
-  const vEn = key === "search" ? words : cat.en, vZh = key === "search" ? words : cat.zh;
-  $("#pvideo").replaceChildren(...(["saved", "new", "quick"].includes(key) ? [] : [videoLinks(vEn, vZh, key === "search" ? "Also search 也在这里搜:" : "More on 更多视频:")]));
   $("#pgrid").replaceChildren(...list.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE).map(card));
   $("#empty").hidden = list.length > 0;
   const go = n => { location.hash = key === "search" ? `#/search/${encodeURIComponent(words)}/${n}` : `#/${key}/${n}`; };
@@ -605,11 +650,17 @@ async function load() {
     const res = await fetch("daily/daily.json", { cache: "no-cache" });
     if (res.ok) { daily = await res.json(); updated = res.headers.get("last-modified"); }
   } catch (_) { /* opened as a file, or no feed yet */ }
+  let videos = [];
+  try { const res = await fetch("daily/videos.json", { cache: "no-cache" }); if (res.ok) videos = await res.json(); } catch (_) { /* no videos yet */ }
+  // A video is shown like a recipe card; its title goes in the big line (Chinese on Bilibili).
+  videos = videos.map(v => ({ ...v, video: true, zh: v.platform === "bilibili" ? v.title : "", title: v.platform === "bilibili" ? (v.dish || v.title) : v.title,
+    minutes: null, ingredients: v.ingredients || [], serves: v.servings ? String(v.servings) : null }));
   const curated = (window.RECIPES || []);
   const seen = new Set(curated.map(r => r.url));
-  recipes = [...daily.filter(r => !seen.has(r.url)), ...curated].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
+  recipes = [...daily.filter(r => !seen.has(r.url)), ...curated, ...videos].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
   const kitchens = new Set(recipes.map(r => r.cuisine)).size;
-  $("#lede").textContent = `${recipes.length} simple recipes from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
+  const nVideos = recipes.filter(r => r.video).length;
+  $("#lede").textContent = `${recipes.length - nVideos} simple recipes and ${nVideos} cooking videos from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
   if (updated && !isNaN(new Date(updated))) {
     const when = new Date(updated).toLocaleString("en-SG", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
     $("#updated").textContent = `🔄 Last updated ${when} · 最近更新`;
