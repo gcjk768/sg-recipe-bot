@@ -64,6 +64,8 @@ h1 {
 }
 h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--seal); }
 .h1zh { font: 900 clamp(2rem, 4.4vw, 3.6rem)/1.1 var(--zh); color: var(--ink-soft); letter-spacing: .08em; }
+.updated { margin-top: 1rem; font-weight: 700; color: var(--jade); }
+.updated:empty { display: none; }
 .lede { max-width: 34ch; margin-top: 1.4rem; font-size: 1.2em; color: var(--ink-soft); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
 .btn {
@@ -140,6 +142,11 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .pagebar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.6rem; }
 .pagebar .btn { min-height: 58px; }
 #page .khead { margin-bottom: 1.6rem; }
+.vlinks { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 0 0 1.6rem; }
+.dbody .vlinks { margin: 1.2rem 0 0; }
+.vlabel { font-weight: 700; color: var(--ink-soft); margin-right: .2rem; }
+.vlink { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.1rem; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--ink); font-weight: 700; text-decoration: none; }
+.vlink:hover { background: var(--ink); color: var(--paper); }
 .pager { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin: 2.2rem 0 1rem; }
 .pager button { min-width: 56px; min-height: 56px; padding: 0 1rem; border: 2px solid var(--ink); border-radius: 14px; background: var(--card); color: var(--ink); font: 700 1.05em var(--body); cursor: pointer; }
 .pager button[aria-current="page"] { background: var(--ink); color: var(--paper); }
@@ -167,9 +174,10 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .card {
   display: flex; flex-direction: column; background: var(--card); border-radius: 18px; overflow: hidden; text-decoration: none;
   border: 2px solid var(--ink); box-shadow: 0 0 0 var(--ink);
-  transition: transform .25s, box-shadow .25s; opacity: 0; transform: translateY(24px);
+  transition: transform .25s, box-shadow .25s; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; /* always ends visible */
 }
-.card.in { opacity: 1; transform: none; transition: opacity .6s, transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .25s; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+.card:nth-child(4n+2) { animation-delay: .06s; } .card:nth-child(4n+3) { animation-delay: .12s; } .card:nth-child(4n+4) { animation-delay: .18s; }
 .card:hover, .card:focus-visible { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
 .card[hidden] { display: none; }
 .photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, var(--saffron), var(--seal)); }
@@ -267,6 +275,7 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
       <div class="kicker">Easy · Everyday ingredients · 简单家常</div>
       <h1>What shall we <em>cook</em> today?</h1>
       <div class="h1zh">今天煮什么？</div>
+      <p class="updated" id="updated"></p>
       <p class="lede" id="lede">Simple recipes from nine kitchens. Tap any dish to open the full recipe.</p>
       <div class="hero-actions">
         <a class="btn btn-main" href="#" onclick="event.preventDefault(); jumpTo(document.getElementById('home'))">Browse recipes 看菜谱 ↓</a>
@@ -295,12 +304,14 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
     <button class="chip quick" id="quick" aria-pressed="false">⚡ Under 30 min <span class="z">30分钟内</span></button>
   </div>
   <div class="khead"><span class="knum" id="pemoji"></span><h2 id="ptitle"></h2><span class="kzh" id="pzh"></span><span class="kemoji" id="pcount"></span></div>
+  <div id="pvideo"></div>
   <div class="grid" id="pgrid"></div>
   <div class="empty" id="empty" hidden>No recipes here yet. 这里还没有菜谱。</div>
   <nav class="pager" id="pager" aria-label="Pages"></nav>
 </section>
 
 <footer class="wrap">
+  New recipes are added automatically every day from 8 am. 每天早上八点起自动加入新菜。<br>
   Every recipe links to its original cook. Photos and recipes belong to their sites. 菜谱和图片版权归原网站所有。
 </footer>
 
@@ -324,9 +335,11 @@ const QUICK = 30;
 // the rest are keyword guesses on the title. ponytail: keyword rules, add a tag in seed.txt when one guesses wrong.
 const has = (r, t) => (r.tags || []).includes(t);
 const text = r => `${r.title} ${r.zh}`;
+const LOW_KCAL = 500; // per serving, for "High protein, low calorie" (the owner: high protein, no calories)
 const MEAT = /chicken|pork|beef|lamb|mutton|bacon|\bham\b|prosciutto|sausage|fish|salmon|tuna|prawn|shrimp|anchov|squid|crab|clam|mussel|oyster sauce|dashi|bonito|gelatin|lard|duck|turkey|ikan|udang|belacan|ayam|daging|鸡|猪|牛|肉|鱼|虾|蟹/i;
 const TOPICS = [
-  ["protein", "High protein", "高蛋白", "💪", r => has(r, "protein")],
+  ["protein", "High protein, low calorie", "高蛋白低卡", "💪", r => has(r, "protein") && r.kcal > 0 && r.kcal <= LOW_KCAL],
+  ["chicken", "Chicken breast", "鸡胸肉", "🐔", r => /chicken breasts?|鸡胸/i.test(text(r) + " " + (r.ingredients || []).join(" "))],
   ["pbreakfast", "Protein breakfast", "高蛋白早餐", "🍳", r => has(r, "protein") && has(r, "breakfast")],
   ["breakfast", "Breakfast", "早餐", "🌅", r => has(r, "breakfast")],
   ["baking", "Cakes & baking", "蛋糕烘焙", "🎂", r => has(r, "baking") || /(?<!pan)cake|cookie|muffin|scone|brownie|chiffon|kuih|castella|dorayaki|banana bread|\bloaf\b|\btarts?\b|蛋糕|饼干|烘焙/i.test(text(r)) && !/rice cake|fish ?cake/i.test(text(r))],
@@ -367,6 +380,18 @@ let recipes = [];
 const NEW_DAYS = 7;
 const weekAgo = (() => { const d = new Date(); d.setDate(d.getDate() - (NEW_DAYS - 1)); return d.toLocaleDateString("en-CA"); })(); // YYYY-MM-DD
 const isNew = r => !!r.added && r.added >= weekAgo;
+
+// ---- search the same dish on video and social sites (opens their own search page) ----
+const VIDEO_SITES = [
+  ["📺 Bilibili 哔哩哔哩", zh => `https://search.bilibili.com/all?keyword=${encodeURIComponent(zh + " 做法")}`, "zh"],
+  ["🎵 Douyin 抖音", zh => `https://www.douyin.com/search/${encodeURIComponent(zh + " 做法")}`, "zh"],
+  ["🎬 TikTok", en => `https://www.tiktok.com/search?q=${encodeURIComponent(en + " recipe")}`, "en"],
+  ["𝕏 X", en => `https://x.com/search?q=${encodeURIComponent(en + " recipe")}`, "en"],
+];
+function videoLinks(en, zh, label = "Watch it on 看视频:") {
+  return h("div", { class: "vlinks" }, h("span", { class: "vlabel", text: label }),
+    ...VIDEO_SITES.map(([name, url, lang]) => h("a", { class: "vlink", href: url(lang === "zh" ? (zh || en) : (en || zh)), target: "_blank", rel: "noopener noreferrer", text: name })));
+}
 
 // ---- saved list (kept in this browser: localStorage) ----
 const store = {
@@ -414,6 +439,7 @@ function showDetail(r) {
       r.zh ? h("div", { class: "cen", text: r.title }) : null,
       h("div", { class: "csite", text: meta }),
       h("h4", { text: "Ingredients 材料" }), ingredientList(r, false),
+      videoLinks(r.title, r.zh, "Watch how to cook it 看做法视频:"),
       h("div", { class: "dacts" },
         h("a", { class: "btn btn-main", href: r.url, target: "_blank", rel: "noopener noreferrer", text: "Open recipe 看食谱 →" }),
         saveBtn(r, "btn btn-ghost"),
@@ -459,7 +485,7 @@ function card(r) {
   if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
   const main = r.zh || r.title;
   const k = KITCHENS.find(x => x[0] === r.cuisine);
-  const meta = [k && `${k[3]} ${k[1]} ${k[2]}`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
+  const meta = [k && `${k[3]} ${k[1]} ${k[2]}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
   const link = { href: r.url, target: "_blank", rel: "noopener noreferrer" };
   const c = h("article", { class: "card" },
     h("a", { class: "cardlink", ...link, "aria-label": `${main}, open recipe` },
@@ -472,11 +498,9 @@ function card(r) {
       h("button", { class: "act", text: "🧾 Ingredients 材料", onclick: () => showDetail(r) }),
       saveBtn(r, "act")),
     h("a", { class: "open", ...link, tabindex: "-1" }, h("span", { text: "Open recipe 看食谱" }), h("span", { class: "arrow", text: "→" })));
-  requestAnimationFrame(() => io.observe(c));
   return c;
 }
 
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -40px" });
 
 // ---- pages: #/<category>[/<page>] and #/search/<words>[/<page>]; no hash = home ----
 const PAGE_SIZE = 12;
@@ -526,6 +550,9 @@ function showPage(key, pageNo, words) {
   $("#pcount").textContent = `${list.length} 道`;
   $("#quick").hidden = key === "quick";
   $("#quick").setAttribute("aria-pressed", quick);
+  // search pages use the words typed; category pages search the category name (not for My saved / New)
+  const vEn = key === "search" ? words : cat.en, vZh = key === "search" ? words : cat.zh;
+  $("#pvideo").replaceChildren(...(["saved", "new", "quick"].includes(key) ? [] : [videoLinks(vEn, vZh, key === "search" ? "Also search 也在这里搜:" : "More on 更多视频:")]));
   $("#pgrid").replaceChildren(...list.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE).map(card));
   $("#empty").hidden = list.length > 0;
   const go = n => { location.hash = key === "search" ? `#/search/${encodeURIComponent(words)}/${n}` : `#/${key}/${n}`; };
@@ -573,12 +600,20 @@ $("#surprise").addEventListener("click", () => {
 // ---- data: curated list + every recipe the bot has posted (daily/daily.json, newest first) ----
 async function load() {
   let daily = [];
-  try { const res = await fetch("daily/daily.json", { cache: "no-cache" }); if (res.ok) daily = await res.json(); } catch (_) { /* opened as a file, or no feed yet */ }
+  let updated = null; // when the bot last added a recipe (the feed file's Last-Modified)
+  try {
+    const res = await fetch("daily/daily.json", { cache: "no-cache" });
+    if (res.ok) { daily = await res.json(); updated = res.headers.get("last-modified"); }
+  } catch (_) { /* opened as a file, or no feed yet */ }
   const curated = (window.RECIPES || []);
   const seen = new Set(curated.map(r => r.url));
   recipes = [...daily.filter(r => !seen.has(r.url)), ...curated].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
   const kitchens = new Set(recipes.map(r => r.cuisine)).size;
   $("#lede").textContent = `${recipes.length} simple recipes from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
+  if (updated && !isNaN(new Date(updated))) {
+    const when = new Date(updated).toLocaleString("en-SG", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+    $("#updated").textContent = `🔄 Last updated ${when} · 最近更新`;
+  }
   const withImg = curated.filter(r => https(r.image));
   [0, 1, 2].forEach(i => {
     const r = withImg[[3, 17, 40][i] % withImg.length];

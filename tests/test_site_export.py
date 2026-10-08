@@ -64,6 +64,13 @@ def test_ingredient_lines():
     assert ingredient_lines({}) == []
 
 
+def test_kcal():
+    from recipebot.site_export import _kcal
+    assert _kcal({"nutrition_per_serving": {"kcal": 420}}) == 420
+    assert _kcal({"nutrition_per_serving": {"kcal": "9999"}}) is None
+    assert _kcal({}) is None
+
+
 def test_recipe_tags():
     from recipebot.site_export import recipe_tags
     assert recipe_tags("high_protein", {"meals": ["breakfast"]}) == ["protein", "breakfast"]

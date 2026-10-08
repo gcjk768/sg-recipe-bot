@@ -4,6 +4,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": 239,
   "rating": 4.91,
   "ratings": 148,
   "zh": "西兰花炒鸡片",
@@ -34,6 +35,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 555,
   "rating": 4.97,
   "ratings": 130,
   "zh": "炒米粉",
@@ -65,6 +67,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 300,
   "rating": 5.0,
   "ratings": 107,
   "zh": "番茄炒蛋",
@@ -91,6 +94,7 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "kcal": 92,
   "rating": 4.8,
   "ratings": 5,
   "zh": "蒸水蛋",
@@ -113,6 +117,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 93,
   "rating": 5.0,
   "ratings": 9,
   "zh": "小白菜炒豆泡",
@@ -135,6 +140,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 360,
   "rating": 4.58,
   "ratings": 256,
   "zh": "宫保鸡丁",
@@ -168,6 +174,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 522,
   "rating": 4.99,
   "ratings": 61,
   "zh": "虾仁炒饭",
@@ -198,6 +205,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 275,
   "rating": 4.93,
   "ratings": 27,
   "zh": "麻婆豆腐",
@@ -237,6 +245,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 360,
   "rating": 4.96,
   "ratings": 196,
   "zh": "鸡肉玉米羹",
@@ -264,6 +273,7 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "kcal": 91,
   "rating": 4.96,
   "ratings": 65,
   "zh": "蚝油芥兰",
@@ -293,6 +303,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 79,
   "rating": 5.0,
   "ratings": 4,
   "zh": "杏仁饼",
@@ -322,6 +333,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": 311,
   "rating": 4.98,
   "ratings": 78,
   "zh": "蒜香黄油虾",
@@ -349,6 +361,7 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "kcal": 510,
   "rating": 4.97,
   "ratings": 477,
   "zh": "肉酱意面",
@@ -381,6 +394,7 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "kcal": 653,
   "rating": 4.94,
   "ratings": 214,
   "zh": "牧羊人派",
@@ -420,6 +434,7 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "kcal": 208,
   "rating": 4.97,
   "ratings": 32,
   "zh": "土豆泥",
@@ -445,6 +460,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": 286,
   "rating": 4.99,
   "ratings": 2348,
   "zh": "烤鸡胸",
@@ -469,6 +485,7 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "kcal": 264,
   "rating": 4.96,
   "ratings": 102,
   "zh": "蘑菇汤",
@@ -498,6 +515,7 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "kcal": 815,
   "rating": 4.99,
   "ratings": 91,
   "zh": "牛肉汉堡",
@@ -526,6 +544,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 351,
   "rating": 4.98,
   "ratings": 551,
   "zh": "巧克力蛋糕",
@@ -556,6 +575,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 709,
   "rating": 4.91,
   "ratings": 253,
   "zh": "胡萝卜蛋糕",
@@ -592,6 +612,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 325,
   "rating": 4.94,
   "ratings": 223,
   "zh": "巧克力豆饼干",
@@ -620,6 +641,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": null,
   "rating": 4.95,
   "ratings": 566,
   "zh": "苹果酥",
@@ -651,6 +673,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 190,
   "rating": 4.93,
   "ratings": 55,
   "zh": "无面粉布朗尼",
@@ -677,6 +700,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 523,
   "rating": null,
   "ratings": null,
   "zh": "简易巧克力蛋糕",
@@ -711,6 +735,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 150,
   "rating": null,
   "ratings": null,
   "zh": "布朗尼",
@@ -737,6 +762,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 507,
   "rating": null,
   "ratings": null,
   "zh": "维多利亚海绵蛋糕",
@@ -766,6 +792,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 399,
   "rating": null,
   "ratings": null,
   "zh": "柠檬糖霜蛋糕",
@@ -792,6 +819,7 @@ window.RECIPES = [
    "baking",
    "breakfast"
   ],
+  "kcal": 268,
   "rating": null,
   "ratings": null,
   "zh": "香蕉蛋糕",
@@ -816,6 +844,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": null,
   "rating": 5.0,
   "ratings": 2,
   "zh": "甜酱油焖鸡",
@@ -847,6 +876,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 338,
   "rating": 4.56,
   "ratings": 95,
   "zh": "椰浆饭",
@@ -883,6 +913,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 795,
   "rating": 4.56,
   "ratings": 747,
   "zh": "仁当牛肉",
@@ -919,6 +950,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 424,
   "rating": 4.6,
   "ratings": 25,
   "zh": "红酱鸡",
@@ -951,6 +983,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 453,
   "rating": 4.82,
   "ratings": 107,
   "zh": "印尼炒饭",
@@ -982,6 +1015,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 600,
   "rating": 4.99,
   "ratings": 326,
   "zh": "沙爹鸡",
@@ -1024,6 +1058,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": 190,
   "rating": 4.88,
   "ratings": 31,
   "zh": "参巴虾",
@@ -1050,6 +1085,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": null,
   "rating": 5.0,
   "ratings": 1,
   "zh": "马来炒饭",
@@ -1080,6 +1116,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": null,
   "rating": 5.0,
   "ratings": 2,
   "zh": "嘛嘛炒面",
@@ -1111,6 +1148,7 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "kcal": null,
   "rating": 4.9,
   "ratings": 7,
   "zh": "香料炸鸡",
@@ -1145,6 +1183,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 654,
   "rating": 4.48,
   "ratings": 42,
   "zh": "班兰戚风蛋糕",
@@ -1171,6 +1210,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 478,
   "rating": 4.5,
   "ratings": 24,
   "zh": "鸡蛋糕(Kuih Bahulu)",
@@ -1195,6 +1235,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 150,
   "rating": 4.7,
   "ratings": 20,
   "zh": "椰丝班兰卷",
@@ -1227,6 +1268,7 @@ window.RECIPES = [
   "tags": [
    "breakfast"
   ],
+  "kcal": 314,
   "rating": 4.95,
   "ratings": 72,
   "zh": "法式吐司",
@@ -1252,6 +1294,7 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "kcal": 386,
   "rating": 4.86,
   "ratings": 493,
   "zh": "法式洋葱汤",
@@ -1279,6 +1322,7 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "kcal": 427,
   "rating": 4.99,
   "ratings": 91,
   "zh": "法式咸派",
@@ -1307,6 +1351,7 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "kcal": 158,
   "rating": 4.98,
   "ratings": 93,
   "zh": "普罗旺斯炖菜",
@@ -1339,6 +1384,7 @@ window.RECIPES = [
   "tags": [
    "breakfast"
   ],
+  "kcal": 115,
   "rating": 5.0,
   "ratings": 43,
   "zh": "法式薄饼",
@@ -1366,6 +1412,7 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "kcal": 1440,
   "rating": 4.95,
   "ratings": 34,
   "zh": "法式火腿芝士三明治",
@@ -1396,6 +1443,7 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "kcal": 854,
   "rating": 5.0,
   "ratings": 121,
   "zh": "猎人烩鸡",
@@ -1431,6 +1479,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": 893,
   "rating": 4.96,
   "ratings": 154,
   "zh": "奶油蘑菇意面",
@@ -1459,6 +1508,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": 394,
   "rating": 4.94,
   "ratings": 135,
   "zh": "意大利蔬菜汤",
@@ -1497,6 +1547,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": 649,
   "rating": 4.99,
   "ratings": 185,
   "zh": "蘑菇烩饭",
@@ -1531,6 +1582,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": 633,
   "rating": 4.99,
   "ratings": 193,
   "zh": "帕玛森鸡排",
@@ -1575,6 +1627,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": null,
   "rating": 4.95,
   "ratings": 227,
   "zh": "培根蛋意面",
@@ -1602,6 +1655,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": null,
   "rating": 4.96,
   "ratings": 45,
   "zh": "青酱意面",
@@ -1623,6 +1677,7 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "kcal": 523,
   "rating": null,
   "ratings": null,
   "zh": "蒜香橄榄油意面",
@@ -1644,6 +1699,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": 164,
   "rating": 4.88,
   "ratings": 8,
   "zh": "辣炖豆腐",
@@ -1671,6 +1727,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "泡菜汤",
@@ -1697,6 +1754,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "杂菜",
@@ -1723,6 +1781,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "石锅拌饭",
@@ -1752,6 +1811,7 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "韩式蒸蛋",
@@ -1769,6 +1829,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "韩式烤牛肉",
@@ -1795,6 +1856,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "泡菜炒饭",
@@ -1821,6 +1883,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "辣炒年糕",
@@ -1847,6 +1910,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "大酱汤",
@@ -1873,6 +1937,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "凉拌豆芽",
@@ -1888,6 +1953,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "韩式煎饼",
@@ -1903,6 +1969,7 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "韩式紫菜饭卷",
@@ -1931,6 +1998,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "韩式糖饼",
@@ -1956,6 +2024,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 361,
   "rating": 4.75,
   "ratings": 180,
   "zh": "姜汁烧肉",
@@ -1984,6 +2053,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 850,
   "rating": 4.58,
   "ratings": 7,
   "zh": "日式咖喱鸡",
@@ -2011,6 +2081,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": null,
   "rating": null,
   "ratings": null,
   "zh": "三文鱼炊饭",
@@ -2039,6 +2110,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": 537,
   "rating": 4.72,
   "ratings": 656,
   "zh": "亲子丼",
@@ -2067,6 +2139,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 659,
   "rating": 4.78,
   "ratings": 170,
   "zh": "黄油酱油鸡",
@@ -2093,6 +2166,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 57,
   "rating": 4.85,
   "ratings": 623,
   "zh": "味噌汤",
@@ -2119,6 +2193,7 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "kcal": 199,
   "rating": 4.64,
   "ratings": 287,
   "zh": "高汤玉子烧",
@@ -2142,6 +2217,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 657,
   "rating": 4.74,
   "ratings": 536,
   "zh": "牛肉饭",
@@ -2168,6 +2244,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 474,
   "rating": 4.77,
   "ratings": 142,
   "zh": "日式炸鸡排",
@@ -2196,6 +2273,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 338,
   "rating": 4.72,
   "ratings": 196,
   "zh": "土豆炖肉",
@@ -2224,6 +2302,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 387,
   "rating": 4.84,
   "ratings": 30,
   "zh": "日式炒饭",
@@ -2250,6 +2329,7 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "kcal": 531,
   "rating": 4.77,
   "ratings": 421,
   "zh": "日式炸鸡",
@@ -2282,6 +2362,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": null,
   "rating": 4.71,
   "ratings": 940,
   "zh": "日式芝士蛋糕",
@@ -2310,6 +2391,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 1240,
   "rating": 4.76,
   "ratings": 268,
   "zh": "长崎蛋糕",
@@ -2335,6 +2417,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 452,
   "rating": 4.7,
   "ratings": 210,
   "zh": "铜锣烧",
@@ -2361,6 +2444,7 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "kcal": 1830,
   "rating": 4.84,
   "ratings": 274,
   "zh": "抹茶蛋糕卷",
@@ -2386,6 +2470,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": 650,
   "rating": 4.93,
   "ratings": 453,
   "zh": "泰式炒河粉",
@@ -2419,6 +2504,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": 530,
   "rating": 4.94,
   "ratings": 359,
   "zh": "泰式红咖喱",
@@ -2453,6 +2539,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": 334,
   "rating": 4.97,
   "ratings": 32,
   "zh": "希腊沙拉",
@@ -2485,6 +2572,7 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "kcal": 354,
   "rating": 4.97,
   "ratings": 62,
   "zh": "番茄烩蛋(中东)",
@@ -2517,6 +2605,7 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "kcal": 442,
   "rating": 4.98,
   "ratings": 73,
   "zh": "希腊烤鸡",
@@ -2544,6 +2633,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": 135,
   "rating": 4.88,
   "ratings": 132,
   "zh": "越南虾春卷",
@@ -2572,6 +2662,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": null,
   "rating": 4.59,
   "ratings": 17,
   "zh": "泰式打抛",
@@ -2605,6 +2696,7 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "kcal": 600,
   "rating": 5.0,
   "ratings": 23,
   "zh": "烤三文鱼卷饼",

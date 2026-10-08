@@ -8,6 +8,7 @@ Run from the repo root:  python site/build.py
 from __future__ import annotations
 
 import json
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -54,6 +55,13 @@ def _as_list(value) -> list:
     return value if isinstance(value, list) else [value] if value else []
 
 
+def _kcal(node: dict) -> int | None:
+    """Calories per serving from schema.org nutrition ("350 kcal", "350", 350), or None."""
+    value = (node.get("nutrition") or {}).get("calories") if isinstance(node.get("nutrition"), dict) else None
+    m = re.search(r"\d+(?:\.\d+)?", str(value or ""))
+    return round(float(m.group())) if m and 0 < float(m.group()) < 3000 else None
+
+
 def _servings(value) -> str | None:
     if isinstance(value, list):
         value = next((v for v in value if v), None)
@@ -78,6 +86,7 @@ def card(row: dict, fetcher: Fetcher) -> tuple[dict | None, str]:
     return {
         "cuisine": row["cuisine"],
         "tags": row["tags"],
+        "kcal": _kcal(node),
         "rating": (page_rating(result.text) or (None, None))[0],
         "ratings": (page_rating(result.text) or (None, None))[1],
         "zh": row["zh"],
@@ -117,6 +126,7 @@ def _selftest() -> None:
     assert _minutes({"prepTime": "PT10M", "cookTime": "PT20M"}) == 30
     assert _servings(["4", "4 servings"]) == "4"
     assert _as_list("1 egg") == ["1 egg"] and _as_list(None) == []
+    assert _kcal({"nutrition": {"calories": "352 kcal"}}) == 352 and _kcal({}) is None and _kcal({"nutrition": {"calories": "n/a"}}) is None
 
 
 if __name__ == "__main__":

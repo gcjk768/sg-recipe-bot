@@ -165,7 +165,7 @@ class Pipeline:
     def notify_admin(self, blocks: list[str]) -> None:
         """Sends an alert card (blocks from render.render_alert) to the admin chat."""
         chat_id = self.settings.telegram_admin_chat_id
-        if not chat_id or not self.settings.telegram_bot_token:
+        if not self.settings.telegram_enabled or not chat_id or not self.settings.telegram_bot_token:
             return
         try:
             self.telegram.send_html(chat_id, blocks)
@@ -407,6 +407,13 @@ class Pipeline:
             report.messages.append(messages)
             if dry_run:
                 report.posted.append(recipe.title)
+                continue
+            if not settings.telegram_enabled:  # the owner, 2026-10-08: the family website replaces the Telegram posts
+                report.posted.append(recipe.title)
+                log.info("added %s (website only, Telegram off)", recipe.title)
+                if not self._record_sent(recipe, report):
+                    incomplete += 1
+                self.vault.posted(recipe, category, meal, report.run_id, self.now())
                 continue
             if i > 0:
                 self.sleep(PAUSE_BETWEEN_RECIPES)

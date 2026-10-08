@@ -174,3 +174,31 @@ def test_page_rating():
     assert page_rating(page('{"ratingValue":9,"bestRating":10,"reviewCount":3}')) == (4.5, 3)
     assert page_rating(page('"none"')) is None
     assert page_rating("<html></html>") is None
+
+
+
+def test_browser_fallback_only_on_403_and_keeps_blocked_pages_blocked(monkeypatch):
+    from recipebot import web
+    from tests.conftest import FakeResponse, FakeSession
+    calls = []
+
+    def fake_browser(url, ws, timeout=45):
+        calls.append(url)
+        if "still" in url:  # the browser also sees a challenge -> stays blocked
+            return web.FetchResult(url=url, final_url=url, status=403, text="Just a moment...")
+        return web.FetchResult(url=url, final_url=url, status=200, text="<p>ingredients</p>")
+
+    monkeypatch.setattr(web, "browser_fetch", fake_browser)
+    routes = {u: FakeResponse(403, body="Forbidden") for u in ("https://a.com/x", "https://a.com/still")}
+    routes["https://a.com/ok"] = FakeResponse(200, body="<p>ingredients</p>")
+    f = web.Fetcher(session=FakeSession(routes), browser_ws="ws://playwright:3000/")
+    assert f.fetch("https://a.com/x").status == 200
+    assert f.fetch("https://a.com/still").status == 403
+    assert f.fetch("https://a.com/ok").status == 200 and calls == ["https://a.com/x", "https://a.com/still"]
+    assert web.Fetcher(session=FakeSession(routes)).browser_ws is None  # tests and the PC: no browser
+
+
+def test_browser_challenge_words():
+    from recipebot.web import _BROWSER_CHALLENGE
+    assert _BROWSER_CHALLENGE.search("Just a moment...") and _BROWSER_CHALLENGE.search("Please verify you are human")
+    assert not _BROWSER_CHALLENGE.search("Tomato Egg Stir Fry - ingredients and steps")

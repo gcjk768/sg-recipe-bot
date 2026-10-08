@@ -150,6 +150,8 @@ class Settings:
     prompts_dir: Path | None = None
     vault_dir: Path | None = None
     """Obsidian vault (movement log + memory); None turns it off."""
+    telegram_enabled: bool = True
+    """False: nothing is sent to Telegram (recipes or alerts); recipes only go to history, vault and website."""
     site_export_dir: Path | None = None
     """Where daily.json for the family recipe website goes; None turns it off."""
 
@@ -166,6 +168,8 @@ class Settings:
         return self.data_dir / "rotation.json"
 
     def require_telegram(self) -> None:
+        if not self.telegram_enabled:
+            return
         missing = [n for n, v in (("TELEGRAM_BOT_TOKEN", self.telegram_bot_token), ("TELEGRAM_CHAT_ID", self.telegram_chat_id)) if not v]
         if missing:
             raise ConfigError("missing required settings: " + ", ".join(missing))
@@ -204,6 +208,7 @@ def load_settings() -> Settings:
         telegram_bot_token=_env("TELEGRAM_BOT_TOKEN"),
         telegram_chat_id=_chat_id("TELEGRAM_CHAT_ID"),
         telegram_admin_chat_id=_chat_id("TELEGRAM_ADMIN_CHAT_ID"),
+        telegram_enabled=_env_bool("TELEGRAM_ENABLED", True),
         llm_api_key=_env("LLM_API_KEY") or _env("ANTHROPIC_API_KEY"),
         llm_provider=provider,
         llm_model=_env("LLM_MODEL", "claude-sonnet-5-5") or "claude-sonnet-5-5",

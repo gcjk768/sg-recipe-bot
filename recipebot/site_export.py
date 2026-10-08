@@ -83,6 +83,15 @@ def ingredient_lines(recipe: dict) -> list[str]:
     return lines
 
 
+def _kcal(recipe: dict) -> int | None:
+    """The model's calories per serving when it is a plausible single portion, else None."""
+    try:
+        kcal = round(float((recipe.get("nutrition_per_serving") or {}).get("kcal")))
+    except (TypeError, ValueError):
+        return None
+    return kcal if 20 <= kcal <= 2500 else None
+
+
 def recipe_tags(category: str, recipe: dict) -> list[str]:
     """Website topics the bot knows for sure: protein (its high_protein category or 25 g+ a
     serving), breakfast (meal tag or category) and baking. Keyword topics are added by the page."""
@@ -138,6 +147,7 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
         items.append({
             "cuisine": kitchen(r.get("cuisine", "")),
             "tags": recipe_tags(category or "", r),
+            "kcal": _kcal(r),
             "zh": r.get("title_zh") or "",
             "title": title,
             "url": url,

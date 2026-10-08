@@ -15,6 +15,8 @@ services:
       VAULT_DIR: /vault
       # Family recipe website: every posted recipe is added to data/site/daily.json.
       SITE_EXPORT_DIR: /data/site
+      # the owner, 2026-10-08: no Telegram messages (recipes or alerts); the website is the only output.
+      TELEGRAM_ENABLED: "false"
     volumes:
       - ./data:/data
       - "${VAULT_HOST_PATH:-./data/vault}:/vault"

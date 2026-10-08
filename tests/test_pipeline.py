@@ -455,3 +455,20 @@ def test_all_rejected_then_second_pick_posts(settings, fixed_now):
     pipeline, tg, _, _ = build(settings, llm, fixed_now)
     report = pipeline.run(category="high_protein")
     assert report.status == "posted" and report.model_calls == 2 and len(sent_texts(tg)) == 1
+
+
+def test_telegram_off_sends_nothing_but_records_the_recipe(settings, fixed_now):
+    settings.telegram_enabled = False
+    llm = FakeLLM([reply_text([make_recipe()])])
+    pipeline, tg, _, _ = build(settings, llm, fixed_now)
+    report = pipeline.run(category="high_protein")
+    assert report.status == "posted" and len(report.posted) == 1
+    assert tg.posts == []  # no recipe post
+    with History(settings.db_path) as history:
+        assert len(history.recent_sent()) == 1  # still recorded, so it reaches the website
+
+
+def test_telegram_off_sends_no_alerts(settings, fixed_now):
+    settings.telegram_enabled = False
+    pipeline, tg, _, _ = build(settings, FakeLLM(["nope", "nope"]), fixed_now)
+    assert pipeline.run(category="high_protein").status == "failed" and tg.posts == []

@@ -5,7 +5,11 @@ from __future__ import annotations
 import codecs
 import html as htmllib
 import json
+import logging
+import os
 import re
+import threading
+import time
 from dataclasses import dataclass
 from typing import Any, Iterator
 from urllib.parse import urlsplit
@@ -44,10 +48,62 @@ class FetchResult:
         return self.error is None and self.status == 200
 
 
+log = logging.getLogger(__name__)
+
+# What a person would see on a challenge page (title + visible text). If the NAS browser still lands
+# on one of these, the site is blocked for us: never worked around (the owner's scraping rule).
+_BROWSER_CHALLENGE = re.compile(
+    r"captcha|verify you are human|are you a robot|robot check|unusual traffic|access denied|"
+    r"checking your browser|just a moment|attention required|request unsuccessful|slide to verify",
+    re.IGNORECASE,
+)
+BROWSER_GAP_SECONDS = 3  # one page at a time, a few seconds apart
+_browser_lock = threading.Lock()
+_browser_last = 0.0
+
+
+def browser_fetch(url: str, ws_url: str, timeout: float = 45) -> "FetchResult":
+    """Loads a page in the shared Playwright Chromium on the NAS (container `playwright`, reachable on
+    Docker network scrape-net). Plain browser: default user agent, no stealth, no cookies. A challenge
+    page or a 403/429 there comes back as is, so the caller treats the site as blocked."""
+    global _browser_last
+    from playwright.sync_api import sync_playwright  # only installed in the NAS image
+
+    with _browser_lock:
+        wait = BROWSER_GAP_SECONDS - (time.monotonic() - _browser_last)
+        if wait > 0:
+            time.sleep(wait)
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.connect(ws_url, timeout=timeout * 1000)
+                try:
+                    page = browser.new_context(locale="en-SG", timezone_id="Asia/Singapore").new_page()
+                    response = page.goto(url, wait_until="domcontentloaded", timeout=timeout * 1000)
+                    page.wait_for_timeout(2500)  # let a JS-built recipe card render
+                    status = response.status if response else None
+                    html, title = page.content(), page.title()
+                    seen = title + "\n" + page.inner_text("body")[:3000]
+                    final_url = page.url
+                finally:
+                    browser.close()
+        except Exception as exc:  # noqa: BLE001 - the browser is a best-effort fallback
+            return FetchResult(url=url, final_url=url, status=None, text="", error=f"browser: {type(exc).__name__}: {exc}")
+        finally:
+            _browser_last = time.monotonic()
+    if _BROWSER_CHALLENGE.search(seen) or status in (403, 429):
+        log.info("browser fallback: %s still blocked (HTTP %s); not working around it", url, status)
+        return FetchResult(url=url, final_url=final_url, status=status or 403, text=html, error=None)
+    return FetchResult(url=url, final_url=final_url, status=status, text=html)
+
+
 class Fetcher:
     """Thin wrapper around a requests style session so tests can swap in a fake."""
 
-    def __init__(self, session: Any | None = None, *, timeout: float = 20, max_bytes: int = 2_000_000):
+    def __init__(self, session: Any | None = None, *, timeout: float = 20, max_bytes: int = 2_000_000,
+                 browser_ws: str | None = None):
+        # A 403 or bot wall is retried once in the NAS Playwright browser when PLAYWRIGHT_WS_URL is
+        # set (the owner, 2026-10-08). Tests pass a fake session and get no browser.
+        self.browser_ws = browser_ws if browser_ws is not None else (None if session is not None else os.environ.get("PLAYWRIGHT_WS_URL"))
         if session is None:
             # A Chrome TLS fingerprint: many recipe sites 403 the plain `requests` handshake.
             from curl_cffi import requests as cffi_requests
@@ -58,6 +114,16 @@ class Fetcher:
         self.max_bytes = max_bytes
 
     def fetch(self, url: str) -> FetchResult:
+        result = self._fetch(url)
+        if self.browser_ws and (result.status == 403 or is_bot_wall(result)):
+            browsed = browser_fetch(url, self.browser_ws)
+            if browsed.error is None:
+                log.info("browser fallback for %s: HTTP %s", url, browsed.status)
+                return browsed
+            log.warning("browser fallback failed for %s: %s", url, browsed.error)
+        return result
+
+    def _fetch(self, url: str) -> FetchResult:
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-SG,en;q=0.9,zh;q=0.8",

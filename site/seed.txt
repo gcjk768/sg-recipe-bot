@@ -1,5 +1,6 @@
 # cuisine | 中文名 | recipe URL | optional tags: baking, breakfast, protein (comma separated)
 # build.py checks every URL and reads title, photo, time and ingredients from the page
+# blocked: thewoksoflife.com serves a Cloudflare challenge even to the NAS Playwright browser (2026-10-08); do not retry
 chinese  | 西兰花炒鸡片 | https://www.recipetineats.com/chicken-broccoli-stir-fry/ | protein
 chinese  | 炒米粉       | https://www.recipetineats.com/singapore-noodles/
 chinese  | 番茄炒蛋     | https://redhousespice.com/tomato-egg-stir-fry/
