@@ -362,7 +362,11 @@ const mins = r => r.minutes ? `⏱ ${r.minutes} min` : "⏱ Quick";
 const emojiOf = key => (KITCHENS.find(k => k[0] === key) || KITCHENS[8])[3];
 const dayLabel = iso => new Date(iso + "T00:00").toLocaleDateString("en-SG", { weekday: "short", day: "numeric", month: "short" });
 
-let recipes = [], newest = null;
+let recipes = [];
+// "New" lasts a week (the owner): anything added in the last 7 days, today included, local time.
+const NEW_DAYS = 7;
+const weekAgo = (() => { const d = new Date(); d.setDate(d.getDate() - (NEW_DAYS - 1)); return d.toLocaleDateString("en-CA"); })(); // YYYY-MM-DD
+const isNew = r => !!r.added && r.added >= weekAgo;
 
 // ---- saved list (kept in this browser: localStorage) ----
 const store = {
@@ -451,7 +455,7 @@ function card(r) {
     box.append(img);
   } else box.append(h("div", { class: "fallback", text: emoji }));
   box.append(h("span", { class: "time" + (r.minutes && r.minutes <= QUICK ? " fast" : ""), text: mins(r) }));
-  if (r.added && r.added === newest) box.append(h("span", { class: "new", text: "🆕 New 新" }));
+  if (isNew(r)) box.append(h("span", { class: "new", text: "🆕 New 新" }));
   if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
   const main = r.zh || r.title;
   const k = KITCHENS.find(x => x[0] === r.cuisine);
@@ -478,7 +482,7 @@ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting
 const PAGE_SIZE = 12;
 let quick = false, currentKey = null;
 const CATS = () => [
-  ...(newest ? [{ k: "new", en: "New today", zh: "今日新菜", e: "🆕", test: r => r.added === newest, group: "t", fresh: true }] : []),
+  ...(recipes.some(isNew) ? [{ k: "new", en: "New this week", zh: "本周新菜", e: "🆕", test: isNew, group: "t", fresh: true }] : []),
   ...KITCHENS.map(([k, en, zh, e]) => ({ k, en, zh, e, test: r => r.cuisine === k, group: "k" })),
   ...TOPICS.map(([k, en, zh, e, test]) => ({ k, en, zh, e, test, group: "t" })),
   { k: "quick", en: `Under ${QUICK} min`, zh: `${QUICK}分钟内`, e: "⚡", test: r => r.minutes > 0 && r.minutes <= QUICK, group: "t" },
@@ -573,7 +577,6 @@ async function load() {
   const curated = (window.RECIPES || []);
   const seen = new Set(curated.map(r => r.url));
   recipes = [...daily.filter(r => !seen.has(r.url)), ...curated].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
-  newest = daily.map(r => r.added).filter(Boolean).sort().pop() || null;
   const kitchens = new Set(recipes.map(r => r.cuisine)).size;
   $("#lede").textContent = `${recipes.length} simple recipes from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
   const withImg = curated.filter(r => https(r.image));
