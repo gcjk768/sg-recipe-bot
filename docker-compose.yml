@@ -7,6 +7,7 @@ services:
     container_name: recipebot
     env_file: .env
     environment:
+      PLAYWRIGHT_WS_URL: ws://playwright:3000/
       # TZ from .env wins; Asia/Singapore is only the fallback.
       TZ: ${TZ:-Asia/Singapore}
       RECIPEBOT_DATA_DIR: /data
