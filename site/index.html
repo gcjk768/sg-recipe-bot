@@ -27,6 +27,7 @@
 }
 html.big { --fs: 1.375rem; }
 * { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; } /* .hero etc. set display, which would beat the hidden attribute */
 html { scroll-behavior: smooth; }
 body {
   font: 400 var(--fs)/1.55 var(--body);
@@ -119,6 +120,33 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .search input:focus { border-color: var(--ink); outline: none; }
 .count { color: var(--ink-soft); white-space: nowrap; }
 
+/* ---------- home tiles + category pages ---------- */
+#home { padding-bottom: 1rem; }
+#home .search { margin: 0 0 2.2rem; }
+#home .search .btn { min-height: 56px; }
+.homeh { font: 900 clamp(1.8rem, 3.6vw, 2.6rem)/1 var(--display); border-bottom: 2px solid var(--ink); padding-bottom: .7rem; margin: 2rem 0 1.4rem; }
+.homeh span { font-family: var(--zh); color: var(--seal); margin-left: .5rem; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.2rem; }
+.tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; padding: 1.1rem 1.2rem; border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff; border: 2px solid var(--ink); background: linear-gradient(135deg, var(--saffron), var(--seal)) center/cover; transition: transform .2s, box-shadow .2s; }
+.tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,10,.05) 20%, rgba(20,14,10,.85)); }
+.tile > * { position: relative; }
+.tile:hover, .tile:focus-visible { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+.tile .te { font-size: 2.2rem; line-height: 1; }
+.tile .tn { font: 800 1.45em/1.1 var(--display); margin-top: .4rem; }
+.tile .tz { font: 900 1.15em var(--zh); opacity: .95; }
+.tile .tc { margin-top: .3rem; font-size: .9em; opacity: .9; }
+.tile.fresh { outline: 4px solid var(--seal); outline-offset: 3px; }
+#page { padding: 1.6rem 0 1rem; }
+.pagebar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.6rem; }
+.pagebar .btn { min-height: 58px; }
+#page .khead { margin-bottom: 1.6rem; }
+.pager { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin: 2.2rem 0 1rem; }
+.pager button { min-width: 56px; min-height: 56px; padding: 0 1rem; border: 2px solid var(--ink); border-radius: 14px; background: var(--card); color: var(--ink); font: 700 1.05em var(--body); cursor: pointer; }
+.pager button[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.pager button:disabled { opacity: .35; cursor: default; }
+.pager .gap { align-self: center; color: var(--ink-soft); }
+.pager .pinfo { width: 100%; text-align: center; color: var(--ink-soft); }
+
 /* ---------- sections + cards ---------- */
 .hero { padding-bottom: 2rem; }
 .new { position: absolute; right: .8rem; top: .8rem; background: var(--seal); color: #fff; border-radius: 999px; padding: .25rem .75rem; font: 700 .85em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
@@ -210,8 +238,6 @@ dialog::backdrop { background: rgba(34,26,20,.55); backdrop-filter: blur(3px); }
 .empty { text-align: center; padding: 5rem 1rem; font: 500 italic 1.6rem var(--display); color: var(--ink-soft); }
 
 footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--ink); color: var(--ink-soft); font-size: .95em; }
-.totop { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30; min-height: 60px; padding: 0 1.4rem; border-radius: 999px; border: 0; background: var(--seal); color: #fff; font: 700 1.05rem var(--body); cursor: pointer; box-shadow: 4px 4px 0 var(--ink); opacity: 0; pointer-events: none; transition: opacity .3s; }
-.totop.show { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; padding-top: 2.5rem; gap: 1rem; }
@@ -236,14 +262,14 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div>
       <div class="kicker">Easy · Everyday ingredients · 简单家常</div>
       <h1>What shall we <em>cook</em> today?</h1>
       <div class="h1zh">今天煮什么？</div>
       <p class="lede" id="lede">Simple recipes from nine kitchens. Tap any dish to open the full recipe.</p>
       <div class="hero-actions">
-        <a class="btn btn-main" href="#kitchens" onclick="event.preventDefault(); jumpTo(main)">Browse recipes 看菜谱 ↓</a>
+        <a class="btn btn-main" href="#" onclick="event.preventDefault(); jumpTo(document.getElementById('home'))">Browse recipes 看菜谱 ↓</a>
         <button class="btn btn-ghost" id="surprise">🎲 Surprise me 随便煮</button>
       </div>
     </div>
@@ -252,23 +278,31 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
 
 </div>
 
-<nav class="filters" aria-label="Filter recipes">
-  <div class="wrap">
-    <div class="chips" id="chips"></div>
-    <div class="search">
-      <input id="q" type="search" placeholder="Search: chicken, egg, tofu, 鸡, 蛋…" aria-label="Search recipes">
-      <span class="count" id="count" aria-live="polite"></span>
-    </div>
-  </div>
-</nav>
+<section class="wrap" id="home" aria-label="Choose a category">
+  <form class="search" id="searchform" role="search">
+    <input id="q" type="search" placeholder="Search: chicken, egg, tofu, 鸡, 蛋…" aria-label="Search recipes">
+    <button class="btn btn-main" type="submit">Search 搜索</button>
+  </form>
+  <h2 class="homeh">Cuisines <span>菜系</span></h2>
+  <div class="tiles" id="tilesK"></div>
+  <h2 class="homeh">Categories <span>类别</span></h2>
+  <div class="tiles" id="tilesT"></div>
+</section>
 
-<main class="wrap" id="kitchens" style="scroll-margin-top: .5rem"></main>
-<div class="wrap empty" id="empty" hidden>No recipes match. Try another word 换个词试试</div>
+<section class="wrap" id="page" hidden>
+  <div class="pagebar">
+    <a class="btn btn-main" href="#" id="back">← All categories 全部类别</a>
+    <button class="chip quick" id="quick" aria-pressed="false">⚡ Under 30 min <span class="z">30分钟内</span></button>
+  </div>
+  <div class="khead"><span class="knum" id="pemoji"></span><h2 id="ptitle"></h2><span class="kzh" id="pzh"></span><span class="kemoji" id="pcount"></span></div>
+  <div class="grid" id="pgrid"></div>
+  <div class="empty" id="empty" hidden>No recipes here yet. 这里还没有菜谱。</div>
+  <nav class="pager" id="pager" aria-label="Pages"></nav>
+</section>
 
 <footer class="wrap">
   Every recipe links to its original cook. Photos and recipes belong to their sites. 菜谱和图片版权归原网站所有。
 </footer>
-<button class="totop" id="totop">↑ Categories 分类</button>
 
 <dialog id="detail" aria-label="Recipe ingredients"></dialog>
 <dialog id="mylist" aria-label="My saved recipes"></dialog>
@@ -302,12 +336,11 @@ const TOPICS = [
   ["saved", "My saved", "我的收藏", "❤", r => isSaved(r)],
   ["veg", "Vegetarian", "素食", "🥬", r => (r.ingredients || []).length > 0 && !MEAT.test(text(r) + " " + r.ingredients.join(" "))],
 ];
-const PAGE = 24; // cards per section before "Show more"; the bot adds ~51 recipes a day
 const $ = s => document.querySelector(s);
-// Jumps to an element with an instant window.scrollTo, measured right after render():
+// Jumps to an element with an instant window.scrollTo:
 // - el.scrollIntoView does nothing while body has overflow-x: clip (needed so phones don't scroll sideways);
 // - smooth scrolling and requestAnimationFrame both wait for painted frames, and a smooth scroll begun
-//   while render() rebuilds the list was dropped in testing. getBoundingClientRect forces layout, so the
+//   while the list was being rebuilt was dropped in testing. getBoundingClientRect forces layout, so the
 //   position is already correct here.
 const jumpTo = (el, center = false) => {
   const box = el.getBoundingClientRect();
@@ -342,7 +375,7 @@ const isSaved = r => saved.some(x => x.url === r.url);
 function toggleSave(r) {
   saved = isSaved(r) ? saved.filter(x => x.url !== r.url) : [r, ...saved];
   store.set("savedRecipes", saved);
-  if (topic === "saved") render();
+  if (currentKey === "saved") route(); else if (currentKey === null) showHome();
   updateSaveUI();
 }
 function updateSaveUI() {
@@ -421,7 +454,8 @@ function card(r) {
   if (r.added && r.added === newest) box.append(h("span", { class: "new", text: "🆕 New 新" }));
   if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
   const main = r.zh || r.title;
-  const meta = [r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
+  const k = KITCHENS.find(x => x[0] === r.cuisine);
+  const meta = [k && `${k[3]} ${k[1]} ${k[2]}`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
   const link = { href: r.url, target: "_blank", rel: "noopener noreferrer" };
   const c = h("article", { class: "card" },
     h("a", { class: "cardlink", ...link, "aria-label": `${main}, open recipe` },
@@ -440,71 +474,96 @@ function card(r) {
 
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -40px" });
 
-// ---- filters ----
-let active = "all", quick = false, topic = null;
-const shown = {}; // section key -> how many cards are rendered
-const chips = $("#chips"), main = $("#kitchens");
-const chip = (label, zh, emoji, on, extra = "") =>
-  h("button", { class: "chip " + extra, "aria-pressed": "false", onclick: on }, emoji ? h("span", { text: emoji, "aria-hidden": "true" }) : null, h("span", { text: label }), h("span", { class: "z", text: zh }));
-const setKitchen = key => { active = key; render(); jumpTo(main); };
+// ---- pages: #/<category>[/<page>] and #/search/<words>[/<page>]; no hash = home ----
+const PAGE_SIZE = 12;
+let quick = false, currentKey = null;
+const CATS = () => [
+  ...(newest ? [{ k: "new", en: "New today", zh: "今日新菜", e: "🆕", test: r => r.added === newest, group: "t", fresh: true }] : []),
+  ...KITCHENS.map(([k, en, zh, e]) => ({ k, en, zh, e, test: r => r.cuisine === k, group: "k" })),
+  ...TOPICS.map(([k, en, zh, e, test]) => ({ k, en, zh, e, test, group: "t" })),
+  { k: "quick", en: `Under ${QUICK} min`, zh: `${QUICK}分钟内`, e: "⚡", test: r => r.minutes > 0 && r.minutes <= QUICK, group: "t" },
+];
+// Cakes & baking: proven recipes first. Stars are pulled toward 4.0 until there are ~20 ratings,
+// so 4.7 from 940 reviews beats 5.0 from 4. Unrated pages score 4.0.
+const proven = r => ((r.rating || 4) * (r.ratings || 0) + 4 * 20) / ((r.ratings || 0) + 20);
 
-function matches(r) {
-  const q = $("#q").value.trim().toLowerCase();
-  return (!q || `${r.zh} ${r.title} ${r.blurb || ""}`.toLowerCase().includes(q))
-    && (!quick || (r.minutes > 0 && r.minutes <= QUICK))
-    && (!topic || TOPICS.find(t => t[0] === topic)[4](r))
-    && (active === "all" || r.cuisine === active);
+function tile(c) {
+  const list = recipes.filter(c.test);
+  const cover = [...list].filter(r => https(r.image)).sort((a, b) => proven(b) - proven(a))[0];
+  const t = h("a", { class: "tile" + (c.fresh ? " fresh" : ""), href: `#/${c.k}` },
+    h("span", { class: "te", text: c.e, "aria-hidden": "true" }),
+    h("span", { class: "tn", text: c.en }), h("span", { class: "tz", text: c.zh }),
+    h("span", { class: "tc", text: c.k === "saved" ? `${list.length} saved 已收藏` : `${list.length} recipes 道菜` }));
+  if (cover) t.style.backgroundImage = `url("${encodeURI(cover.image)}")`;
+  return t;
 }
 
-function section(key, num, title, zh, emoji, list, sub, fresh) {
-  shown[key] = shown[key] || PAGE;
-  const grid = h("div", { class: "grid" }, ...list.slice(0, shown[key]).map(card));
-  const sec = h("section", { class: "kitchen" + (fresh ? " fresh" : ""), id: key },
-    h("div", { class: "khead" },
-      h("span", { class: "knum", text: num }), h("h2", { text: title }), h("span", { class: "kzh", text: zh }),
-      h("span", { class: "kemoji", text: emoji, "aria-hidden": "true" })),
-    sub ? h("p", { class: "ksub", text: sub }) : null, grid);
-  if (list.length > shown[key]) sec.append(h("button", { class: "btn btn-ghost more", text: `Show more 更多 (${list.length - shown[key]})`, onclick: () => { shown[key] += PAGE; render(); } }));
-  return sec;
+function showHome() {
+  currentKey = null;
+  $("#hero").hidden = false; $("#home").hidden = false; $("#page").hidden = true;
+  const cats = CATS();
+  $("#tilesK").replaceChildren(...cats.filter(c => c.group === "k").map(tile));
+  $("#tilesT").replaceChildren(...cats.filter(c => c.group === "t").map(tile));
 }
 
-function render() {
-  const hits = recipes.filter(matches);
-  // Cakes & baking: proven recipes first. Stars are pulled toward 4.0 until there are ~20 ratings,
-  // so 4.7 from 940 reviews beats 5.0 from 4. Unrated pages score 4.0.
-  const proven = r => ((r.rating || 4) * (r.ratings || 0) + 4 * 20) / ((r.ratings || 0) + 20);
-  if (topic === "baking") hits.sort((a, b) => proven(b) - proven(a));
-  const parts = [];
-  const fresh = newest ? hits.filter(r => r.added === newest) : [];
-  if (fresh.length && active === "all") parts.push(section("new", "🆕", "New", "新菜", "✨", fresh, `Added ${dayLabel(newest)} · 最新加入`, true));
-  KITCHENS.forEach(([key, en, zh, emoji], i) => {
-    const list = hits.filter(r => r.cuisine === key);
-    if (list.length) parts.push(section(key, String(i + 1).padStart(2, "0"), en, zh, emoji, list));
-  });
-  main.replaceChildren(...parts);
+function showPage(key, pageNo, words) {
+  const cat = key === "search"
+    ? { k: "search", en: `Search: ${words}`, zh: "搜索", e: "🔍", test: r => `${r.zh} ${r.title} ${r.blurb || ""} ${(r.ingredients || []).join(" ")}`.toLowerCase().includes(words.toLowerCase()) }
+    : CATS().find(c => c.k === key);
+  if (!cat) { location.hash = ""; return; }
+  currentKey = key;
+  $("#hero").hidden = true; $("#home").hidden = true; $("#page").hidden = false;
+  let list = recipes.filter(cat.test);
+  if (quick && key !== "quick") list = list.filter(r => r.minutes > 0 && r.minutes <= QUICK);
+  if (key === "baking") list.sort((a, b) => proven(b) - proven(a));
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const p = Math.min(Math.max(1, pageNo || 1), pages);
+  $("#pemoji").textContent = cat.e; $("#ptitle").textContent = cat.en; $("#pzh").textContent = cat.zh;
+  $("#pcount").textContent = `${list.length} 道`;
+  $("#quick").hidden = key === "quick";
+  $("#quick").setAttribute("aria-pressed", quick);
+  $("#pgrid").replaceChildren(...list.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE).map(card));
+  $("#empty").hidden = list.length > 0;
+  const go = n => { location.hash = key === "search" ? `#/search/${encodeURIComponent(words)}/${n}` : `#/${key}/${n}`; };
+  const pager = $("#pager");
+  pager.replaceChildren();
+  if (pages > 1) {
+    const nums = [];
+    for (let n = 1; n <= pages; n++) if (pages <= 9 || n === 1 || n === pages || Math.abs(n - p) <= 2) nums.push(n);
+    pager.append(h("button", { text: "‹ Prev 上一页", onclick: () => go(p - 1), ...(p === 1 ? { disabled: "" } : {}) }));
+    nums.forEach((n, i) => {
+      if (i && n - nums[i - 1] > 1) pager.append(h("span", { class: "gap", text: "…" }));
+      pager.append(h("button", { text: String(n), onclick: () => go(n), ...(n === p ? { "aria-current": "page" } : {}) }));
+    });
+    pager.append(h("button", { text: "Next 下一页 ›", onclick: () => go(p + 1), ...(p === pages ? { disabled: "" } : {}) }));
+    pager.append(h("div", { class: "pinfo", text: `Page ${p} of ${pages} · 第 ${p} / ${pages} 页` }));
+  }
   updateSaveUI();
-  allChip.setAttribute("aria-pressed", active === "all");
-  kitchenChips.forEach(c => c.setAttribute("aria-pressed", c.dataset.key === active));
-  quickChip.setAttribute("aria-pressed", quick);
-  topicChips.forEach(c => c.setAttribute("aria-pressed", c.dataset.topic === topic));
-  $("#count").textContent = `${hits.length} recipes 道菜`;
-  $("#empty").hidden = hits.length > 0;
+  scrollTo({ top: 0, behavior: "instant" });
 }
 
-const allChip = chip("All", "全部", "✨", () => setKitchen("all"));
-const kitchenChips = KITCHENS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => setKitchen(key)); c.dataset.key = key; return c; });
-const topicChips = TOPICS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => { topic = topic === key ? null : key; for (const k in shown) delete shown[k]; render(); if (topic) jumpTo(main); }, "topic"); c.dataset.topic = key; return c; });
-const quickChip = chip(`Under ${QUICK} min`, `${QUICK}分钟内`, "⚡", () => { quick = !quick; render(); if (quick) jumpTo(main); }, "quick");
-chips.append(allChip, ...kitchenChips, h("span", { class: "chipbreak", "aria-hidden": "true" }), ...topicChips, quickChip);
-$("#q").addEventListener("input", () => { for (const k in shown) delete shown[k]; render(); });
+function route() {
+  const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  if (!parts.length) return showHome();
+  if (parts[0] === "search") return showPage("search", +parts[2] || 1, decodeURIComponent(parts[1] || ""));
+  showPage(parts[0], +parts[1] || 1);
+}
+addEventListener("hashchange", route);
+$("#quick").addEventListener("click", () => {
+  quick = !quick;
+  const parts = location.hash.replace(/^#\/?/, "").split("/");
+  const first = parts[0] === "search" ? `#/search/${parts[1] || ""}` : `#/${parts[0]}`;
+  if (location.hash === first) route(); else location.hash = first;
+});
+$("#searchform").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = $("#q").value.trim();
+  if (q) location.hash = `#/search/${encodeURIComponent(q)}`;
+});
 
-// 🎲 jumps to a random dish on the page and makes it glow
+// 🎲 opens a random dish's ingredients card; no scrolling around the page
 $("#surprise").addEventListener("click", () => {
-  const cards = [...main.querySelectorAll(".card")];
-  const c = cards[Math.floor(Math.random() * cards.length)];
-  if (!c) return;
-  jumpTo(c, true);
-  c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");
+  if (recipes.length) showDetail(recipes[Math.floor(Math.random() * recipes.length)]);
 });
 
 // ---- data: curated list + every recipe the bot has posted (daily/daily.json, newest first) ----
@@ -522,7 +581,7 @@ async function load() {
     const r = withImg[[3, 17, 40][i] % withImg.length];
     if (r) $("#stack").insertBefore(h("div", { class: "polaroid" }, h("img", { src: r.image, alt: "", referrerpolicy: "no-referrer" }), h("span", { text: r.zh })), $("#stack .seal"));
   });
-  render();
+  route();
   updateSaveUI();
 }
 load();
@@ -533,9 +592,7 @@ const setBig = big => { document.documentElement.classList.toggle("big", big); s
 setBig(!!localStorage.getItem("bigText"));
 sizeBtn.addEventListener("click", () => setBig(!document.documentElement.classList.contains("big")));
 
-const toTop = $("#totop");
-addEventListener("scroll", () => toTop.classList.toggle("show", $(".filters").getBoundingClientRect().bottom < 0), { passive: true });
-toTop.addEventListener("click", () => jumpTo($(".filters")));
+
 </script>
 </body>
 </html>
