@@ -96,6 +96,9 @@ class RunReport:
         return "\n".join(lines)
 
 
+MANUAL_PREFIX = "manual-"
+
+
 class Pipeline:
     def __init__(
         self,
@@ -278,7 +281,8 @@ class Pipeline:
             slot = self.resolve_slot(day, category, theme)
             report.category, report.theme = slot.category, slot.theme
             if run_id is None:
-                report.run_id = f"{started:%Y%m%d-%H%M%S}-{slot.category}"
+                # "manual-" runs are extras (recipebot run): they never count as the day's scheduled update.
+                report.run_id = f"{'' if scheduled else MANUAL_PREFIX}{started:%Y%m%d-%H%M%S}-{slot.category}"
             if run_row is not None:
                 self.history.update_run(run_row, run_id=report.run_id, category=slot.category, theme=slot.theme)
             log.info(

@@ -436,3 +436,22 @@ def test_shutdown_raised_by_the_pipeline_stops_the_loop(settings, history):
     assert run_forever(pipeline, settings, sleep=sleep, now=lambda: clock["now"], max_runs=5) == 0
     assert pipeline.days == [date(2026, 9, 29)]
     assert history.runs_for_day(date(2026, 9, 29))[0].unfinished
+
+
+def test_manual_extra_runs_do_not_cancel_the_daily_update(settings, fixed_now):
+    """the owner, 2026-10-09: a manual run after midnight made the scheduler skip that day's update."""
+    from datetime import date
+    from recipebot.history import History
+    from recipebot.scheduler import NONE, DONE, day_status
+
+    class P:
+        pass
+
+    with History(settings.db_path) as history:
+        row = history.start_run("manual-20261009-000247-baking_cakes", "baking_cakes", None, run_day=date(2026, 10, 9))
+        history.finish_run(row, "posted", 1, None)
+        p = P(); p.history = history
+        assert day_status(p, date(2026, 10, 9)) == NONE  # the manual extra does not count
+        row = history.start_run("20261009-080000-high_protein", "high_protein", None, run_day=date(2026, 10, 9))
+        history.finish_run(row, "posted", 1, None)
+        assert day_status(p, date(2026, 10, 9)) == DONE

@@ -4,7 +4,8 @@ The loop makes at most one attempt per rotation date per process, and consults t
 before every attempt, so:
 * a container that (re)starts after the post time catches up the missed post, within
   RECIPEBOT_CATCH_UP_HOURS of the post time, even across midnight;
-* a date that already has a run (scheduled or manual) is never posted a second time;
+* a date that already has its scheduled run is never posted a second time; manual extras
+  (`recipebot run`, run ids starting with "manual-") never count, so they can't cancel the daily update;
 * a run that was killed half way is reported to the admin chat and not repeated, because the
   first half may already be in the channel;
 * a run that fails before it can record itself is not retried in a loop; the next attempt is
@@ -22,7 +23,7 @@ from datetime import date, datetime, time as dtime, timedelta
 from typing import Callable
 
 from recipebot.config import Settings
-from recipebot.pipeline import Pipeline
+from recipebot.pipeline import MANUAL_PREFIX, Pipeline
 from recipebot.render import render_alert
 
 log = logging.getLogger(__name__)
@@ -87,6 +88,7 @@ def day_status(pipeline: Pipeline, day: date) -> str:
     except Exception:  # noqa: BLE001 - a broken database is reported by the run itself
         log.exception("could not read the runs table; assuming %s has not run", day)
         return NONE
+    runs = [r for r in runs if not (r.run_id or "").startswith(MANUAL_PREFIX)]  # extras don't cancel the daily update
     if not runs:
         return NONE
     if any(not r.unfinished for r in runs):

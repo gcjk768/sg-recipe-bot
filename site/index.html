@@ -66,6 +66,7 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .h1zh { font: 900 clamp(2rem, 4.4vw, 3.6rem)/1.1 var(--zh); color: var(--ink-soft); letter-spacing: .08em; }
 .updated { margin-top: 1rem; font-weight: 700; color: var(--jade); }
 .updated:empty { display: none; }
+.updated.stale { color: var(--seal); }
 .lede { max-width: 34ch; margin-top: 1.4rem; font-size: 1.2em; color: var(--ink-soft); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
 .btn {
@@ -664,7 +665,10 @@ async function load() {
   $("#lede").textContent = `${recipes.length - nVideos} simple recipes and ${nVideos} cooking videos from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
   if (updated && !isNaN(new Date(updated))) {
     const when = new Date(updated).toLocaleString("en-SG", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
-    $("#updated").textContent = `🔄 Last updated ${when} · 最近更新`;
+    // No Telegram alerts any more, so a stalled bot shows here: the bot adds something every morning.
+    const stale = Date.now() - new Date(updated) > 36 * 3600e3;
+    $("#updated").textContent = stale ? `⚠ Not updated since ${when} · 已超过一天没有更新` : `🔄 Last updated ${when} · 最近更新`;
+    $("#updated").classList.toggle("stale", stale);
   }
   const withImg = curated.filter(r => https(r.image));
   [0, 1, 2].forEach(i => {
