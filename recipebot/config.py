@@ -150,6 +150,8 @@ class Settings:
     prompts_dir: Path | None = None
     vault_dir: Path | None = None
     """Obsidian vault (movement log + memory); None turns it off."""
+    site_export_dir: Path | None = None
+    """Where daily.json for the family recipe website goes; None turns it off."""
 
     @property
     def db_path(self) -> Path:
@@ -197,6 +199,7 @@ def load_settings() -> Settings:
         raise ConfigError("RECIPEBOT_COUNT must be between 1 and 3")
     prompts_dir = _env("RECIPEBOT_PROMPTS_DIR")
     vault_dir = _env("VAULT_DIR")
+    site_export_dir = _env("SITE_EXPORT_DIR")
     return Settings(
         telegram_bot_token=_env("TELEGRAM_BOT_TOKEN"),
         telegram_chat_id=_chat_id("TELEGRAM_CHAT_ID"),
@@ -228,4 +231,5 @@ def load_settings() -> Settings:
         fetch_timeout_seconds=_env_int("RECIPEBOT_FETCH_TIMEOUT", 20),
         prompts_dir=Path(prompts_dir) if prompts_dir else None,
         vault_dir=Path(vault_dir) if vault_dir else None,
+        site_export_dir=Path(site_export_dir) if site_export_dir else None,
     )

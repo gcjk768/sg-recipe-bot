@@ -13,6 +13,8 @@ services:
       RECIPEBOT_DATA_DIR: /data
       # Obsidian vault (movement log + memory). On the NAS set VAULT_HOST_PATH in .env.
       VAULT_DIR: /vault
+      # Family recipe website: every posted recipe is added to data/site/daily.json.
+      SITE_EXPORT_DIR: /data/site
     volumes:
       - ./data:/data
       - "${VAULT_HOST_PATH:-./data/vault}:/vault"
@@ -27,6 +29,24 @@ services:
     # One shot instead of the daemon (for the NAS task scheduler or a manual test):
     #   docker compose run --rm recipebot recipebot run --dry-run
     #   docker compose run --rm recipebot recipebot run
+
+  # Family recipe website (site/index.html), read-only static files.
+  # Open http://<NAS LAN IP>:8780 at home or http://<NAS Tailscale IP>:8780 over Tailscale.
+  # Rebuild the data with "python site/build.py" on a PC, then copy site/ here; no restart needed.
+  recipe-site:
+    image: nginx:1.27-alpine
+    container_name: recipe-site
+    ports:
+      - "8780:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+      - ./data/site:/usr/share/nginx/html/daily:ro
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
 
   # Optional: Claude Code CLI in a container, with this folder mounted, for editing and operating
   # the bot from the NAS. Not started by "docker compose up"; run it on demand:

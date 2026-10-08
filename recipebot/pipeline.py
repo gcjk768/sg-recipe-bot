@@ -26,6 +26,7 @@ from recipebot.prompts import load_brief_template, load_system_prompt
 from recipebot import telegram as tg
 from recipebot.render import RenderError, render_alert, render_recipe
 from recipebot.rotation import Rotation, Slot, daily_plan
+from recipebot.site_export import safe_export
 from recipebot.telegram import TelegramClient, TelegramError
 from recipebot.validate import main_ingredient, validate_reply
 from recipebot.vault import Vault
@@ -451,6 +452,7 @@ class Pipeline:
         when the write fails, so the owner knows the channel and the table disagree."""
         try:
             self.history.add_sent(recipe, main_ingredient=main_ingredient(recipe), run_id=report.run_id, sent_at=self.now())
+            safe_export(self.history, self.settings.site_export_dir, self.fetcher, self.tz)
             return True
         except Exception as exc:  # noqa: BLE001
             log.exception("posted %s but could not record it", recipe.title)
