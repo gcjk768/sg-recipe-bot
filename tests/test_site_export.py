@@ -9,7 +9,7 @@ from recipebot.web import FetchResult
 from tests.conftest import make_recipe
 
 SGT = ZoneInfo("Asia/Singapore")
-PAGE = '<script type="application/ld+json">{"@type":"Recipe","name":"x","image":["https://img/a.jpg"]}</script>'
+PAGE = '<script type="application/ld+json">{"@type":"Recipe","name":"x","image":["https://img/a.jpg"],"aggregateRating":{"ratingValue":"4.9","ratingCount":"812"}}</script>'
 
 
 class FakeFetcher:
@@ -45,6 +45,7 @@ def test_export_newest_first_and_images_cached(tmp_path):
         assert items[0]["cuisine"] == "italian" and items[0]["site"] == "b.com"
         assert items[0]["added"] == "2026-10-09"  # 17:00 UTC is the next day in Singapore
         assert items[0]["image"] == "https://img/a.jpg"
+        assert (items[0]["rating"], items[0]["ratings"]) == (4.9, 812)
         assert items[0]["ingredients"] and all(isinstance(line, str) and line for line in items[0]["ingredients"])
         export_site(history, out, fetcher, SGT)
         assert len(fetcher.calls) == 2  # second export reads photos from images.json

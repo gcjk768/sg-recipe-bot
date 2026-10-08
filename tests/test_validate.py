@@ -344,3 +344,14 @@ def test_cost_per_serving_tolerance_is_rounding_only():
 def test_nutrition_plausibility(nutrition, plausible):
     recipe = Recipe.model_validate(make_recipe(nutrition_per_serving=nutrition))
     assert (recipe.nutrition is not None) == plausible
+
+
+@pytest.mark.parametrize("stars,ok", [("4.1", False), ("4.6", True), (None, True)])
+def test_bakes_need_a_good_rating_when_the_page_shows_one(stars, ok):
+    agg = f',"aggregateRating":{{"ratingValue":"{stars}","ratingCount":"90"}}' if stars else ""
+    html = '<script type="application/ld+json">{"@type":"Recipe","name":"x"%s}</script>ingredients' % agg
+    bake = make_recipe(category="baking_cakes", prep_minutes=20, cook_minutes=40, total_minutes=60)
+    result = validate_reply(_reply([bake], category="baking_cakes"), "baking_cakes", history=None, fetcher=_fetcher({URL: FakeResponse(200, body=html)}))
+    assert (len(result.accepted) == 1) == ok
+    if not ok:
+        assert "rated 4.1 stars" in result.rejected[0].reason

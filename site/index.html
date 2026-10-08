@@ -95,7 +95,7 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 @keyframes stamp { from { opacity: 0; transform: scale(2.2); } }
 
 /* ---------- filters ---------- */
-.filters { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+.filters { position: relative; background: var(--paper); padding: 1rem 0; border-bottom: 1px solid var(--rule); }
 .chips { display: flex; gap: .6rem; overflow-x: auto; scrollbar-width: none; padding: .2rem .2rem .5rem; }
 .chips::-webkit-scrollbar { display: none; }
 @media (min-width: 861px) { .chips { flex-wrap: wrap; overflow: visible; } .chips .chipbreak { display: block; flex-basis: 100%; height: 0; } }
@@ -152,6 +152,7 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
   position: absolute; left: .8rem; bottom: .8rem; background: var(--paper); color: var(--ink); border-radius: 999px;
   padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
+.rate { position: absolute; right: .8rem; bottom: .8rem; background: var(--ink); color: #ffd877; border-radius: 999px; padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
 .time.fast { background: var(--jade); color: #fff; }
 .cbody { padding: 1.1rem 1.2rem .6rem; flex: 1; }
 .czh { font: 900 1.55em/1.2 var(--zh); }
@@ -209,7 +210,7 @@ dialog::backdrop { background: rgba(34,26,20,.55); backdrop-filter: blur(3px); }
 .empty { text-align: center; padding: 5rem 1rem; font: 500 italic 1.6rem var(--display); color: var(--ink-soft); }
 
 footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--ink); color: var(--ink-soft); font-size: .95em; }
-.totop { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30; width: 60px; height: 60px; border-radius: 50%; border: 0; background: var(--seal); color: #fff; font-size: 1.6rem; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); opacity: 0; pointer-events: none; transition: opacity .3s; }
+.totop { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30; min-height: 60px; padding: 0 1.4rem; border-radius: 999px; border: 0; background: var(--seal); color: #fff; font: 700 1.05rem var(--body); cursor: pointer; box-shadow: 4px 4px 0 var(--ink); opacity: 0; pointer-events: none; transition: opacity .3s; }
 .totop.show { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 860px) {
@@ -242,7 +243,7 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
       <div class="h1zh">今天煮什么？</div>
       <p class="lede" id="lede">Simple recipes from nine kitchens. Tap any dish to open the full recipe.</p>
       <div class="hero-actions">
-        <a class="btn btn-main" href="#kitchens">Browse recipes 看菜谱 ↓</a>
+        <a class="btn btn-main" href="#kitchens" onclick="event.preventDefault(); jumpTo(main)">Browse recipes 看菜谱 ↓</a>
         <button class="btn btn-ghost" id="surprise">🎲 Surprise me 随便煮</button>
       </div>
     </div>
@@ -261,13 +262,13 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   </div>
 </nav>
 
-<main class="wrap" id="kitchens"></main>
+<main class="wrap" id="kitchens" style="scroll-margin-top: .5rem"></main>
 <div class="wrap empty" id="empty" hidden>No recipes match. Try another word 换个词试试</div>
 
 <footer class="wrap">
   Every recipe links to its original cook. Photos and recipes belong to their sites. 菜谱和图片版权归原网站所有。
 </footer>
-<button class="totop" id="totop" aria-label="Back to top">↑</button>
+<button class="totop" id="totop">↑ Categories 分类</button>
 
 <dialog id="detail" aria-label="Recipe ingredients"></dialog>
 <dialog id="mylist" aria-label="My saved recipes"></dialog>
@@ -278,7 +279,6 @@ const KITCHENS = [
   ["chinese", "Chinese", "中餐", "🥢"],
   ["western", "Western", "西餐", "🍽️"],
   ["malay", "Malay", "马来", "🌶️"],
-  ["indian", "Indian", "印度", "🍛"],
   ["french", "French", "法国", "🥐"],
   ["italian", "Italian", "意大利", "🍝"],
   ["korean", "Korean", "韩国", "🥘"],
@@ -299,10 +299,20 @@ const TOPICS = [
   ["soup", "Soups", "汤", "🍲", r => /soup|stew|jjigae|broth|汤|羹/i.test(text(r))],
   ["noodles", "Noodles & pasta", "面", "🍜", r => /noodle|pasta|spaghetti|penne|fettuccine|lasagn|\bmee\b|udon|ramen|soba|pad thai|chow fun|hor fun|japchae|laksa|bee hoon|面|米粉|河粉/i.test(text(r))],
   ["rice", "Rice dishes", "饭", "🍚", r => /\brice\b|nasi|bibimbap|bokkeumbap|gohan|donburi|\w+don\b|risotto|biryani|饭|丼/i.test(text(r)) && !/rice paper|rice cake|rice flour/i.test(text(r))],
+  ["saved", "My saved", "我的收藏", "❤", r => isSaved(r)],
   ["veg", "Vegetarian", "素食", "🥬", r => (r.ingredients || []).length > 0 && !MEAT.test(text(r) + " " + r.ingredients.join(" "))],
 ];
 const PAGE = 24; // cards per section before "Show more"; the bot adds ~51 recipes a day
 const $ = s => document.querySelector(s);
+// Jumps to an element with an instant window.scrollTo, measured right after render():
+// - el.scrollIntoView does nothing while body has overflow-x: clip (needed so phones don't scroll sideways);
+// - smooth scrolling and requestAnimationFrame both wait for painted frames, and a smooth scroll begun
+//   while render() rebuilds the list was dropped in testing. getBoundingClientRect forces layout, so the
+//   position is already correct here.
+const jumpTo = (el, center = false) => {
+  const box = el.getBoundingClientRect();
+  scrollTo({ top: Math.max(0, scrollY + box.top - (center ? (innerHeight - box.height) / 2 : 12)), behavior: "instant" });
+};
 const https = u => /^https:\/\//.test(u || "");
 
 // Builds an element; text is always set as textContent, never parsed as HTML.
@@ -332,6 +342,7 @@ const isSaved = r => saved.some(x => x.url === r.url);
 function toggleSave(r) {
   saved = isSaved(r) ? saved.filter(x => x.url !== r.url) : [r, ...saved];
   store.set("savedRecipes", saved);
+  if (topic === "saved") render();
   updateSaveUI();
 }
 function updateSaveUI() {
@@ -408,6 +419,7 @@ function card(r) {
   } else box.append(h("div", { class: "fallback", text: emoji }));
   box.append(h("span", { class: "time" + (r.minutes && r.minutes <= QUICK ? " fast" : ""), text: mins(r) }));
   if (r.added && r.added === newest) box.append(h("span", { class: "new", text: "🆕 New 新" }));
+  if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
   const main = r.zh || r.title;
   const meta = [r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
   const link = { href: r.url, target: "_blank", rel: "noopener noreferrer" };
@@ -434,7 +446,7 @@ const shown = {}; // section key -> how many cards are rendered
 const chips = $("#chips"), main = $("#kitchens");
 const chip = (label, zh, emoji, on, extra = "") =>
   h("button", { class: "chip " + extra, "aria-pressed": "false", onclick: on }, emoji ? h("span", { text: emoji, "aria-hidden": "true" }) : null, h("span", { text: label }), h("span", { class: "z", text: zh }));
-const setKitchen = key => { active = key; render(); main.scrollIntoView({ behavior: "smooth", block: "start" }); };
+const setKitchen = key => { active = key; render(); jumpTo(main); };
 
 function matches(r) {
   const q = $("#q").value.trim().toLowerCase();
@@ -458,6 +470,10 @@ function section(key, num, title, zh, emoji, list, sub, fresh) {
 
 function render() {
   const hits = recipes.filter(matches);
+  // Cakes & baking: proven recipes first. Stars are pulled toward 4.0 until there are ~20 ratings,
+  // so 4.7 from 940 reviews beats 5.0 from 4. Unrated pages score 4.0.
+  const proven = r => ((r.rating || 4) * (r.ratings || 0) + 4 * 20) / ((r.ratings || 0) + 20);
+  if (topic === "baking") hits.sort((a, b) => proven(b) - proven(a));
   const parts = [];
   const fresh = newest ? hits.filter(r => r.added === newest) : [];
   if (fresh.length && active === "all") parts.push(section("new", "🆕", "New", "新菜", "✨", fresh, `Added ${dayLabel(newest)} · 最新加入`, true));
@@ -477,8 +493,8 @@ function render() {
 
 const allChip = chip("All", "全部", "✨", () => setKitchen("all"));
 const kitchenChips = KITCHENS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => setKitchen(key)); c.dataset.key = key; return c; });
-const topicChips = TOPICS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => { topic = topic === key ? null : key; for (const k in shown) delete shown[k]; render(); main.scrollIntoView({ behavior: "smooth", block: "start" }); }, "topic"); c.dataset.topic = key; return c; });
-const quickChip = chip(`Under ${QUICK} min`, `${QUICK}分钟内`, "⚡", () => { quick = !quick; render(); }, "quick");
+const topicChips = TOPICS.map(([key, en, zh, emoji]) => { const c = chip(en, zh, emoji, () => { topic = topic === key ? null : key; for (const k in shown) delete shown[k]; render(); if (topic) jumpTo(main); }, "topic"); c.dataset.topic = key; return c; });
+const quickChip = chip(`Under ${QUICK} min`, `${QUICK}分钟内`, "⚡", () => { quick = !quick; render(); if (quick) jumpTo(main); }, "quick");
 chips.append(allChip, ...kitchenChips, h("span", { class: "chipbreak", "aria-hidden": "true" }), ...topicChips, quickChip);
 $("#q").addEventListener("input", () => { for (const k in shown) delete shown[k]; render(); });
 
@@ -487,7 +503,7 @@ $("#surprise").addEventListener("click", () => {
   const cards = [...main.querySelectorAll(".card")];
   const c = cards[Math.floor(Math.random() * cards.length)];
   if (!c) return;
-  c.scrollIntoView({ behavior: "smooth", block: "center" });
+  jumpTo(c, true);
   c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");
 });
 
@@ -518,8 +534,8 @@ setBig(!!localStorage.getItem("bigText"));
 sizeBtn.addEventListener("click", () => setBig(!document.documentElement.classList.contains("big")));
 
 const toTop = $("#totop");
-addEventListener("scroll", () => toTop.classList.toggle("show", scrollY > 900), { passive: true });
-toTop.addEventListener("click", () => scrollTo({ top: 0 }));
+addEventListener("scroll", () => toTop.classList.toggle("show", $(".filters").getBoundingClientRect().bottom < 0), { passive: true });
+toTop.addEventListener("click", () => jumpTo($(".filters")));
 </script>
 </body>
 </html>

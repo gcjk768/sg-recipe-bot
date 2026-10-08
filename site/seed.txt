@@ -41,17 +41,6 @@ malay    | 香料炸鸡     | https://nomadette.com/ayam-goreng-berempah/
 malay    | 班兰戚风蛋糕 | https://rasamalaysia.com/pandan-chiffon-cake/ | baking
 malay    | 鸡蛋糕(Kuih Bahulu) | https://rasamalaysia.com/kuih-bahulu/ | baking
 malay    | 椰丝班兰卷   | https://rasamalaysia.com/kuih-dadar/ | baking
-indian   | 扁豆汤       | https://www.indianhealthyrecipes.com/dal-tadka/
-indian   | 鹰嘴豆咖喱   | https://www.indianhealthyrecipes.com/chana-masala/
-indian   | 孜然饭       | https://www.indianhealthyrecipes.com/jeera-rice/
-indian   | 土豆花菜     | https://www.indianhealthyrecipes.com/aloo-gobi/
-indian   | 印度咖喱鸡   | https://www.indianhealthyrecipes.com/chicken-curry/
-indian   | 印度煎饼     | https://www.indianhealthyrecipes.com/chapati/ | breakfast
-indian   | 菠菜奶酪     | https://www.indianhealthyrecipes.com/palak-paneer-recipe/
-indian   | 黄油鸡(简易) | https://www.recipetineats.com/butter-chicken/
-indian   | 印度鸡蛋炒   | https://www.indianhealthyrecipes.com/egg-bhurji/ | breakfast, protein
-indian   | 印度酥饼     | https://www.indianhealthyrecipes.com/nankhatai-recipe/ | baking
-indian   | 无蛋巧克力蛋糕 | https://www.indianhealthyrecipes.com/eggless-chocolate-cake/ | baking
 french   | 法式吐司     | https://www.recipetineats.com/french-toast/ | breakfast
 french   | 法式洋葱汤   | https://www.recipetineats.com/french-onion-soup/
 french   | 法式咸派     | https://www.recipetineats.com/quiche-lorraine/

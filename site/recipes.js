@@ -4,6 +4,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": 4.91,
+  "ratings": 148,
   "zh": "西兰花炒鸡片",
   "title": "Chicken Broccoli Stir Fry (extra sauce!)",
   "url": "https://www.recipetineats.com/chicken-broccoli-stir-fry/",
@@ -32,6 +34,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.97,
+  "ratings": 130,
   "zh": "炒米粉",
   "title": "Singapore Noodles",
   "url": "https://www.recipetineats.com/singapore-noodles/",
@@ -61,6 +65,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 107,
   "zh": "番茄炒蛋",
   "title": "Tomato Egg Stir-Fry (番茄炒蛋)",
   "url": "https://redhousespice.com/tomato-egg-stir-fry/",
@@ -85,6 +91,8 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "rating": 4.8,
+  "ratings": 5,
   "zh": "蒸水蛋",
   "title": "Chinese Steamed Eggs (鸡蛋羹)",
   "url": "https://omnivorescookbook.com/chinese-steamed-egg/",
@@ -105,6 +113,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 9,
   "zh": "小白菜炒豆泡",
   "title": "Stir Fried Bok Choy with Tofu Puffs",
   "url": "https://omnivorescookbook.com/stir-fried-bok-choy/",
@@ -125,6 +135,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.58,
+  "ratings": 256,
   "zh": "宫保鸡丁",
   "title": "Kung Pao Chicken Recipe (The Best!)",
   "url": "https://rasamalaysia.com/kung-pao-chicken-recipe/",
@@ -156,6 +168,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 61,
   "zh": "虾仁炒饭",
   "title": "Chinese Fried Rice with Shrimp / Prawns",
   "url": "https://www.recipetineats.com/chinese-fried-rice/",
@@ -184,6 +198,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.93,
+  "ratings": 27,
   "zh": "麻婆豆腐",
   "title": "Mapo Tofu",
   "url": "https://www.recipetineats.com/mapo-tofu/",
@@ -221,6 +237,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.96,
+  "ratings": 196,
   "zh": "鸡肉玉米羹",
   "title": "Chinese Chicken and Corn Soup",
   "url": "https://www.recipetineats.com/chinese-chicken-corn-soup/",
@@ -246,6 +264,8 @@ window.RECIPES = [
  {
   "cuisine": "chinese",
   "tags": [],
+  "rating": 4.96,
+  "ratings": 65,
   "zh": "蚝油芥兰",
   "title": "Restaurant Style Chinese Broccoli with Oyster Sauce",
   "url": "https://www.recipetineats.com/chinese-broccoli-with-oyster-sauce/",
@@ -273,6 +293,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 5.0,
+  "ratings": 4,
   "zh": "杏仁饼",
   "title": "Chinese Almond Cookies",
   "url": "https://omnivorescookbook.com/chinese-almond-cookies/",
@@ -300,6 +322,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": 4.98,
+  "ratings": 78,
   "zh": "蒜香黄油虾",
   "title": "Garlic Prawns (Shrimp!)",
   "url": "https://www.recipetineats.com/garlic-prawns/",
@@ -325,6 +349,8 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "rating": 4.97,
+  "ratings": 477,
   "zh": "肉酱意面",
   "title": "Spaghetti Bolognese",
   "url": "https://www.recipetineats.com/spaghetti-bolognese/",
@@ -355,6 +381,8 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "rating": 4.94,
+  "ratings": 214,
   "zh": "牧羊人派",
   "title": "Shepherd's Pie",
   "url": "https://www.recipetineats.com/shepherds-pie/",
@@ -392,6 +420,8 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "rating": 4.97,
+  "ratings": 32,
   "zh": "土豆泥",
   "title": "Creamy Mashed Potato",
   "url": "https://www.recipetineats.com/mashed-potato/",
@@ -415,6 +445,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": 4.99,
+  "ratings": 2348,
   "zh": "烤鸡胸",
   "title": "Oven Baked Chicken Breast",
   "url": "https://www.recipetineats.com/oven-baked-chicken-breast/",
@@ -437,6 +469,8 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "rating": 4.96,
+  "ratings": 102,
   "zh": "蘑菇汤",
   "title": "Mushroom Soup",
   "url": "https://www.recipetineats.com/mushroom-soup/",
@@ -464,6 +498,8 @@ window.RECIPES = [
  {
   "cuisine": "western",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 91,
   "zh": "牛肉汉堡",
   "title": "Hamburger Recipe",
   "url": "https://www.recipetineats.com/hamburger/",
@@ -490,6 +526,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.98,
+  "ratings": 551,
   "zh": "巧克力蛋糕",
   "title": "Chocolate Cake",
   "url": "https://www.recipetineats.com/chocolate-cake/",
@@ -518,6 +556,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.91,
+  "ratings": 253,
   "zh": "胡萝卜蛋糕",
   "title": "Carrot Cake (Easy and ultra moist!)",
   "url": "https://www.recipetineats.com/carrot-cake/",
@@ -552,6 +592,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.94,
+  "ratings": 223,
   "zh": "巧克力豆饼干",
   "title": "Soft Easy Chocolate Chip Cookies",
   "url": "https://www.recipetineats.com/chocolate-chip-cookies/",
@@ -578,6 +620,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.95,
+  "ratings": 566,
   "zh": "苹果酥",
   "title": "Apple Crumble",
   "url": "https://www.recipetineats.com/apple-crumble/",
@@ -607,6 +651,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.93,
+  "ratings": 55,
   "zh": "无面粉布朗尼",
   "title": "Flourless Chocolate Brownies (gluten free)",
   "url": "https://www.recipetineats.com/brownies/",
@@ -631,6 +677,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "简易巧克力蛋糕",
   "title": "Easy chocolate cake",
   "url": "https://www.bbcgoodfood.com/recipes/easy-chocolate-cake",
@@ -663,6 +711,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "布朗尼",
   "title": "Best ever chocolate brownies recipe",
   "url": "https://www.bbcgoodfood.com/recipes/best-ever-chocolate-brownies-recipe",
@@ -687,6 +737,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "维多利亚海绵蛋糕",
   "title": "Classic Victoria sandwich recipe",
   "url": "https://www.bbcgoodfood.com/recipes/classic-victoria-sandwich-recipe",
@@ -714,6 +766,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "柠檬糖霜蛋糕",
   "title": "Lemon drizzle cake",
   "url": "https://www.bbcgoodfood.com/recipes/lemon-drizzle-cake",
@@ -738,6 +792,8 @@ window.RECIPES = [
    "baking",
    "breakfast"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "香蕉蛋糕",
   "title": "Banana bread",
   "url": "https://www.bbcgoodfood.com/recipes/banana-bread",
@@ -760,6 +816,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 2,
   "zh": "甜酱油焖鸡",
   "title": "Ayam Masak Kicap 2.0 | Kicap Manis Braised Chicken Stir Fry",
   "url": "https://nomadette.com/ayam-kicap-manis/",
@@ -789,6 +847,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.56,
+  "ratings": 95,
   "zh": "椰浆饭",
   "title": "Nasi Lemak Recipe",
   "url": "https://rasamalaysia.com/nasi-lemak-recipe/",
@@ -823,6 +883,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.56,
+  "ratings": 747,
   "zh": "仁当牛肉",
   "title": "Beef Rendang (The Best!)",
   "url": "https://rasamalaysia.com/beef-rendang-recipe-rendang-daging/",
@@ -857,6 +919,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.6,
+  "ratings": 25,
   "zh": "红酱鸡",
   "title": "Ayam Masak Merah (Chicken in Spicy Tomato Sauce)",
   "url": "https://rasamalaysia.com/ayam-masak-merah/",
@@ -887,6 +951,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.82,
+  "ratings": 107,
   "zh": "印尼炒饭",
   "title": "Nasi Goreng (Indonesian Fried Rice)",
   "url": "https://www.recipetineats.com/nasi-goreng-indonesian-fried-rice/",
@@ -916,6 +982,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 326,
   "zh": "沙爹鸡",
   "title": "Satay Chicken Curry (Malaysian)",
   "url": "https://www.recipetineats.com/chicken-satay/",
@@ -956,6 +1024,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.88,
+  "ratings": 31,
   "zh": "参巴虾",
   "title": "Sambal Udang (Prawn Sambal)",
   "url": "https://rasamalaysia.com/sambal-udang-prawn-sambal/",
@@ -980,6 +1050,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 1,
   "zh": "马来炒饭",
   "title": "Nasi Goreng Kampung",
   "url": "https://nomadette.com/nasi-goreng-kampung/",
@@ -1008,6 +1080,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 2,
   "zh": "嘛嘛炒面",
   "title": "Mee Goreng Mamak (Singapore-Style)",
   "url": "https://nomadette.com/mee-goreng-mamak/",
@@ -1037,6 +1111,8 @@ window.RECIPES = [
  {
   "cuisine": "malay",
   "tags": [],
+  "rating": 4.9,
+  "ratings": 7,
   "zh": "香料炸鸡",
   "title": "Ayam Goreng Berempah (Malaysian Spiced Fried Chicken)",
   "url": "https://nomadette.com/ayam-goreng-berempah/",
@@ -1069,6 +1145,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.48,
+  "ratings": 42,
   "zh": "班兰戚风蛋糕",
   "title": "Pandan Chiffon Cake",
   "url": "https://rasamalaysia.com/pandan-chiffon-cake/",
@@ -1093,6 +1171,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.5,
+  "ratings": 24,
   "zh": "鸡蛋糕(Kuih Bahulu)",
   "title": "Kuih Bahulu",
   "url": "https://rasamalaysia.com/kuih-bahulu/",
@@ -1115,6 +1195,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.7,
+  "ratings": 20,
   "zh": "椰丝班兰卷",
   "title": "Kuih Dadar (Kuih Ketayap)",
   "url": "https://rasamalaysia.com/kuih-dadar/",
@@ -1141,344 +1223,12 @@ window.RECIPES = [
   ]
  },
  {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "扁豆汤",
-  "title": "Dal Tadka Recipe (Restaurant Style)",
-  "url": "https://www.indianhealthyrecipes.com/dal-tadka/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/04/dal-tadka-recipe.jpg",
-  "minutes": 40,
-  "serves": "4",
-  "blurb": "Dal tadka is a comforting, flavorful and hearty Indian lentil dish. This super flavorsome & delicious homemade dal tadka rivals any Indian restaurant!",
-  "ingredients": [
-   "1 cup (200 grams) toor dal ((split pigeon peas or ¾ cup toor dal, ¼ cup moong dal or red lentils & 2 tbsps chana dal))",
-   "3 cups water ((to cook dal))",
-   "¾ cup hot water ((use only if required to adjust the consistency))",
-   "1½ to 2 tablespoon oil",
-   "½ teaspoon cumin seeds ((jeera))",
-   "1 teaspoon (4) garlic (cloves, fine chopped)",
-   "1 teaspoon (1 inch) ginger (peeled & fine chopped)",
-   "1 medium (⅓ to ½ cup) onion ((fine chopped))",
-   "1 green chilli ((chopped, optional))",
-   "2 medium (1 cup) tomatoes ((deseeded, fine chopped))",
-   "¼ teaspoon turmeric",
-   "½ to ¾ teaspoon red chilli powder",
-   "½ teaspoon garam masala",
-   "1 teaspoon salt ((more to adjust))",
-   "1 tablespoon kasuri methi ((dried fenugreek leaves))",
-   "1 to 2 tablespoon coriander leaves ((fine chopped, more for garnish))",
-   "1 medium lemon ((to serve, or use 1 tsp amchur - dried mango powder))",
-   "2 tablespoons ghee ((oil for a vegan dish))",
-   "½ to ¾ teaspoon cumin seeds",
-   "2 dried red chilies",
-   "½ to 1 tablespoon garlic (fine chopped (I use 1 tbsp))",
-   "⅛ teaspoon hing ((asafoetida) (or gluten-free hing))",
-   "⅓ teaspoon red chilli powder",
-   "¼ teaspoon mustard seeds ((optional))",
-   "1 sprig curry leaves ((optional, pat dry))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "鹰嘴豆咖喱",
-  "title": "Authentic Chana Masala (Chickpea Masala)",
-  "url": "https://www.indianhealthyrecipes.com/chana-masala/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/08/chana-masala-recipe.jpg",
-  "minutes": 50,
-  "serves": "4",
-  "blurb": "This restaurant Chana masala is a popular Indian dish of chickpeas cooked in an onion tomato gravy. It goes great as a side with rice, paratha or roti.",
-  "ingredients": [
-   "1 cup chana ((dried raw chickpeas) (or 3 cups soaked or 2 - 15 oz cans))",
-   "1½ cups water ((to pressure cook, + more to make gravy))",
-   "2 tablespoon oil (or as needed)",
-   "1 small bay leaf ((optional))",
-   "1 inch cinnamon ((optional))",
-   "2 cloves ((optional))",
-   "2 green cardamoms ((optional))",
-   "1½ cups onions ((fine chopped, 2 large))",
-   "1 green chili (slit (optional))",
-   "¾ to 1 tablespoon ginger garlic paste ((or ½ tbsp each fine chopped) )",
-   "1½ cups tomatoes ((fine chopped, 3 large or 1½ cups tomato puree or whole peeled tomatoes))",
-   "¾ teaspoon salt ((+ more to adjust to taste))",
-   "¼ teaspoon turmeric",
-   "1½ teaspoons Kashmiri red chili powder ((adjust to taste))",
-   "1 teaspoon garam masala ((adjust to taste))",
-   "2 teaspoon coriander powder",
-   "½ teaspoon cumin powder ((optional))",
-   "1 teaspoon kasuri methi ((dried fenugreek leaves) (optional))",
-   "¼ teaspoon amchur ((dried mango powder) (optional))",
-   "2 tbsp coriander leaves ((cilantro chopped finely))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "孜然饭",
-  "title": "Jeera Rice Recipe",
-  "url": "https://www.indianhealthyrecipes.com/jeera-rice/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2015/12/jeera-rice-recipe.jpg",
-  "minutes": 25,
-  "serves": "3",
-  "blurb": "Make the perfect jeera rice that's non sticky, fluffy & aromatic. Instructions included to make jeera rice in a regular pot, traditional pressure cooker & Insta",
-  "ingredients": [
-   "1½ cups aged basmati rice ((refer notes))",
-   "2 tablespoon ghee ( or oil or butter)",
-   "1 green chili (slit and deseeded (optional))",
-   "2½ cups water to pressure cook (or (1¾ cups + 2 tbsps for instant pot) or (3 cups for regular pot, Cut down if not using aged rice))",
-   "½ to ¾ teaspoon salt ( as needed)",
-   "2 teaspoons cumin seeds ((jeera))",
-   "1 bay leaf ((tej patta))",
-   "4 green cardamoms ((elaichi))",
-   "2 inch cinnamon piece ((dalchini))",
-   "4 cloves ((laung))",
-   "1 strand mace ((javitri) (optional))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "土豆花菜",
-  "title": "Aloo Gobi Recipe (Cauliflower Potato Curry)",
-  "url": "https://www.indianhealthyrecipes.com/aloo-gobi/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/03/aloo-gobi-recipe.jpg",
-  "minutes": 50,
-  "serves": "3",
-  "blurb": "A delicious & flavor packed dish of spiced potatoes & cauliflower. Make the best aloo gobi with this recipe! Serve it with plain rice, roti or paratha.",
-  "ingredients": [
-   "1½ cup (2 medium) potatoes ((cubed to ¾ x ¾ inch))",
-   "2 cups (180 grams) cauliflower florets ((gobi, chopped to 1½ inch) )",
-   "¾ to 1 cup (1 medium) onion ((chopped finely) )",
-   "¾ to 1 cup (2 medium) tomatoes ((finely chopped) or ¼ cup tomato puree or 2 tbsp tomato paste mixed with 3 tbsps water)",
-   "½ tablespoon (½ inch) ginger (peeled & minced or grated)",
-   "½ tablespoon (3 to 4) garlic (cloves, peeled & minced or pressed)",
-   "1 green chili (slit or chopped (optional))",
-   "2 tablespoons coriander leaves (chopped finely)",
-   "½ to ¾ teaspoon salt ((adjust to taste))",
-   "2 to 3 tablespoons oil",
-   "lemon juice to serve ((optional))",
-   "½ teaspoon cumin seeds ((jeera))",
-   "¾ to 1¼ teaspoon Kashmiri red chili powder ((adjust to taste))",
-   "¼ teaspoon turmeric",
-   "1 teaspoon garam masala ((adjust to taste))",
-   "¾ to 1 teaspoon coriander powder",
-   "½ to ¾ teaspoon roasted cumin powder ((jeera powder) (updated))",
-   "1 tablespoon kasuri methi ((dried fenugreek leaves) (skip if you don't have))",
-   "½ to 1 teaspoon amchur ((Optional, Dried mango powder))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "印度咖喱鸡",
-  "title": "Chicken Curry Recipe",
-  "url": "https://www.indianhealthyrecipes.com/chicken-curry/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/chicken-curry-recipe.jpg",
-  "minutes": 50,
-  "serves": "3",
-  "blurb": "Simple Indian chicken curry made delicious, spicy and hot with minimum ingredients. This is a basic recipe that can be tried even by beginners. It pairs great w",
-  "ingredients": [
-   "½ kg (1.1 lbs.) chicken ((preferably bone-in, boneless is okay))",
-   "2 to 3 tablespoons oil",
-   "1 cup (3 medium) onions ((fine chopped))",
-   "1 to 2 green chilies ((slit, omit for less spicy, Thai or Indian chili peppers or serrano peppers))",
-   "1 tablespoon ginger garlic paste (or ¾ inch ginger, 3 cloves garlic minced)",
-   "½ cup (2 medium) tomatoes ((pureed or finely chopped))",
-   "¼ cup yogurt ((or 1½ tbsp cashew butter or 12 cashews powdered & pureed with ¼ cup water, refer notes))",
-   "½ to ¾ teaspoon salt ((adjust as needed))",
-   "½ to 1 cup hot water ((or light coconut milk))",
-   "2 tablespoons coriander leaves (or mint leaves finely chopped)",
-   "¼ teaspoon turmeric powder",
-   "1 teaspoon Kashmiri red chili powder (or smoked paprika (½ tsp for less spicy))",
-   "1 teaspoon garam masala ((½ tsp more if needed, adjust to taste))",
-   "1 teaspoon coriander powder",
-   "1 bay leaf (or 1 sprig curry leaves)",
-   "4 cloves",
-   "2 inch cinnamon piece",
-   "3 green cardamom"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [
-   "breakfast"
-  ],
-  "zh": "印度煎饼",
-  "title": "Chapati Recipe (Indian Flatbread)",
-  "url": "https://www.indianhealthyrecipes.com/chapati/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/11/chapati-recipe-soft.jpg",
-  "minutes": 37,
-  "serves": "6",
-  "blurb": "Make super soft chapati with this easy step by step guide. Chapati is a traditional Indian flatbread made with whole wheat flour and water. Serve them with curr",
-  "ingredients": [
-   "2 cups chakki atta ((stone ground whole wheat flour))",
-   "¾ cup warm water ((or hot water, 2 to 4 tbsps more as required read notes))",
-   "¼ teaspoon salt ((optional))",
-   "1 to 1½ tablespoons oil ((optional, read notes))",
-   "2 to 2½ tablespoons ghee (or oil)"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "菠菜奶酪",
-  "title": "Palak Paneer Recipe (Spinach Paneer)",
-  "url": "https://www.indianhealthyrecipes.com/palak-paneer-recipe/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2020/06/palak-paneer-recipe.jpg",
-  "minutes": 45,
-  "serves": "2",
-  "blurb": "Palak paneer recipe - Indian cottage cheese simmered in onion tomato spinach gravy. This palak paneer is one of the best you can make at home. Tastes simply del",
-  "ingredients": [
-   "150 grams (1¼ cups) paneer ( (Indian cottage cheese))",
-   "3½ to 4 cups (100 to 120 grams) palak ((spinach) )",
-   "2 tablespoons oil ((or half oil & half butter))",
-   "2 green chilies ((deseeded) (less spicy kind))",
-   "¾ cup ( 90 grams, 1 small) onions ((fine chopped))",
-   "½ cup (1 small) tomatoes ((deseeded & chopped or pureed))",
-   "¾ teaspoon ginger garlic paste ((read notes for substitute))",
-   "½ teaspoon salt ((use as per your taste))",
-   "8 to 10 cashewnuts ((read notes for substitutes))",
-   "½ to ¾ teaspoon garam masala ((adjust to taste))",
-   "½ teaspoon kasuri methi ((dried fenugreek leaves) (skip if you don't have))",
-   "¼ cup water (to blend spinach)",
-   "¾ cup water (to cook the gravy)",
-   "3 tablespoons cream ((optional))",
-   "⅛ teaspoon cumin seeds ((jeera) (optional))",
-   "2 green cardamoms ((elaichi) (optional))",
-   "1 inch cinnamon ((dalchini) (optional))",
-   "2 cloves ((laung) (optional))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [],
-  "zh": "黄油鸡(简易)",
-  "title": "Butter Chicken",
-  "url": "https://www.recipetineats.com/butter-chicken/",
-  "site": "recipetineats.com",
-  "image": "https://www.recipetineats.com/tachyon/2019/01/Butter-Chicken_5-SQ.jpg",
-  "minutes": 35,
-  "serves": "3",
-  "blurb": "RECIPE VIDEO above. This is a Chef recipe and is one of the easiest Indian curries to make. The Butter Chicken Sauce is so good that you will want it on tap! Ma",
-  "ingredients": [
-   "1/2 cup plain yoghurt (, full fat)",
-   "1 tbsp lemon juice",
-   "1 tsp tumeric powder",
-   "2 tsp garam masala ((Note 1))",
-   "1/2 tsp chilli powder or cayenne pepper powder ((Note 2))",
-   "1 tsp ground cumin",
-   "1 tbsp ginger, freshly grated",
-   "2 cloves garlic, crushed",
-   "1.5 lb / 750 g chicken thigh fillets, cut into bite size pieces",
-   "2 tbsp (30 g) ghee or butter, ( OR 1 tbsp vegetable oil (Note 3))",
-   "1 cup tomato passata (aka tomato puree) ((Note 4))",
-   "1 cup heavy / thickened cream ((Note 5))",
-   "1 tbsp sugar",
-   "1 1/4 tsp salt",
-   "Basmati rice",
-   "White rice",
-   "Coriander/cilantro (optional)"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [
-   "breakfast",
-   "protein"
-  ],
-  "zh": "印度鸡蛋炒",
-  "title": "Egg Bhurji Recipe (Indian Anda Bhurji)",
-  "url": "https://www.indianhealthyrecipes.com/egg-bhurji/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2019/07/egg-bhurji.jpg",
-  "minutes": 20,
-  "serves": "2",
-  "blurb": "Egg bhurji is a simple scrambled eggs dish made with spices, eggs & herbs. Serve it with rice, roti or bread.",
-  "ingredients": [
-   "4 eggs ((or 2 to 3 jumbo eggs))",
-   "¼ teaspoon salt ((more to adjust))",
-   "2 tablespoons oil",
-   "½ teaspoon cumin seeds ((jeera))",
-   "½ to ¾ cup onion (finely chopped)",
-   "1 green chili ( slit or chopped)",
-   "¾ to 1 teaspoon ginger garlic paste ((or ½ inch ginger & 2 garlic cloves minced finely))",
-   "¾ to 1 teaspoon garam masala ( or pav bhaji masala (adjust to taste))",
-   "½ to ¾ teaspoon red chili powder ((adjust to taste))",
-   "⅛ teaspoon turmeric ((haldi))",
-   "2 tablespoons coriander leaves (or 1 sprig curry leaves or 8 mint leaves)",
-   "1 small tomato (chopped finely (optional))",
-   "¼ cup bell pepper ((capsicum) (optional, can use upto ¾ cup))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [
-   "baking"
-  ],
-  "zh": "印度酥饼",
-  "title": "Nankhatai Recipe",
-  "url": "https://www.indianhealthyrecipes.com/nankhatai-recipe/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2018/08/nankhatai-recipe.jpg",
-  "minutes": 25,
-  "serves": "12",
-  "blurb": "Traditional Indian eggless cookies known as Nankhatai, made with flour, sugar, cardamoms and ghee. This recipe works with different combinations of flour and tu",
-  "ingredients": [
-   "¾ cup (75 grams) wheat flour ((or all-purpose flour))",
-   "¼ cup (25 grams) besan ((gram flour ))",
-   "1 tablespoon semolina (suji (optional))",
-   "¼ teaspoon baking powder ((or 1 pinch baking soda for 1x recipe))",
-   "3 green cardamoms (powdered (or ½ tsp powder for 1x recipe))",
-   "½ cup (65 grams) powdered sugar",
-   "⅓ cup (75 grams) ghee (or soft butter (use only as needed))"
-  ]
- },
- {
-  "cuisine": "indian",
-  "tags": [
-   "baking"
-  ],
-  "zh": "无蛋巧克力蛋糕",
-  "title": "Eggless Chocolate Cake Recipe",
-  "url": "https://www.indianhealthyrecipes.com/eggless-chocolate-cake/",
-  "site": "indianhealthyrecipes.com",
-  "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2012/05/eggless-chocolate-cake-recipe.jpg",
-  "minutes": 45,
-  "serves": "8",
-  "blurb": "Eggless chocolate cake that's vegan, called as wacky cake or depression cake. It turns out soft and moist. To make the cake rich use milk and melted butter. Egg",
-  "ingredients": [
-   "1½ cups (180 grams) all-purpose flour ((organic maida or wheat flour) )",
-   "¼ cup cocoa powder ((use good quality cocoa))",
-   "1 teaspoon (5 grams) Baking soda ((check expiry date))",
-   "⅓ teaspoon (2 grams) salt (( I use pink salt))",
-   "1 cup (200 grams) sugar ((organic))",
-   "1 cup (240 ml) Water (( use milk to make rich cake))",
-   "⅓ cup (80 ml) oil ((coconut, canola, light olive oil or melted butter))",
-   "1 tablespoon (15 ml) white vinegar ((Minimum 5% Acidity) )",
-   "1 tablespoon (15 ml) Vanilla extract ((or vanilla powder or essence as needed))",
-   "¾ cup (180 ml) milk ((or almond or cashew milk, refer notes))",
-   "2 tablespoons (10 grams) cocoa powder",
-   "4 to 6 tablespoon sugar ((or powdered jaggery as needed))",
-   "1 teaspoon (5 ml) vanilla extract",
-   "¼ cup unsalted butter ((soft but cold))",
-   "3 tablespoons cocoa powder ((good quality))",
-   "1 ½ cups powdered sugar ((or icing sugar))",
-   "1 teaspoon vanilla extract",
-   "2 to 2 ½ tablespoons milk ((or whipping cream))"
-  ]
- },
- {
   "cuisine": "french",
   "tags": [
    "breakfast"
   ],
+  "rating": 4.95,
+  "ratings": 72,
   "zh": "法式吐司",
   "title": "French Toast",
   "url": "https://www.recipetineats.com/french-toast/",
@@ -1502,6 +1252,8 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "rating": 4.86,
+  "ratings": 493,
   "zh": "法式洋葱汤",
   "title": "French Onion Soup",
   "url": "https://www.recipetineats.com/french-onion-soup/",
@@ -1527,6 +1279,8 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 91,
   "zh": "法式咸派",
   "title": "Quiche Lorraine",
   "url": "https://www.recipetineats.com/quiche-lorraine/",
@@ -1553,6 +1307,8 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "rating": 4.98,
+  "ratings": 93,
   "zh": "普罗旺斯炖菜",
   "title": "Ratatouille (French Vegetable Stew)",
   "url": "https://www.recipetineats.com/ratatouille/",
@@ -1583,6 +1339,8 @@ window.RECIPES = [
   "tags": [
    "breakfast"
   ],
+  "rating": 5.0,
+  "ratings": 43,
   "zh": "法式薄饼",
   "title": "JB's Crêpes",
   "url": "https://www.recipetineats.com/crepes/",
@@ -1608,6 +1366,8 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "rating": 4.95,
+  "ratings": 34,
   "zh": "法式火腿芝士三明治",
   "title": "Croque Monsieur (French hot ham and cheese sandwich)",
   "url": "https://www.recipetineats.com/croque-monsieur/",
@@ -1636,6 +1396,8 @@ window.RECIPES = [
  {
   "cuisine": "french",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 121,
   "zh": "猎人烩鸡",
   "title": "JB's Chicken Chasseur",
   "url": "https://www.recipetineats.com/chicken-chasseur/",
@@ -1669,6 +1431,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.96,
+  "ratings": 154,
   "zh": "奶油蘑菇意面",
   "title": "Creamy Mushroom Pasta",
   "url": "https://www.recipetineats.com/creamy-mushroom-pasta/",
@@ -1695,6 +1459,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.94,
+  "ratings": 135,
   "zh": "意大利蔬菜汤",
   "title": "Minestrone Soup",
   "url": "https://www.recipetineats.com/minestrone-soup/",
@@ -1731,6 +1497,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 185,
   "zh": "蘑菇烩饭",
   "title": "Mushroom Risotto",
   "url": "https://www.recipetineats.com/mushroom-risotto/",
@@ -1763,6 +1531,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.99,
+  "ratings": 193,
   "zh": "帕玛森鸡排",
   "title": "Chicken Parmigiana",
   "url": "https://www.recipetineats.com/chicken-parmigiana/",
@@ -1805,6 +1575,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.95,
+  "ratings": 227,
   "zh": "培根蛋意面",
   "title": "Carbonara (real)",
   "url": "https://www.recipetineats.com/carbonara/",
@@ -1830,6 +1602,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": 4.96,
+  "ratings": 45,
   "zh": "青酱意面",
   "title": "JUICY Pesto Pasta!",
   "url": "https://www.recipetineats.com/pesto-pasta/",
@@ -1849,6 +1623,8 @@ window.RECIPES = [
  {
   "cuisine": "italian",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "蒜香橄榄油意面",
   "title": "Spaghetti aglio e olio",
   "url": "https://www.bbcgoodfood.com/recipes/spaghetti-aglio-e-olio",
@@ -1868,6 +1644,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": 4.88,
+  "ratings": 8,
   "zh": "辣炖豆腐",
   "title": "Dubu Jorim (Korean Braised Tofu)",
   "url": "https://www.beyondkimchee.com/braised-tofu/",
@@ -1893,6 +1671,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "泡菜汤",
   "title": "Kimchi stew (Kimchi-jjigae)",
   "url": "https://www.maangchi.com/recipe/kimchi-jjigae",
@@ -1917,6 +1697,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "杂菜",
   "title": "Japchae (Sweet potato starch noodles stir fried with vegetables)",
   "url": "https://www.maangchi.com/recipe/japchae",
@@ -1941,6 +1723,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "石锅拌饭",
   "title": "Bibimbap (Mixed rice with vegetables)",
   "url": "https://www.maangchi.com/recipe/bibimbap",
@@ -1968,6 +1752,8 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "韩式蒸蛋",
   "title": "Steamed egg side dish (Gyeranjjim)",
   "url": "https://www.maangchi.com/recipe/gyeranjjim",
@@ -1983,6 +1769,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "韩式烤牛肉",
   "title": "Bulgogi Korean beef BBQ",
   "url": "https://www.maangchi.com/recipe/bulgogi",
@@ -2007,6 +1795,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "泡菜炒饭",
   "title": "Kimchi fried rice (Kimchi-bokkeumbap)",
   "url": "https://www.maangchi.com/recipe/kimchi-bokkeumbap",
@@ -2031,6 +1821,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "辣炒年糕",
   "title": "Tteokbokki (Hot and spicy rice cakes)",
   "url": "https://www.maangchi.com/recipe/tteokbokki",
@@ -2055,6 +1847,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "大酱汤",
   "title": "Doenjang-jjigae (Fermented soybean paste stew)",
   "url": "https://www.maangchi.com/recipe/doenjang-jjigae",
@@ -2079,6 +1873,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "凉拌豆芽",
   "title": "Soybean sprout side dish (Kongnamul-muchim)",
   "url": "https://www.maangchi.com/recipe/kongnamul-muchim",
@@ -2092,6 +1888,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "韩式煎饼",
   "title": "Pajeon (Green onion pancake)",
   "url": "https://www.maangchi.com/recipe/pajeon",
@@ -2105,6 +1903,8 @@ window.RECIPES = [
  {
   "cuisine": "korean",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "韩式紫菜饭卷",
   "title": "Classic gimbap",
   "url": "https://www.maangchi.com/recipe/gimbap",
@@ -2131,6 +1931,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": null,
+  "ratings": null,
   "zh": "韩式糖饼",
   "title": "Sweet pancakes with brown sugar syrup filling (Hotteok)",
   "url": "https://www.maangchi.com/recipe/hotteok",
@@ -2154,6 +1956,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.75,
+  "ratings": 180,
   "zh": "姜汁烧肉",
   "title": "Ginger Pork (Shogayaki)",
   "url": "https://www.justonecookbook.com/ginger-pork-shogayaki/",
@@ -2180,6 +1984,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.58,
+  "ratings": 7,
   "zh": "日式咖喱鸡",
   "title": "Easy Japanese Curry",
   "url": "https://www.justonecookbook.com/10-minute-meal-japanese-curry/",
@@ -2205,6 +2011,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": null,
+  "ratings": null,
   "zh": "三文鱼炊饭",
   "title": "Salmon Takikomi Gohan (Salmon Rice)",
   "url": "https://japanesecooking101.com/salmon-takikomi-gohan-recipe/",
@@ -2231,6 +2039,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": 4.72,
+  "ratings": 656,
   "zh": "亲子丼",
   "title": "Oyakodon (Chicken and Egg Rice Bowl)",
   "url": "https://www.justonecookbook.com/oyakodon/",
@@ -2257,6 +2067,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.78,
+  "ratings": 170,
   "zh": "黄油酱油鸡",
   "title": "Butter Shoyu Chicken",
   "url": "https://www.justonecookbook.com/teriyaki-chicken/",
@@ -2281,6 +2093,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.85,
+  "ratings": 623,
   "zh": "味噌汤",
   "title": "Homemade Miso Soup with Tofu",
   "url": "https://www.justonecookbook.com/homemade-miso-soup/",
@@ -2305,6 +2119,8 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "rating": 4.64,
+  "ratings": 287,
   "zh": "高汤玉子烧",
   "title": "Dashimaki Tamago (Japanese Dashi Rolled Omelette)",
   "url": "https://www.justonecookbook.com/tamagoyaki-japanese-rolled-omelette/",
@@ -2326,6 +2142,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.74,
+  "ratings": 536,
   "zh": "牛肉饭",
   "title": "Gyudon (Japanese Beef Rice Bowl)",
   "url": "https://www.justonecookbook.com/gyudon/",
@@ -2350,6 +2168,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.77,
+  "ratings": 142,
   "zh": "日式炸鸡排",
   "title": "Chicken Katsu",
   "url": "https://www.justonecookbook.com/chicken-katsu/",
@@ -2376,6 +2196,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.72,
+  "ratings": 196,
   "zh": "土豆炖肉",
   "title": "Nikujaga (Japanese Meat and Potato Stew)",
   "url": "https://www.justonecookbook.com/nikujaga/",
@@ -2402,6 +2224,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.84,
+  "ratings": 30,
   "zh": "日式炒饭",
   "title": "Japanese Fried Rice with Edamame, Tofu and Hijiki Seaweed",
   "url": "https://www.justonecookbook.com/japanese-fried-rice/",
@@ -2426,6 +2250,8 @@ window.RECIPES = [
  {
   "cuisine": "japanese",
   "tags": [],
+  "rating": 4.77,
+  "ratings": 421,
   "zh": "日式炸鸡",
   "title": "Karaage (Japanese Fried Chicken)",
   "url": "https://www.justonecookbook.com/karaage/",
@@ -2456,6 +2282,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.71,
+  "ratings": 940,
   "zh": "日式芝士蛋糕",
   "title": "Japanese Cheesecake",
   "url": "https://www.justonecookbook.com/japanese-cheesecake/",
@@ -2482,6 +2310,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.76,
+  "ratings": 268,
   "zh": "长崎蛋糕",
   "title": "Japanese Castella Cake",
   "url": "https://www.justonecookbook.com/castella/",
@@ -2505,6 +2335,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.7,
+  "ratings": 210,
   "zh": "铜锣烧",
   "title": "Dorayaki (Japanese Red Bean Pancake)",
   "url": "https://www.justonecookbook.com/dorayaki/",
@@ -2529,6 +2361,8 @@ window.RECIPES = [
   "tags": [
    "baking"
   ],
+  "rating": 4.84,
+  "ratings": 274,
   "zh": "抹茶蛋糕卷",
   "title": "Matcha Swiss Roll (Roll Cake)",
   "url": "https://www.justonecookbook.com/matcha-swiss-roll/",
@@ -2552,6 +2386,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 4.93,
+  "ratings": 453,
   "zh": "泰式炒河粉",
   "title": "Pad Thai",
   "url": "https://www.recipetineats.com/chicken-pad-thai/",
@@ -2583,6 +2419,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 4.94,
+  "ratings": 359,
   "zh": "泰式红咖喱",
   "title": "Thai Red Curry with Chicken",
   "url": "https://www.recipetineats.com/thai-red-curry-with-chicken/",
@@ -2615,6 +2453,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 4.97,
+  "ratings": 32,
   "zh": "希腊沙拉",
   "title": "Greek Salad with Homemade Greek Salad Dressing",
   "url": "https://www.recipetineats.com/greek-salad/",
@@ -2645,6 +2485,8 @@ window.RECIPES = [
    "breakfast",
    "protein"
   ],
+  "rating": 4.97,
+  "ratings": 62,
   "zh": "番茄烩蛋(中东)",
   "title": "Shakshuka (Middle Eastern Poached or Baked Eggs)",
   "url": "https://www.recipetineats.com/shakshuka/",
@@ -2675,6 +2517,8 @@ window.RECIPES = [
   "tags": [
    "protein"
   ],
+  "rating": 4.98,
+  "ratings": 73,
   "zh": "希腊烤鸡",
   "title": "Greek Chicken",
   "url": "https://www.recipetineats.com/greek-chicken/",
@@ -2700,6 +2544,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 4.88,
+  "ratings": 132,
   "zh": "越南虾春卷",
   "title": "Vietnamese Rice Paper Rolls (Spring Rolls)",
   "url": "https://www.recipetineats.com/vietnamese-rice-paper-rolls/",
@@ -2726,6 +2572,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 4.59,
+  "ratings": 17,
   "zh": "泰式打抛",
   "title": "Thai Holy Basil Stir Fry Recipe for Any Meat (Pad Kra Pao)",
   "url": "https://hot-thai-kitchen.com/pad-kra-pao/",
@@ -2757,6 +2605,8 @@ window.RECIPES = [
  {
   "cuisine": "others",
   "tags": [],
+  "rating": 5.0,
+  "ratings": 23,
   "zh": "烤三文鱼卷饼",
   "title": "12 Minute Baked Salmon Fajitas",
   "url": "https://www.recipetineats.com/baked-salmon/",

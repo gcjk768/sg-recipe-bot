@@ -18,6 +18,7 @@ from recipebot.web import (  # noqa: E402
     Fetcher,
     extract_recipe_jsonld,
     is_bot_wall,
+    page_rating,
     iso_duration_to_minutes,
     recipe_node_title,
     strip_html,
@@ -77,6 +78,8 @@ def card(row: dict, fetcher: Fetcher) -> tuple[dict | None, str]:
     return {
         "cuisine": row["cuisine"],
         "tags": row["tags"],
+        "rating": (page_rating(result.text) or (None, None))[0],
+        "ratings": (page_rating(result.text) or (None, None))[1],
         "zh": row["zh"],
         "title": recipe_node_title(node) or row["zh"],
         "url": row["url"],

@@ -165,3 +165,12 @@ def test_decode_body_skips_unusable_labels(label):
     body = f'<meta charset="{label}"><p>番茄 ingredient</p>'.encode("utf-8")
     assert "番茄 ingredient" in decode_body(body, "text/html")
     assert "番茄 ingredient" in decode_body(body, f"text/html; charset={label}")
+
+
+def test_page_rating():
+    from recipebot.web import page_rating
+    page = lambda agg: '<script type="application/ld+json">{"@type":"Recipe","name":"x","aggregateRating":%s}</script>' % agg
+    assert page_rating(page('{"ratingValue":"4.85","ratingCount":"1,234"}')) == (4.85, 1234)
+    assert page_rating(page('{"ratingValue":9,"bestRating":10,"reviewCount":3}')) == (4.5, 3)
+    assert page_rating(page('"none"')) is None
+    assert page_rating("<html></html>") is None

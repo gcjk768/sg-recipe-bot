@@ -16,7 +16,7 @@ from recipebot.categories import Category, get_category, is_known
 from recipebot.history import History
 from recipebot.models import ModelReply, Recipe
 from recipebot.textutil import main_ingredient_name, normalise_title, normalise_url
-from recipebot.web import Fetcher, is_bot_wall, is_homepage, page_looks_like_recipe
+from recipebot.web import Fetcher, is_bot_wall, is_homepage, page_looks_like_recipe, page_rating
 
 MAX_INGREDIENTS = 10
 MAX_STEPS = 8
@@ -159,6 +159,9 @@ def check_static(recipe: Recipe, brief_category: str) -> str | None:
 BOT_WALLED = "bot walled"
 
 
+MIN_BAKE_RATING = 4.3
+
+
 def check_source_page(recipe: Recipe, fetcher: Fetcher) -> str | None:
     """None when the page checks out, BOT_WALLED when a bot check hides it, else the reason to drop."""
     result = fetcher.fetch(recipe.source.url)
@@ -172,6 +175,10 @@ def check_source_page(recipe: Recipe, fetcher: Fetcher) -> str | None:
         return f"source page redirected to the homepage ({result.final_url})"
     if not page_looks_like_recipe(result.text):
         return "source page does not mention ingredients and has no schema.org Recipe data"
+    if recipe.category == "baking_cakes":  # the owner: bakes must be ones with a high success rate
+        rating = page_rating(result.text)
+        if rating and rating[0] < MIN_BAKE_RATING:
+            return f"bake rated {rating[0]} stars from {rating[1]} ratings (needs {MIN_BAKE_RATING}+)"
     return None
 
 

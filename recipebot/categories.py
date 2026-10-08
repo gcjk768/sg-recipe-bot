@@ -31,9 +31,11 @@ class Category:
 
 _PAN = "🍳"  # 🍳
 
-# the owner, 2026-10-04: the bot only posts high protein meal prep, so this is the only category.
+# the owner, 2026-10-04: high protein meal prep only. 2026-10-08: plus 1 to 5 cakes and bakes a day
+# (Western and Eastern) for the family recipe website.
 CATEGORIES: dict[str, Category] = {
     "high_protein": Category("high_protein", "High protein", "highprotein", total_cap=45, emoji=_PAN),
+    "baking_cakes": Category("baking_cakes", "Cakes and baking", "baking", hands_on_cap=30, emoji="🎂"),
 }
 
 

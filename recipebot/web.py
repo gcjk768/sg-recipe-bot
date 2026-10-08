@@ -297,6 +297,25 @@ def _instructions(value: Any) -> list[str]:
     return steps
 
 
+def page_rating(html: str) -> tuple[float, int] | None:
+    """(stars, number of ratings) from the page's schema.org aggregateRating, or None."""
+    for node in extract_recipe_jsonld(html):
+        agg = node.get("aggregateRating")
+        if isinstance(agg, list):
+            agg = agg[0] if agg else None
+        if not isinstance(agg, dict):
+            continue
+        try:
+            value = float(str(agg.get("ratingValue")).replace(",", "."))
+            count = int(float(str(agg.get("ratingCount") or agg.get("reviewCount") or 0).replace(",", "")))
+            best = float(agg.get("bestRating") or 5)
+        except (TypeError, ValueError):
+            continue
+        if best > 0 and 0 < value <= best:
+            return round(value * 5 / best, 2), count
+    return None
+
+
 def recipe_node_title(node: dict) -> str | None:
     return _text_of(node.get("name") or node.get("headline")) or None
 

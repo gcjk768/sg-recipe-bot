@@ -1,8 +1,9 @@
 from recipebot.categories import CATEGORIES, get_category, is_known
 
 
-def test_only_high_protein():
-    assert list(CATEGORIES) == ["high_protein"]
+def test_categories():
+    assert list(CATEGORIES) == ["high_protein", "baking_cakes"]
+    assert CATEGORIES["baking_cakes"].hands_on_cap == 30 and CATEGORIES["baking_cakes"].total_cap is None
     cat = CATEGORIES["high_protein"]
     assert (cat.label, cat.hashtag, cat.total_cap, cat.hands_on_cap, cat.emoji) == ("High protein", "highprotein", 45, None, "🍳")
 

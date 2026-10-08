@@ -432,8 +432,10 @@ def test_no_admin_chat_means_no_alert(settings, fixed_now):
 def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch):
     monkeypatch.setattr("recipebot.rotation.PER_MEAL", 2)
     plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 29))
+    monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
+    plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 29))
     assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2
-    assert {s.category for _, s in plan} == {"high_protein"}  # only high protein meal prep
+    assert {s.category for _, s in plan} == {"high_protein"}
     urls = [f"https://x.com/{i}" for i in range(len(plan))]
     llm = FakeLLM([reply_text([make_recipe(title=f"Dish {i}", category=s.category, meals=["supper"], prep_minutes=5,
                                            cook_minutes=10, total_minutes=15, source={"site": "s", "url": urls[i]})],

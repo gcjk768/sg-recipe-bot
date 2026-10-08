@@ -18,6 +18,7 @@ custom) can be slotted in without touching code:
 from __future__ import annotations
 
 import json
+import random
 from dataclasses import dataclass
 from datetime import date, timedelta
 from pathlib import Path
@@ -57,15 +58,39 @@ PROTEINS = (
 )  # PER_MEAL of them, so no two posts of a meal share a main protein
 
 
-def daily_plan(day: date) -> list[tuple[str, Slot]]:
+BAKES_PER_DAY = (1, 5)  # the owner, 2026-10-08: 1 to 5 cakes and bakes a day for the family website
+BAKES = (
+    ("Western", "banana bread"), ("Eastern", "pandan chiffon cake"), ("Western", "brownies"),
+    ("Eastern", "kuih bahulu"), ("Western", "butter cake"), ("Eastern", "huat kueh or ma lai gao (steamed cake)"),
+    ("Western", "muffins"), ("Eastern", "castella"), ("Western", "scones"), ("Eastern", "egg tarts"),
+    ("Western", "cookies"), ("Eastern", "Japanese cotton cheesecake"), ("Western", "carrot cake"),
+    ("Eastern", "dorayaki"), ("Western", "pound cake"), ("Eastern", "kaya or coconut bake"),
+    ("Western", "apple crumble"), ("Eastern", "Hokkaido chiffon cupcakes"),
+)
+
+
+def bake_slots(day: date) -> list[Slot]:
+    """1 to 5 cakes and bakes, how many seeded by the date so a restart plans the same day the
+    same way; themes walk through BAKES, alternating Western and Eastern."""
+    n = random.Random(day.toordinal()).randint(*BAKES_PER_DAY)
+    start = day.toordinal() * BAKES_PER_DAY[1]
+    return [
+        Slot("baking_cakes", f"{side} bake, for example {example}")
+        for side, example in (BAKES[(start + i) % len(BAKES)] for i in range(n))
+    ]
+
+
+def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
     """The scheduled day's posts as (meal, slot): PER_MEAL each of breakfast, lunch and dinner, all
-    high protein meal prep, each built around a different main protein (shifted by one each day)."""
+    high protein meal prep, each built around a different main protein (shifted by one each day),
+    then the day's bakes, which carry no forced meal tag."""
     shift = day.toordinal() % len(PROTEINS)
-    plan = []
+    plan: list[tuple[str | None, Slot]] = []
     for meal in ("breakfast", "lunch", "dinner"):
         for i in range(PER_MEAL):
             protein = PROTEINS[(shift + i) % len(PROTEINS)]
             plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}")))
+    plan += [(None, slot) for slot in bake_slots(day)]
     return plan
 
 

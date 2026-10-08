@@ -17,7 +17,7 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from recipebot.textutil import format_qty
-from recipebot.web import extract_recipe_jsonld
+from recipebot.web import extract_recipe_jsonld, page_rating
 
 log = logging.getLogger(__name__)
 
@@ -113,7 +113,7 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_path = out_dir / "images.json"
     try:
-        images: dict[str, str] = json.loads(cache_path.read_text(encoding="utf-8"))
+        images: dict[str, dict | str] = json.loads(cache_path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         images = {}
     rows = history.conn.execute(
@@ -124,10 +124,13 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
         if url in seen or not url.startswith("https://"):
             continue
         seen.add(url)
-        if url not in images:
+        if not isinstance(images.get(url), dict):  # str entries are the older photo-only cache
             result = fetcher.fetch(url)
-            images[url] = page_image(result.text) if result.ok else ""
+            rating = page_rating(result.text) if result.ok else None
+            images[url] = {"image": page_image(result.text) if result.ok else "", "rating": rating[0] if rating else None,
+                           "ratings": rating[1] if rating else None}
             fetched = True
+        page = images[url]
         try:
             r = json.loads(recipe_json)
         except ValueError:
@@ -139,7 +142,9 @@ def export_site(history, out_dir: Path, fetcher, tz: tzinfo) -> int:
             "title": title,
             "url": url,
             "site": urlsplit(url).netloc.removeprefix("www."),
-            "image": images[url] or None,
+            "image": page["image"] or None,
+            "rating": page["rating"],
+            "ratings": page["ratings"],
             "minutes": r.get("total_minutes"),
             "serves": str(r["servings"]) if r.get("servings") else None,
             "blurb": (r.get("why_it_fits") or "")[:160],
