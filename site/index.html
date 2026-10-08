@@ -408,7 +408,6 @@ const NEW_DAYS = 7;
 const weekAgo = (() => { const d = new Date(); d.setDate(d.getDate() - (NEW_DAYS - 1)); return d.toLocaleDateString("en-CA"); })(); // YYYY-MM-DD
 const isNew = r => !!r.added && r.added >= weekAgo;
 
- (kept in this browser: localStorage) ----
 // ---- saved list (kept in this browser: localStorage) ----
 const store = {
   get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } },
