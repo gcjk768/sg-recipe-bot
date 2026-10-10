@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home Kitchen · 家常菜谱</title>
-<meta name="description" content="Easy home recipes from nine kitchens, everyday ingredients.">
+<meta name="description" content="Easy home recipes with everyday ingredients.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%A5%A2%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,12 +20,12 @@
   --jade: #2f6b55;
   --card: #fffaf1;
   --rule: #d9c7a8;
-  --fs: 1.125rem;
+  --fs: 1.25rem;
   --display: "Fraunces", Georgia, serif;
   --zh: "Noto Serif SC", "Songti SC", serif;
   --body: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
 }
-html.big { --fs: 1.375rem; }
+html.big { --fs: 1.55rem; }
 * { box-sizing: border-box; margin: 0; }
 [hidden] { display: none !important; } /* .hero etc. set display, which would beat the hidden attribute */
 html { scroll-behavior: smooth; }
@@ -35,11 +35,6 @@ body {
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip; /* tilted hero photos must not cause sideways scroll on phones */
-}
-/* paper grain */
-body::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .35; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 a { color: inherit; }
 :focus-visible { outline: 4px solid var(--saffron); outline-offset: 3px; border-radius: 6px; }
@@ -56,47 +51,26 @@ a { color: inherit; }
 .sizebtn:hover { background: var(--seal); }
 
 /* ---------- hero ---------- */
-.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; padding: 4rem 0 3.5rem; position: relative; }
-.kicker { font: 700 .95rem var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--seal); }
+.hero { padding: 2.2rem 0 1.4rem; }
 h1 {
-  font: 900 clamp(3rem, 7.4vw, 6.4rem)/.92 var(--display);
-  font-variation-settings: "SOFT" 100, "opsz" 144; letter-spacing: -.035em; margin: .8rem 0 .4rem;
+  font: 900 clamp(2.4rem, 6vw, 4.2rem)/1.05 var(--display);
+  font-variation-settings: "SOFT" 100, "opsz" 144; letter-spacing: -.02em; margin: 0 0 .4rem;
 }
-h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--seal); }
-.h1zh { font: 900 clamp(2rem, 4.4vw, 3.6rem)/1.1 var(--zh); color: var(--ink-soft); letter-spacing: .08em; }
-.updated { margin-top: 1rem; font-weight: 700; color: var(--jade); }
+h1 em { font-style: italic; font-weight: 500; color: var(--seal); }
+.h1zh { font: 700 clamp(1.4rem, 3vw, 2rem)/1.2 var(--zh); color: var(--ink-soft); }
+.updated { margin-top: .8rem; font-weight: 700; color: var(--jade); }
 .updated:empty { display: none; }
 .updated.stale { color: var(--seal); }
-.lede { max-width: 34ch; margin-top: 1.4rem; font-size: 1.2em; color: var(--ink-soft); }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+.lede { max-width: 40ch; margin-top: 1rem; color: var(--ink-soft); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.4rem; }
 .btn {
-  display: inline-flex; align-items: center; gap: .6rem; min-height: 60px; padding: 0 1.6rem;
+  display: inline-flex; align-items: center; gap: .6rem; min-height: 60px; padding: .4rem 1.6rem;
   font: 700 1.1em var(--body); border-radius: 999px; border: 2px solid var(--ink); cursor: pointer; text-decoration: none;
-  transition: transform .2s, box-shadow .2s, background .2s;
 }
-.btn-main { background: var(--seal); border-color: var(--seal); color: #fff; box-shadow: 5px 5px 0 var(--ink); }
-.btn-main:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+.btn-main { background: var(--seal); border-color: var(--seal); color: #fff; }
+.btn-main:hover { background: #a22b15; border-color: #a22b15; }
 .btn-ghost { background: transparent; color: var(--ink); }
 .btn-ghost:hover { background: var(--ink); color: var(--paper); }
-
-.stack { position: relative; height: 470px; }
-.polaroid {
-  position: absolute; width: 58%; background: var(--card); padding: .7rem .7rem 2.6rem; box-shadow: 0 18px 40px -12px rgba(34,26,20,.45);
-  border-radius: 4px; animation: drop .9s cubic-bezier(.2,.9,.3,1.2) both;
-}
-.polaroid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; background: var(--paper-2); }
-.polaroid span { position: absolute; bottom: .7rem; left: .9rem; right: .9rem; font: 900 1.05rem var(--zh); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.polaroid:nth-child(1) { left: 2%; top: 6%; rotate: -8deg; animation-delay: .15s; }
-.polaroid:nth-child(2) { right: 0; top: 0; rotate: 6deg; animation-delay: .3s; }
-.polaroid:nth-child(3) { left: 22%; top: 34%; rotate: -1deg; animation-delay: .45s; z-index: 2; }
-@keyframes drop { from { opacity: 0; transform: translateY(-40px) scale(1.06); } }
-.seal {
-  position: absolute; z-index: 3; right: 4%; bottom: 2%; width: 128px; height: 128px; display: grid; place-items: center;
-  background: var(--seal); color: #fff6ea; border-radius: 14px; rotate: 9deg;
-  font: 900 2.2rem/1 var(--zh); writing-mode: vertical-rl; letter-spacing: .1em;
-  box-shadow: inset 0 0 0 5px var(--seal), inset 0 0 0 8px #fff6ea; animation: stamp .5s .9s cubic-bezier(.3,1.6,.5,1) both;
-}
-@keyframes stamp { from { opacity: 0; transform: scale(2.2); } }
 
 /* ---------- filters ---------- */
 .filters { position: relative; background: var(--paper); padding: 1rem 0; border-bottom: 1px solid var(--rule); }
@@ -128,16 +102,20 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 #home .search { margin: 0 0 2.2rem; }
 #home .search .btn { min-height: 56px; }
 .homeh { font: 900 clamp(1.8rem, 3.6vw, 2.6rem)/1 var(--display); border-bottom: 2px solid var(--ink); padding-bottom: .7rem; margin: 2rem 0 1.4rem; }
-.homeh span { font-family: var(--zh); color: var(--seal); margin-left: .5rem; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.2rem; }
-.tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; padding: 1.1rem 1.2rem; border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff; border: 2px solid var(--ink); background: linear-gradient(135deg, var(--saffron), var(--seal)) center/cover; transition: transform .2s, box-shadow .2s; }
+.homeh span { font: 700 .6em var(--zh); color: var(--ink-soft); margin-left: .5rem; }
+.more-d summary { cursor: pointer; list-style: none; min-height: 60px; display: flex; align-items: center; }
+.more-d summary::-webkit-details-marker { display: none; }
+.more-d summary::after { content: "▾ Show"; margin-left: auto; font: 700 1rem var(--body); border: 2px solid var(--ink); border-radius: 999px; padding: .5rem 1rem; }
+.more-d[open] summary::after { content: "▴ Hide"; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+.tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; padding: 1.1rem 1.2rem; border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff; border: 2px solid var(--ink); background: linear-gradient(135deg, var(--saffron), var(--seal)) center/cover; }
 .tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,14,10,.05) 20%, rgba(20,14,10,.85)); }
 .tile > * { position: relative; }
-.tile:hover, .tile:focus-visible { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+.tile:hover, .tile:focus-visible { box-shadow: 0 0 0 4px var(--saffron); }
 .tile .te { font-size: 2.2rem; line-height: 1; }
-.tile .tn { font: 800 1.45em/1.1 var(--display); margin-top: .4rem; }
-.tile .tz { font: 900 1.15em var(--zh); opacity: .95; }
-.tile .tc { margin-top: .3rem; font-size: .9em; opacity: .9; }
+.tile .tn { font: 800 1.4em/1.1 var(--display); margin-top: .4rem; }
+.tile .tz { font: 700 1em var(--zh); opacity: .95; }
+.tile .tc { margin-top: .3rem; opacity: .9; }
 .tile.fresh { outline: 4px solid var(--seal); outline-offset: 3px; }
 #page { padding: 1.6rem 0 1rem; }
 .pagebar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.6rem; }
@@ -152,12 +130,10 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 
 /* ---------- sections + cards ---------- */
 .hero { padding-bottom: 2rem; }
-.new { position: absolute; right: .8rem; top: .8rem; background: var(--seal); color: #fff; border-radius: 999px; padding: .25rem .75rem; font: 700 .85em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.new { position: absolute; left: .7rem; top: .7rem; z-index: 1; background: var(--seal); color: #fff; border-radius: 999px; padding: .25rem .75rem; font: 700 .85em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
 .kitchen.fresh .khead { border-color: var(--seal); }
 .kitchen.fresh .khead h2 { color: var(--seal); }
 .ksub { color: var(--ink-soft); font-size: .95em; margin: -1rem 0 1.4rem; }
-.card.flash { animation: flash 1.6s ease 2; }
-@keyframes flash { 50% { box-shadow: 0 0 0 8px var(--saffron); transform: scale(1.03); } }
 .more { display: block; margin: 1.8rem auto 0; }
 .kitchen { padding: 3.2rem 0 1rem; }
 .kitchen[hidden] { display: none; }
@@ -168,61 +144,43 @@ h1 em { margin-right: .12em; font-style: italic; font-weight: 500; color: var(--
 .khead .kemoji { margin-left: auto; font-size: 2.4rem; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.6rem; }
 .card {
-  display: flex; flex-direction: column; background: var(--card); border-radius: 18px; overflow: hidden; text-decoration: none;
-  border: 2px solid var(--ink); box-shadow: 0 0 0 var(--ink);
-  transition: transform .25s, box-shadow .25s; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; /* always ends visible */
+  position: relative; display: flex; flex-direction: column; background: var(--card); border-radius: 18px; overflow: hidden;
+  border: 2px solid var(--ink);
 }
-@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
-.card:nth-child(4n+2) { animation-delay: .06s; } .card:nth-child(4n+3) { animation-delay: .12s; } .card:nth-child(4n+4) { animation-delay: .18s; }
-.card:hover, .card:focus-visible { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+.card:hover { box-shadow: 0 0 0 4px var(--saffron); }
 .card[hidden] { display: none; }
+.cardlink { display: flex; flex-direction: column; flex: 1; width: 100%; text-align: left; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.heart { position: absolute; right: .7rem; top: .7rem; z-index: 2; width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--ink); background: var(--card); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.heart.saved { background: #fde3dc; color: var(--seal); }
 .photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, var(--saffron), var(--seal)); }
-.photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
-.card:hover .photo img { transform: scale(1.07); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .photo .fallback { position: absolute; inset: 0; display: grid; place-items: center; font-size: 4rem; }
-.time {
-  position: absolute; left: .8rem; bottom: .8rem; background: var(--paper); color: var(--ink); border-radius: 999px;
-  padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25);
-}
 .photo.bilibili { background: linear-gradient(135deg, #fb7299, #23ade5); }
 .photo.youtube { background: linear-gradient(135deg, #ff4e45, #8a1c14); }
 .photo .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 1.6rem; padding-left: 4px; }
 .vframe { position: relative; aspect-ratio: 16/9; margin-bottom: 1rem; border-radius: 14px; overflow: hidden; background: #000; }
 .vframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .steps { padding-left: 1.6rem; display: grid; gap: .7rem; }
-.steps li { padding-left: .3rem; line-height: 1.5; }
+.steps li { padding-left: .3rem; line-height: 1.55; }
 .steps li::marker { font-weight: 800; color: var(--seal); }
-.rate { position: absolute; right: .8rem; bottom: .8rem; background: var(--ink); color: #ffd877; border-radius: 999px; padding: .3rem .8rem; font: 700 .9em var(--body); box-shadow: 0 4px 14px rgba(0,0,0,.25); }
-.time.fast { background: var(--jade); color: #fff; }
-.cbody { padding: 1.1rem 1.2rem .6rem; flex: 1; }
-.czh { font: 900 1.55em/1.2 var(--zh); }
-.czh.latin { font: 800 1.4em/1.15 var(--display); letter-spacing: -.01em; }
-.cen { font: 600 1.05em/1.3 var(--display); color: var(--ink-soft); margin-top: .25rem; }
-.csite { font-size: .85em; color: var(--ink-soft); margin-top: .6rem; opacity: .8; }
-.open {
-  text-decoration: none;
-  display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 1.2rem;
-  background: var(--ink); color: var(--paper); font-weight: 700;
-}
-.open .arrow { transition: transform .25s; font-size: 1.3em; }
-.open:hover { background: var(--seal); }
-.open:hover .arrow { transform: translateX(6px); }
-.cardlink { display: flex; flex-direction: column; flex: 1; text-decoration: none; color: inherit; }
-.acts { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--ink); }
-.act { min-height: 54px; border: 0; background: var(--card); color: var(--ink); font: 700 .95em var(--body); cursor: pointer; }
-.act + .act { border-left: 2px solid var(--ink); }
-.act:hover { background: var(--paper-2); }
-.act.saved { background: #fde3dc; color: var(--seal); }
+.cbody { padding: 1rem 1.2rem 1.2rem; flex: 1; }
+.cen { font: 800 1.4em/1.2 var(--display); }
+.czh { font: 500 1.05em/1.3 var(--zh); color: var(--ink-soft); margin-top: .2rem; }
+.csite { margin-top: .6rem; color: var(--ink-soft); }
+.csite.fast { color: var(--jade); font-weight: 700; }
 .listbtn { font: 700 1rem var(--body); background: var(--seal); color: #fff; border: 0; border-radius: 999px; padding: .7rem 1.2rem; cursor: pointer; min-height: 48px; box-shadow: 3px 3px 0 var(--ink); }
 .bar .tools { display: flex; gap: .7rem; }
 dialog { margin: auto; border: 2px solid var(--ink); border-radius: 22px; padding: 0; width: min(760px, 94vw); max-height: 90vh; background: var(--card); color: var(--ink); box-shadow: 12px 12px 0 var(--ink); }
 dialog::backdrop { background: rgba(34,26,20,.55); backdrop-filter: blur(3px); }
 .dhead { position: sticky; top: 0; z-index: 1; display: flex; gap: .8rem; align-items: center; justify-content: space-between; padding: 1rem 1.4rem; background: var(--ink); color: var(--paper); }
-.dhead h3 { font: 900 1.5em/1.2 var(--zh); }
+.dhead h3 { font: 800 1.4em/1.2 var(--display); }
+.dhead h3 small { display: block; font: 500 .75em var(--zh); opacity: .85; }
+.dmeta { color: var(--ink-soft); margin-bottom: .4rem; }
 .dclose { min-width: 52px; min-height: 52px; border-radius: 50%; border: 2px solid var(--paper); background: transparent; color: var(--paper); font-size: 1.4rem; cursor: pointer; }
 .dbody { padding: 1.4rem 1.6rem 1.8rem; }
-.dimg { width: 100%; max-height: 300px; object-fit: cover; border-radius: 14px; display: block; margin-bottom: 1rem; }
-.dbody h4 { font: 800 1.25em var(--display); margin: 1.2rem 0 .6rem; }
+.dimg { width: 100%; max-height: 320px; object-fit: cover; border-radius: 14px; display: block; margin-bottom: 1rem; }
+.dbody h4 { font: 800 1.3em var(--display); margin: 1.4rem 0 .6rem; }
+.dbody h4 span { font: 500 .8em var(--zh); color: var(--ink-soft); }
 .ing { list-style: none; padding: 0; display: grid; gap: .35rem; }
 .ing li { padding: .45rem .2rem; border-bottom: 1px dashed var(--rule); }
 .ing label { display: flex; gap: .8rem; align-items: flex-start; cursor: pointer; }
@@ -234,7 +192,7 @@ dialog::backdrop { background: rgba(34,26,20,.55); backdrop-filter: blur(3px); }
 .lrec header { display: flex; gap: 1rem; align-items: center; }
 .lrec img { width: 84px; height: 84px; object-fit: cover; border-radius: 10px; flex: none; }
 .lrec .lt { flex: 1; }
-.lrec .lt b { font: 900 1.25em var(--zh); display: block; }
+.lrec .lt b { font: 800 1.2em var(--display); display: block; }
 .lrec .lt a { color: var(--seal); font-weight: 700; }
 .lrm { border: 2px solid var(--ink); background: var(--paper); border-radius: 999px; min-height: 46px; padding: 0 1rem; font: 700 .9em var(--body); cursor: pointer; }
 .lempty { text-align: center; padding: 2rem 0; font: 500 italic 1.3em var(--display); color: var(--ink-soft); }
@@ -252,72 +210,66 @@ dialog::backdrop { background: rgba(34,26,20,.55); backdrop-filter: blur(3px); }
 footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--ink); color: var(--ink-soft); font-size: .95em; }
 
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; padding-top: 2.5rem; gap: 1rem; }
-  .stack { height: 330px; max-width: 460px; }
-  .seal { width: 96px; height: 96px; font-size: 1.7rem; }
   .search input { min-width: 0; }
   .count { font-size: .85em; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .card { opacity: 1; transform: none; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="bar">
-    <div class="brand"><span class="zh">家</span> Home Kitchen</div>
+    <div class="brand">Home Kitchen <span class="zh">(家常菜谱)</span></div>
     <div class="tools">
-      <button class="listbtn" id="openlist">❤ My list 我的清单 <span id="listcount"></span></button>
-      <button class="sizebtn" id="size" aria-pressed="false">A+ Bigger text 大字</button>
+      <button class="listbtn" id="openlist">❤ My list (我的清单) <span id="listcount"></span></button>
+      <button class="sizebtn" id="size" aria-pressed="false">A+ Bigger text (大字)</button>
     </div>
   </header>
 
   <section class="hero" id="hero">
-    <div>
-      <div class="kicker">Easy · Everyday ingredients · 简单家常</div>
-      <h1>What shall we <em>cook</em> today?</h1>
-      <div class="h1zh">今天煮什么？</div>
-      <p class="updated" id="updated"></p>
-      <p class="lede" id="lede">Simple recipes from nine kitchens. Tap any dish to open the full recipe.</p>
-      <div class="hero-actions">
-        <a class="btn btn-main" href="#" onclick="event.preventDefault(); jumpTo(document.getElementById('home'))">Browse recipes 看菜谱 ↓</a>
-        <button class="btn btn-ghost" id="surprise">🎲 Surprise me 随便煮</button>
-      </div>
+    <h1>What shall we <em>cook</em> today?</h1>
+    <div class="h1zh">(今天煮什么？)</div>
+    <p class="updated" id="updated"></p>
+    <p class="lede" id="lede">Simple recipes. Tap a dish to see how to cook it.</p>
+    <div class="hero-actions">
+      <a class="btn btn-main" href="#" onclick="event.preventDefault(); jumpTo(document.getElementById('home'))">See all recipes (看菜谱) ↓</a>
+      <button class="btn btn-ghost" id="surprise">🎲 Surprise me (随便煮)</button>
     </div>
-    <div class="stack" id="stack" aria-hidden="true"><div class="seal">家常菜</div></div>
   </section>
 
 </div>
 
 <section class="wrap" id="home" aria-label="Choose a category">
   <form class="search" id="searchform" role="search">
-    <input id="q" type="search" placeholder="Search: chicken, egg, tofu, 鸡, 蛋…" aria-label="Search recipes">
-    <button class="btn btn-main" type="submit">Search 搜索</button>
+    <input id="q" type="search" placeholder="Search, e.g. chicken, egg, tofu (鸡, 蛋, 豆腐)" aria-label="Search recipes">
+    <button class="btn btn-main" type="submit">Search (搜索)</button>
   </form>
-  <h2 class="homeh">Cuisines <span>菜系</span></h2>
-  <div class="tiles" id="tilesK"></div>
-  <h2 class="homeh">Categories <span>类别</span></h2>
+  <h2 class="homeh">Categories <span>(类别)</span></h2>
   <div class="tiles" id="tilesT"></div>
-  <h2 class="homeh">Chinese dialects <span>中华方言菜</span></h2>
-  <div class="tiles" id="tilesD"></div>
+  <h2 class="homeh">Cuisines <span>(菜系)</span></h2>
+  <div class="tiles" id="tilesK"></div>
+  <details class="more-d">
+    <summary><h2 class="homeh" style="border:0;margin:0;padding:0;flex:1">Chinese regional dishes <span>(中华方言菜)</span></h2></summary>
+    <div class="tiles" id="tilesD" style="margin-top:1.2rem"></div>
+  </details>
 </section>
 
 <section class="wrap" id="page" hidden>
   <div class="pagebar">
-    <a class="btn btn-main" href="#" id="back">← All categories 全部类别</a>
-    <button class="chip quick" id="quick" aria-pressed="false">⚡ Under 30 min <span class="z">30分钟内</span></button>
+    <a class="btn btn-main" href="#" id="back">← All categories (全部类别)</a>
+    <button class="chip quick" id="quick" aria-pressed="false">⚡ Under 30 min (30分钟内)</button>
   </div>
   <div class="khead"><span class="knum" id="pemoji"></span><h2 id="ptitle"></h2><span class="kzh" id="pzh"></span><span class="kemoji" id="pcount"></span></div>
   <div class="grid" id="pgrid"></div>
-  <div class="empty" id="empty" hidden>No recipes here yet. 这里还没有菜谱。</div>
+  <div class="empty" id="empty" hidden>No recipes here yet. (这里还没有菜谱。)</div>
   <nav class="pager" id="pager" aria-label="Pages"></nav>
 </section>
 
 <footer class="wrap">
-  New recipes are added automatically every day from 8 am. 每天早上八点起自动加入新菜。<br>
-  Every recipe links to its original cook. Photos and recipes belong to their sites. 菜谱和图片版权归原网站所有。
+  New recipes are added every morning from 8 am. (每天早上八点起自动加入新菜。)<br>
+  Each recipe links to its original cook. Photos and recipes belong to their sites. (菜谱和图片版权归原网站所有。)
 </footer>
 
 <dialog id="detail" aria-label="Recipe ingredients"></dialog>
@@ -400,8 +352,9 @@ function h(tag, attrs = {}, ...kids) {
   return el;
 }
 const mins = r => r.minutes ? `⏱ ${r.minutes} min` : "⏱ Quick";
+// English first, Chinese in brackets after it.
+const zhOf = r => r.zh && !r.title.includes(r.zh) ? r.zh : "";  // some titles already carry the Chinese name
 const emojiOf = key => (KITCHENS.find(k => k[0] === key) || KITCHENS[8])[3];
-const dayLabel = iso => new Date(iso + "T00:00").toLocaleDateString("en-SG", { weekday: "short", day: "numeric", month: "short" });
 
 let recipes = [];
 // "New" lasts a week (the owner): anything added in the last 7 days, today included, local time.
@@ -428,14 +381,15 @@ function updateSaveUI() {
   document.querySelectorAll("[data-save]").forEach(b => {
     const on = saved.some(x => x.url === b.dataset.save);
     b.classList.toggle("saved", on);
-    b.textContent = on ? "❤ Saved 已收藏" : "♡ Save 收藏";
+    b.textContent = b.dataset.short ? (on ? "❤" : "♡") : on ? "❤ Saved (已收藏)" : "♡ Save (收藏)";
+    b.setAttribute("aria-label", on ? "Saved. Tap to remove" : "Save this recipe");
   });
 }
-const saveBtn = (r, cls) => h("button", { class: cls, "data-save": r.url, onclick: () => toggleSave(r) });
+const saveBtn = (r, cls, short) => h("button", { class: cls, "data-save": r.url, ...(short ? { "data-short": "1" } : {}), onclick: () => toggleSave(r) });
 const shareUrl = r => "https://wa.me/?text=" + encodeURIComponent(`${r.zh ? r.zh + " " : ""}${r.title}\n${r.url}`);
 
 function ingredientList(r, tickable) {
-  if (!r.ingredients || !r.ingredients.length) return h("p", { text: "Ingredients are on the recipe page. 材料请看原网页。" });
+  if (!r.ingredients || !r.ingredients.length) return h("p", { text: "Ingredients are on the original recipe page. (材料请看原网页。)" });
   return h("ul", { class: "ing" }, ...r.ingredients.map((line, i) => {
     if (!tickable) return h("li", { text: line });
     const key = `${r.url}|${i}`;
@@ -456,25 +410,25 @@ function showDetail(r) {
   const d = $("#detail");
   const meta = r.video
     ? [r.platform === "bilibili" ? "📺 Bilibili" : "▶ YouTube", r.channel, r.serves && `serves ${r.serves}`, r.minutes && `⏱ about ${r.minutes} min`].filter(Boolean).join("  ·  ")
-    : [mins(r), r.serves && `serves ${r.serves}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site].filter(Boolean).join("  ·  ");
+    : [mins(r), r.serves && `serves ${r.serves}`, r.kcal && `🔥 ${r.kcal} kcal`, r.rating && `⭐ ${r.rating.toFixed(1)}`, r.site].filter(Boolean).join("  ·  ");
   const embed = r.video && embedUrl(r);
   const steps = r.steps || [];
+  const noText = r.video && !(r.ingredients || []).length;
   d.replaceChildren(
-    h("div", { class: "dhead" }, h("h3", { text: r.zh || r.title }), h("button", { class: "dclose", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
+    h("div", { class: "dhead" }, h("h3", { text: r.title }, zhOf(r) ? h("small", { text: `(${zhOf(r)})` }) : null), h("button", { class: "dclose", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
     h("div", { class: "dbody" },
       embed ? h("div", { class: "vframe" }, h("iframe", { src: embed, title: r.title, allow: "encrypted-media; fullscreen; picture-in-picture", allowfullscreen: "", referrerpolicy: "strict-origin-when-cross-origin" }))
         : https(r.image) ? h("img", { class: "dimg", src: r.image, alt: "", referrerpolicy: "no-referrer" }) : null,
-      r.zh && r.title !== r.zh ? h("div", { class: "cen", text: r.title }) : null,
-      h("div", { class: "csite", text: meta }),
-      h("h4", { text: "Ingredients 材料" }),
-      r.video && !(r.ingredients || []).length ? h("p", { text: "This video doesn't list the recipe in writing yet. Watch above. 这个视频还没有文字食谱，请看上面的视频。" }) : ingredientList(r, false),
-      steps.length ? h("h4", { text: "Steps 做法" }) : null,
+      h("div", { class: "dmeta", text: meta }),
+      h("h4", { text: "Ingredients " }, h("span", { text: "(材料)" })),
+      noText ? h("p", { text: "This video has no written recipe yet. Please watch it above. (这个视频还没有文字食谱，请看上面的视频。)" }) : ingredientList(r, false),
+      steps.length ? h("h4", { text: "Steps " }, h("span", { text: "(做法)" })) : null,
       steps.length ? h("ol", { class: "steps" }, ...steps.map(t => h("li", { text: t }))) : null,
       h("div", { class: "dacts" },
-        h("a", { class: r.video ? "btn btn-ghost" : "btn btn-main", href: r.url, target: "_blank", rel: "noopener noreferrer",
-          text: r.video ? (r.platform === "bilibili" ? "Open on Bilibili ↗" : "Open on YouTube ↗") : "Open recipe 看食谱 →" }),
-        saveBtn(r, r.video ? "btn btn-main" : "btn btn-ghost"),
-        h("a", { class: "btn btn-ghost", href: shareUrl(r), target: "_blank", rel: "noopener noreferrer", text: "💬 WhatsApp" }))));
+        h("a", { class: "btn btn-main", href: r.url, target: "_blank", rel: "noopener noreferrer",
+          text: r.video ? (r.platform === "bilibili" ? "Open on Bilibili ↗" : "Open on YouTube ↗") : "Open the original recipe (看原食谱) →" }),
+        saveBtn(r, "btn btn-ghost"),
+        h("a", { class: "btn btn-ghost", href: shareUrl(r), target: "_blank", rel: "noopener noreferrer", text: "💬 Send by WhatsApp" }))));
   updateSaveUI();
   d.showModal();
 }
@@ -484,19 +438,19 @@ function showList() {
   const blocks = saved.map(r => h("section", { class: "lrec" },
     h("header", {},
       https(r.image) ? h("img", { src: r.image, alt: "", referrerpolicy: "no-referrer", class: "noprint" }) : null,
-      h("div", { class: "lt" }, h("b", { text: r.zh || r.title }), r.zh ? h("span", { text: r.title + " " }) : null,
-        h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer", class: "noprint", text: "Open recipe 看食谱 →" }),
+      h("div", { class: "lt" }, h("b", { text: r.title }), zhOf(r) ? h("span", { text: `(${zhOf(r)}) ` }) : null,
+        h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer", class: "noprint", text: "Open the original recipe (看原食谱) →" }),
         h("span", { class: "printonly", text: r.url })),
-      h("button", { class: "lrm noprint", text: "Remove 删除", onclick: () => { toggleSave(r); showList(); } })),
+      h("button", { class: "lrm noprint", text: "Remove (删除)", onclick: () => { toggleSave(r); showList(); } })),
     ingredientList(r, true)));
   d.replaceChildren(
-    h("div", { class: "dhead" }, h("h3", { text: `❤ My list 我的清单 (${saved.length})` }), h("button", { class: "dclose noprint", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
+    h("div", { class: "dhead" }, h("h3", { text: `❤ My list (我的清单) · ${saved.length}` }), h("button", { class: "dclose noprint", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
     h("div", { class: "dbody" },
-      saved.length ? h("p", { class: "noprint", text: "Tick what you already have or have bought. 已有或买好的打勾。" }) : null,
-      ...(saved.length ? blocks : [h("p", { class: "lempty", text: "Nothing saved yet. Tap ♡ Save on any dish. 还没有收藏，点 ♡ 收藏 就可以。" })]),
+      saved.length ? h("p", { class: "noprint", text: "Tick what you already have or have bought. (已有或买好的打勾。)" }) : null,
+      ...(saved.length ? blocks : [h("p", { class: "lempty", text: "Nothing saved yet. Tap the ♡ on any dish. (还没有收藏，点 ♡ 就可以。)" })]),
       saved.length ? h("div", { class: "dacts noprint" },
-        h("button", { class: "btn btn-main", text: "🖨 Print shopping list 打印", onclick: () => print() }),
-        h("button", { class: "btn btn-ghost", text: "Untick all 清除勾选", onclick: () => { ticked = {}; store.set("tickedItems", ticked); showList(); } })) : null));
+        h("button", { class: "btn btn-main", text: "🖨 Print shopping list (打印)", onclick: () => print() }),
+        h("button", { class: "btn btn-ghost", text: "Untick all (清除勾选)", onclick: () => { ticked = {}; store.set("tickedItems", ticked); showList(); } })) : null));
   if (!d.open) d.showModal();
 }
 $("#openlist").addEventListener("click", showList);
@@ -515,32 +469,21 @@ function card(r) {
   if (r.video) {
     box.classList.add(r.platform);
     box.append(h("span", { class: "play", text: "▶", "aria-hidden": "true" }));
-    box.append(h("span", { class: "time", text: `▶ ${Math.floor(r.seconds / 60)}:${String(r.seconds % 60).padStart(2, "0")}` }));
-    box.append(h("span", { class: "rate", text: r.platform === "bilibili" ? "📺 Bilibili" : "▶ YouTube" }));
-  } else box.append(h("span", { class: "time" + (r.minutes && r.minutes <= QUICK ? " fast" : ""), text: mins(r) }));
-  if (isNew(r)) box.append(h("span", { class: "new", text: "🆕 New 新" }));
-  if (r.rating) box.append(h("span", { class: "rate", text: `⭐ ${r.rating.toFixed(1)}` + (r.ratings ? ` (${r.ratings >= 1000 ? (r.ratings / 1000).toFixed(1) + "k" : r.ratings})` : "") }));
-  const main = r.zh || r.title;
-  const k = DIALECTS.find(d => (r.cuisine === "chinese" || r.cuisine === "malay") && d[4].test(where(r))) || REGIONS.find(d => d[4].test(where(r))) || KITCHENS.find(x => x[0] === r.cuisine);
-  const views = n => n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n >= 1e3 ? Math.round(n / 1e3) + "k" : String(n);
+  }
+  if (isNew(r)) box.append(h("span", { class: "new", text: "🆕 New" }));
+  const fast = !r.video && r.minutes && r.minutes <= QUICK;
   const meta = r.video
-    ? [k && `${k[3]} ${k[1]} ${k[2]}`, `👁 ${views(r.views || 0)} views`, r.channel, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ")
-    : [k && `${k[3]} ${k[1]} ${k[2]}`, r.kcal && `🔥 ${r.kcal} kcal`, r.site, r.serves && `serves ${r.serves}`, r.added && `added ${dayLabel(r.added)}`].filter(Boolean).join(" · ");
-  const link = { href: r.url, target: "_blank", rel: "noopener noreferrer" };
-  const c = h("article", { class: "card" },
-    h("a", { class: "cardlink", ...link, "aria-label": `${main}, open recipe`, ...(r.video ? { onclick: e => { e.preventDefault(); showDetail(r); } } : {}) },
+    ? [`▶ ${Math.floor(r.seconds / 60)}:${String(r.seconds % 60).padStart(2, "0")} video`, r.platform === "bilibili" ? "Bilibili" : "YouTube"].join(" · ")
+    : [mins(r), r.serves && `serves ${r.serves}`].filter(Boolean).join(" · ");
+  // The whole card opens our own recipe window; the original site is one button inside it.
+  return h("article", { class: "card" },
+    h("button", { class: "cardlink", "aria-label": `${r.title}. Show the recipe`, onclick: () => showDetail(r) },
       box,
       h("div", { class: "cbody" },
-        h("div", { class: r.zh ? "czh" : "czh latin", text: main }),
-        r.zh ? h("div", { class: "cen", text: r.title }) : null,
-        h("div", { class: "csite", text: meta }))),
-    h("div", { class: "acts" },
-      h("button", { class: "act", text: r.video ? ((r.ingredients || []).length ? "🧾 Recipe 做法" : "▶ Watch 看视频") : "🧾 Ingredients 材料", onclick: () => showDetail(r) }),
-      saveBtn(r, "act")),
-    h("a", { class: "open", ...link, tabindex: "-1", ...(r.video ? { onclick: e => { e.preventDefault(); showDetail(r); } } : {}) },
-      h("span", { text: r.video ? "▶ Watch & cook here 在这里看做法" : "Open recipe 看食谱" }),
-      h("span", { class: "arrow", text: "→" })));
-  return c;
+        h("div", { class: "cen", text: r.title }),
+        zhOf(r) ? h("div", { class: "czh", text: `(${zhOf(r)})` }) : null,
+        h("div", { class: "csite" + (fast ? " fast" : ""), text: meta }))),
+    saveBtn(r, "heart", true));
 }
 
 
@@ -565,8 +508,8 @@ function tile(c) {
   const cover = [...list].filter(r => https(r.image)).sort((a, b) => proven(b) - proven(a))[0];
   const t = h("a", { class: "tile" + (c.fresh ? " fresh" : ""), href: `#/${c.k}` },
     h("span", { class: "te", text: c.e, "aria-hidden": "true" }),
-    h("span", { class: "tn", text: c.en }), h("span", { class: "tz", text: c.zh }),
-    h("span", { class: "tc", text: c.k === "saved" ? `${list.length} saved 已收藏` : `${list.length} recipes 道菜` }));
+    h("span", { class: "tn", text: c.en }), h("span", { class: "tz", text: `(${c.zh})` }),
+    h("span", { class: "tc", text: c.k === "saved" ? `${list.length} saved` : `${list.length} ${list.length === 1 ? "recipe" : "recipes"}` }));
   if (cover) t.style.backgroundImage = `url("${encodeURI(cover.image)}")`;
   return t;
 }
@@ -594,8 +537,8 @@ function showPage(key, pageNo, words) {
   if (key === "videos") list.sort((a, b) => (b.views || 0) - (a.views || 0)); // most watched first
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const p = Math.min(Math.max(1, pageNo || 1), pages);
-  $("#pemoji").textContent = cat.e; $("#ptitle").textContent = cat.en; $("#pzh").textContent = cat.zh;
-  $("#pcount").textContent = `${list.length} 道`;
+  $("#pemoji").textContent = cat.e; $("#ptitle").textContent = cat.en; $("#pzh").textContent = `(${cat.zh})`;
+  $("#pcount").textContent = `${list.length} recipes`;
   $("#quick").hidden = key === "quick";
   $("#quick").setAttribute("aria-pressed", quick);
   $("#pgrid").replaceChildren(...list.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE).map(card));
@@ -606,13 +549,13 @@ function showPage(key, pageNo, words) {
   if (pages > 1) {
     const nums = [];
     for (let n = 1; n <= pages; n++) if (pages <= 9 || n === 1 || n === pages || Math.abs(n - p) <= 2) nums.push(n);
-    pager.append(h("button", { text: "‹ Prev 上一页", onclick: () => go(p - 1), ...(p === 1 ? { disabled: "" } : {}) }));
+    pager.append(h("button", { text: "‹ Previous (上一页)", onclick: () => go(p - 1), ...(p === 1 ? { disabled: "" } : {}) }));
     nums.forEach((n, i) => {
       if (i && n - nums[i - 1] > 1) pager.append(h("span", { class: "gap", text: "…" }));
       pager.append(h("button", { text: String(n), onclick: () => go(n), ...(n === p ? { "aria-current": "page" } : {}) }));
     });
-    pager.append(h("button", { text: "Next 下一页 ›", onclick: () => go(p + 1), ...(p === pages ? { disabled: "" } : {}) }));
-    pager.append(h("div", { class: "pinfo", text: `Page ${p} of ${pages} · 第 ${p} / ${pages} 页` }));
+    pager.append(h("button", { text: "Next (下一页) ›", onclick: () => go(p + 1), ...(p === pages ? { disabled: "" } : {}) }));
+    pager.append(h("div", { class: "pinfo", text: `Page ${p} of ${pages} (第 ${p} / ${pages} 页)` }));
   }
   updateSaveUI();
   scrollTo({ top: 0, behavior: "instant" });
@@ -660,21 +603,15 @@ async function load() {
   // saved dishes stay even after they leave the feed (older than 3 months): they live in this browser
   const live = new Set([...daily, ...curated, ...videos].map(r => r.url));
   recipes = [...daily.filter(r => !seen.has(r.url)), ...curated, ...videos, ...saved.filter(r => !live.has(r.url))].filter(r => https(r.url) && KITCHENS.some(k => k[0] === r.cuisine));
-  const kitchens = new Set(recipes.map(r => r.cuisine)).size;
   const nVideos = recipes.filter(r => r.video).length;
-  $("#lede").textContent = `${recipes.length - nVideos} simple recipes and ${nVideos} cooking videos from ${kitchens} kitchens, new ones added every day. Tap any dish to open the full recipe. 每天都有新菜，点一下就能看做法。`;
+  $("#lede").textContent = `${recipes.length - nVideos} recipes and ${nVideos} cooking videos. New ones every day. Tap a dish to see how to cook it. (每天都有新菜，点一下就能看做法。)`;
   if (updated && !isNaN(new Date(updated))) {
     const when = new Date(updated).toLocaleString("en-SG", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
     // No Telegram alerts any more, so a stalled bot shows here: the bot adds something every morning.
     const stale = Date.now() - new Date(updated) > 36 * 3600e3;
-    $("#updated").textContent = stale ? `⚠ Not updated since ${when} · 已超过一天没有更新` : `🔄 Last updated ${when} · 最近更新`;
+    $("#updated").textContent = stale ? `⚠ Not updated since ${when} (已超过一天没有更新)` : `🔄 Last updated ${when} (最近更新)`;
     $("#updated").classList.toggle("stale", stale);
   }
-  const withImg = curated.filter(r => https(r.image));
-  [0, 1, 2].forEach(i => {
-    const r = withImg[[3, 17, 40][i] % withImg.length];
-    if (r) $("#stack").insertBefore(h("div", { class: "polaroid" }, h("img", { src: r.image, alt: "", referrerpolicy: "no-referrer" }), h("span", { text: r.zh })), $("#stack .seal"));
-  });
   route();
   updateSaveUI();
 }
@@ -682,7 +619,7 @@ load();
 
 // ---- bigger text, remembered ----
 const sizeBtn = $("#size");
-const setBig = big => { document.documentElement.classList.toggle("big", big); sizeBtn.setAttribute("aria-pressed", big); sizeBtn.textContent = big ? "A− Normal text 正常" : "A+ Bigger text 大字"; localStorage.setItem("bigText", big ? "1" : ""); };
+const setBig = big => { document.documentElement.classList.toggle("big", big); sizeBtn.setAttribute("aria-pressed", big); sizeBtn.textContent = big ? "A− Normal text (正常)" : "A+ Bigger text (大字)"; localStorage.setItem("bigText", big ? "1" : ""); };
 setBig(!!localStorage.getItem("bigText"));
 sizeBtn.addEventListener("click", () => setBig(!document.documentElement.classList.contains("big")));
 
