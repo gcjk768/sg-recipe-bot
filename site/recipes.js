@@ -30,6 +30,15 @@ window.RECIPES = [
    "400g/ 14 oz broccoli florets (, broken/cut into small bite size pieces (2 medium heads, ~5 cups))",
    "1 1/4 cups water",
    "White rice (or other rice of choice)"
+  ],
+  "steps": [
+   "Tenderise chicken: Consider tenderising chicken breast using this method. (Not needed for thigh)",
+   "Broccoli: steam or boil using preferred method until cooked to your taste (it won't cook any further in the stir fry). I usually microwave steam 3 minutes on high. Drain well (waterlogged florets = diluted sauce).",
+   "Sauce: Mix cornflour and soy sauce until lump free, then mix in remaining ingredients.",
+   "Cook aromatics: Heat oil in a large skillet over high heat. Add garlic and onion, stir for 10 seconds until garlic starts to go golden.",
+   "Cook chicken: Add chicken and cook for 2 minutes or until the chicken is just cooked through.",
+   "Thicken sauce: Add broccoli, Sauce and water. Stir well and cook for 1 to 2 minutes until the Sauce thickens and becomes glossy, and coats the ingredients.",
+   "Serve over rice!"
   ]
  },
  {
@@ -62,6 +71,16 @@ window.RECIPES = [
    "1/2 lb / 250g Chinese barbecue pork (Char Siu), thinly sliced (Note 5)",
    "1 cup red capsicum / bell pepper",
    "2 tsp thinly sliced hot green pepper (adjust to taste, optional)"
+  ],
+  "steps": [
+   "Combine the Sauce ingredients in a small bowl and mix.",
+   "Place rice vermicelli noodles in a large bowl filled with boiled water and soak as per packet instructions. Drain and set aside.",
+   "Heat 1 tbsp of oil in a wok or heavy based fry pan over medium heat. Add the shrimp/prawns, cook until just cooked - about 2 1/2 to 3 minutes. Remove and set aside.",
+   "Add the egg and spread it out to make a thin omelette. Once set, use a spatula to roll it up, remove from the wok and slice (while still rolled up).",
+   "Return the wok to medium heat and add the remaining 1 tbsp of oil. Add the garlic, ginger and onion, cook for 2 minutes until onion is slightly softened.",
+   "Add capsicum and cook for 1 minute.",
+   "Add noodles and Sauce, give it a few tosses. Then add the egg, pork, shrimp/prawns, chillies (if using). Toss until the sauce coats all the noodles and everything is heated through - about 1 to 2 minutes.",
+   "Serve immediately."
   ]
  },
  {
@@ -86,6 +105,15 @@ window.RECIPES = [
    "½ teaspoon salt",
    "1 pinch sugar",
    "½ stalk scallions (finely chopped)"
+  ],
+  "steps": [
+   "Remove the stems of the tomatoes, then cut them into bite-sized pieces. Optionally, remove their skin beforehand (see note 1 to learn how).",
+   "Crack the eggs into a bowl and add 2 tablespoons of water. Beat until the whites and yolks are well integrated.",
+   "Heat 1½ tablespoons of oil in a skillet/frying pan over high heat until very hot (see note 2 if using a carbon steel wok).",
+   "Pour in the beaten egg. Allow the bottom part to set first. Then move with a spatula so that the running part flows to the hot surface to cook. Break the scrambled egg into bite-sized pieces then transfer out to a plate.",
+   "Add the remaining ½ tablespoon of oil to the same skillet/pan/wok. Fry sliced garlic over medium heat until fragrant (do not burn).",
+   "Put in the chopped tomato. Stir-fry for 20 seconds or so. Add ¼ cup (60ml) of water. Leave to cook until the tomato becomes a little mushy.",
+   "Add the scrambled egg. Sprinkle salt, sugar and scallions over. Give everything a quick stir to combine. Dish out and serve immediately with steamed rice, or as a topping for noodles (see note 3 if using a carbon steel wok)."
   ]
  },
  {
@@ -112,6 +140,17 @@ window.RECIPES = [
    "green onions (, Sliced)",
    "Light soy sauce ((or tamari for gluten-free) (Optional))",
    "Sesame oil"
+  ],
+  "steps": [
+   "Prepare the steamer and bring the water to a boil.",
+   "Break the eggs into a liquid measuring cup and add the salt. Beat the eggs with a fork until they are smooth, but not airy. Check the volume measurement of the beaten eggs, it should be about 1/2 cup.",
+   "Add the water, just under two times the volume of the egg, just slightly above 3/4 cup (about 1 tablespoon more) in most cases (*Footnote 2). Whisk until the mixture is consistent.",
+   "Prepare a heat-proof bowl or container that can fit in your steamer. It can be a big wide bowl that’s about 24 oz (700 ml) or two 12-oz (350 ml) ramekins. (*Footnote 3)",
+   "Using a fine mesh strainer, strain the eggs into the bowl you prepared. If there are any bubbles on the surface, use a spoon to gently scoop them off. Cover the bowl with plastic wrap and poke a few small holes in it.",
+   "Reduce the heat of the steamer to medium-low. Carefully transfer the bowl with the egg into the steamer.",
+   "Steam for 7 to 12 minutes, until the eggs are just set. After 7 minutes, lightly shimmy the steamer rack or the bowl to judge how set your eggs are. The eggs should jiggle slightly without any obvious liquid on or under the center of the surface. Let it cook longer, if needed, until the eggs are set. (*Footnote 5)",
+   "After the steaming is done, turn the heat off and transfer the bowl onto a coaster or trivet. Let the eggs rest for 5 minutes. Carefully peel off the plastic wrap. Drizzle with sesame oil and light soy sauce and garnish with green onion.",
+   "Serve hot as breakfast or as a snack."
   ]
  },
  {
@@ -135,6 +174,13 @@ window.RECIPES = [
    "1 tablespoon peanut oil ((or vegetable oil))",
    "1 teaspoon sugar",
    "2 tablespoons light soy sauce ((or soy sauce))"
+  ],
+  "steps": [
+   "Heat 1 tablespoon of oil in a medium-sized wok or large skillet over high heat until hot. Add scallion and stir a few times until fragrant.",
+   "Add bok choy. Stir and cook for 1 to 2 minutes, to coat evenly with oil.",
+   "Sprinkle it with sugar and swirl in light soy sauce. Immediately stir a few times to mix well. Add deep fried tofu, then stir again for about 20 seconds.",
+   "Cover the wok and lower to medium-low heat. Steam for 30 seconds. Uncover and stir to check the doneness. Cover and cook for another 10 to 20 seconds again, if necessary, until the bok choy is cooked through and slightly caramelized on the edges. Turn off the heat and transfer everything to a serving plate.",
+   "Serve hot as a side dish or over steamed rice as a light main dish."
   ]
  },
  {
@@ -169,6 +215,15 @@ window.RECIPES = [
    "1/4 teaspoon Chinese black vinegar",
    "2 tablespoons water",
    "1 teaspoon cornstarch"
+  ],
+  "steps": [
+   "Rinse the chicken in water, then pat it dry with a paper towel. Cut the chicken into small cubes and marinate with the marinade ingredients for 30 minutes.",
+   "Mix the ingredients for the Kung Pao Sauce in a small bowl and set it aside.",
+   "Heat a wok with one tablespoon of oil and stir-fry the marinated chicken until it's 70% cooked. Remove it from the wok and set it aside. (The surface of the chicken should turn white and opaque, but it should not be fully cooked at this point.)",
+   "Clean the wok or skillet with paper towels, then heat the remaining 2 tablespoons of oil until fully heated. Add the ginger and garlic slices, and quickly stir-fry before adding the dried red chilies.",
+   "Stir-fry the dried red chilies until aromatic, then add the chicken. Briefly stir-fry before adding the roasted peanuts.",
+   "Add the sauce and stir continuously until the chicken is well coated. Then, add the scallions and mix thoroughly with the chicken.",
+   "Dish out the Kung Pao chicken and serve immediately with steamed rice."
   ]
  },
  {
@@ -200,6 +255,17 @@ window.RECIPES = [
    "1 tbsp Oyster Sauce",
    "1 1/2 tbsp soy sauce ((all purpose or light) (Note 3))",
    "1/2 tsp sesame oil ((roasted - i.e. dark colour))"
+  ],
+  "steps": [
+   "Mix together Sauce ingredients, set aside.",
+   "Heat 1 tbsp oil in a wok (or heavy based skillet/fry pan) over medium heat. Add eggs and cook until scrambled, then remove onto plate.",
+   "Increase heat to high and add bacon. Cook until golden, then remove onto plate with egg - about 2 minutes.",
+   "Drain off excess bacon fat.",
+   "Add remaining 2 tbsp oil, garlic and ginger. (Note 5) Return wok to stove on high heat. Stir fry as it comes up to heat, don’t let it burn. When garlic starts to sizzle, add onion and stir fry for 2 minutes until golden.",
+   "Add Chinese wine and sugar and let it simmer rapidly, stirring, for 20 seconds, until mostly evaporated.",
+   "Add prawns/shrimp and stir fry for 1 minute to heat through (if pre-cooked, cook longer to cook if raw).",
+   "Add rice, Sauce, eggs, bacon and all but 2 tbsp of shallots/scallions. Stir fry for 2 minutes until rice is hot - around 2 minutes.",
+   "Transfer to serving plate, sprinkle with remaining scallions and serve."
   ]
  },
  {
@@ -240,6 +306,20 @@ window.RECIPES = [
    "2 tsp cornflour / cornstarch",
    "1/4 cup water",
    "White rice"
+  ],
+  "steps": [
+   "Toast, grind and sift Sichuan peppercorns. Blanch tofu 3 min. Cook pork until golden, remove.",
+   "Sauté garlic and ginger 90 sec, then black bean and bean sauce 3 min, then chilli and paprika 30 sec. Add beef stock and soy, simmer tofu 10 min. Add sugar, pork, 1/2 tsp Sichuan pepper, then thicken sauce with cornflour slurry. Stir in green onion and sesame, serve garnished with 1/2 tsp Sichuan pepper.",
+   "Toast peppercorns – In a small skillet over medium heat (no oil), toast the peppercorns for 2 - 3 minutes until fragrant (some will “pop” and crack open).",
+   "Grind and sift – Transfer to a mortar and pestle, or spice grinder. Cool for a few minutes, then grind as finely as possible. Sift through a fine mesh sieve to remove the coarser husks (discard these). Measure out 1 teaspoon to use in the dish.",
+   "Blanch - Bring the water, dark soy and salt to a boil in a large saucepan over higher heat. Carefully add the tofu, then once it comes back up to the boil, lower the heat slightly so it’s simmering rapidly and simmer for 3 minutes. This step removes raw beany flavour and seasons the tofu. And don't worry, the tofu won't fall apart!",
+   "Remove - Use a slotted spoon to carefully scoop the tofu out into a bowl. Set aside.",
+   "Cook golden pork – Heat the oil in a wok over high heat. (Note 9) Cook pork, breaking it up as you go, until you no longer see pink. Then lower the heat to medium and cook for another 2 minutes until the pork has golden bits. Add the light soy sauce, stir for 5 seconds, the remove the pork into a bowl and set aside.",
+   "Sauté aromatics – Reduce heat to low. Add the rest of the oil into the wok, then cook the garlic and ginger for 90 seconds. Add black beans and broad bean paste, cook for 3 minutes, stirring constantly. Add chilli powder and paprika, cook for 30 seconds..",
+   "Simmer – Add the beef stock and light soy. Turn the heat up to medium high, then once it starts bubbling, gently add the tofu (discard any excess water pooled in the tofu bowl). Simmer gently for 10 minutes (lower heat as needed), gently scraping the base with a rubber spatula every now and then to ensure it doesn’t catch (I push across base, avoid stirring as tofu will break). There should still be plenty of liquid at the end, mapo tofu is saucy.",
+   "Cornflour slurry – Mix the water and cornflour together. This will thicken the sauce.",
+   "Thicken sauce – Add the sugar, pork mince, 1/2 teaspoon sichuan powder. Stir gently using the rubber spatula. Pour the cornflour slurry all over the surface (not in one place) then gently stir again.",
+   "Finish and serve – Stir in most of the green onion (reserve a little for garnish) and sesame oil. Pour into a serving bowl. Sprinkle with remaining Sichuan pepper and garnish with green onion. Serve over rice!"
   ]
  },
  {
@@ -268,6 +348,12 @@ window.RECIPES = [
    "1 cup shredded cooked chicken",
    "Salt and white pepper (, to taste)",
    "3 tbsp sliced scallions / shallots ((optional))"
+  ],
+  "steps": [
+   "Place broth, creamed corn, soy sauce, Chinese cooking wine, ginger, garlic and cornflour / water mixture in a saucepan over high heat.",
+   "Bring to boil, then turn down the heat to medium and stir occasionally. Cook for 5 minutes or until slightly thickened.",
+   "Adjust seasoning with salt, turn off heat, and slowly whisk in the egg so it cooks in \"ribbons\" throughout the soup. This also thickens the soup.",
+   "Add the chicken, season with white pepper, and serve, garnished with scallions."
   ]
  },
  {
@@ -296,6 +382,14 @@ window.RECIPES = [
    "1/2 tsp sugar",
    "1 clove garlic (, finely grated)",
    "1 tsp ginger (, finely grated)"
+  ],
+  "steps": [
+   "Trim ends off Chinese Broccoli. If any stems are super thick, cut them in half (you want all stems approximately the same width).",
+   "Steam Chinese Broccoli using whatever method you want - I microwave in a steamer on high for 4 minutes. The stem should be just cooked - not super soft and floppy.",
+   "Stack the Chinese broccoli together and cut into 4\"/10cm lengths, then stack neatly on top of each other.",
+   "Combine water and corn flour in small saucepan, mix to dissolve.",
+   "Then add remaining ingredients, turn stove onto medium and bring to boil. Boil for 30 seconds to allow to thicken, then remove from stove.",
+   "Drizzle over Chinese broccoli and serve. Best served warm."
   ]
  },
  {
@@ -326,6 +420,19 @@ window.RECIPES = [
    "28 raw whole almonds",
    "1 egg yolk",
    "1/4 teaspoon sugar"
+  ],
+  "steps": [
+   "Combine the all-purpose flour, sugar, almond flour, baking soda, and salt in a medium-sized bowl. Sift the dry ingredients through a colander into a large bowl. Press the larger chunks of almond flour through the mesh using your fingers.",
+   "Cut the butter into 1/2” (1 cm) squares, then transfer it into the bowl with the flour. Cut the butter using a butter cutter or your fingers, until it forms a moist cornmeal-like texture.",
+   "Add the egg and almond extract. Mix until it forms a smooth dough. Wrap the dough in a piece of plastic wrap and transfer it into the fridge to chill for 1 hour, or in the freezer for 20 minutes.",
+   "While chilling the dough, preheat the oven to 350 °F (176 °C). Line a baking sheet with parchment paper.",
+   "To make the egg wash, combine the egg yolk and sugar in a small bowl. Stir to mix well. If not using immediately, cover with plastic wrap to prevent from drying out.",
+   "To make the cookies, take about 2 teaspoons of dough (14 g), then roll it with your hands into a dough ball. Repeat the process to make all the cookies and place them onto the lined baking sheet, about 2” (5 cm) apart.",
+   "Press the dough balls lightly with your finger and press 1 almond into the center of each cookie.",
+   "Brush each cookie thoroughly with the egg wash. (*Footnote 1)",
+   "Bake for 12 to 15 minutes, until the edges of the cookies turn golden brown.",
+   "Transfer the baking sheet onto your counter and let the cookies cool for at least 5 minutes. Transfer the cookies to a cooling rack or plate. Enjoy!",
+   "Store the completely cooled cookies in an airtight container at room temperature for 4 to 5 days. You can freeze these cookies, too. Thaw the cookies in the fridge. You can also warm them up in the microwave or in a 350 °F (176 °C) oven before serving."
   ]
  },
  {
@@ -356,6 +463,16 @@ window.RECIPES = [
    "1 tbsp parsley, finely chopped ((garnish))",
    "Lemon wedges",
    "Bread for mopping!"
+  ],
+  "steps": [
+   "Marinade: Place the prawns, 1 tablespoon olive oil and pepper in bowl. Gently toss then set aside for 20 minutes (no longer else the prawns will sweat from the salt),.",
+   "Sear in batches: Heat 1 tablespoon olive oil in a large non-stick frying pan over high heat. Place half the prawns in the pan then sear each side for just 45 seconds, using tongs to turn.",
+   "Remove & repeat: Remove prawns onto a plate, heat the last 1 tablespoon of oil and cook each side for 45 seconds.",
+   "Return first batch of prawns back into pan.",
+   "Garlic - Add garlic then stir for 30 seconds.",
+   "Add wine - it will sizzle and be steamy! Stir, scraping the bottom of the pan, until wine mostly evaporates - around 30 seconds.",
+   "Butter & lemon: Scatter butter across pan, add lemon juice. Swirl butter around the pan until it melts, then toss through the parsley.",
+   "Serve: Transfer the prawns and all the butter sauce onto a serving plate. Serve with extra lemon wedges. Bread for mopping is essential - try this simple Crusty Artisan Bread!"
   ]
  },
  {
@@ -363,7 +480,7 @@ window.RECIPES = [
   "tags": [],
   "kcal": 510,
   "rating": 4.97,
-  "ratings": 477,
+  "ratings": 478,
   "zh": "肉酱意面",
   "title": "Spaghetti Bolognese",
   "url": "https://www.recipetineats.com/spaghetti-bolognese/",
@@ -389,6 +506,18 @@ window.RECIPES = [
    "1/2 tsp black pepper",
    "400 g / 13 oz spaghetti (, dried)",
    "Parmesan cheese (and finely chopped parsley (optional))"
+  ],
+  "steps": [
+   "Sauté - Heat oil in a large pot or deep skillet over medium high heat. Add onion and garlic, cook for 3 minutes or until light golden and softened.",
+   "Cook beef - Turn heat up to high and add beef. Cook, breaking it up as your go, until browned.",
+   "Reduce wine - Add red wine. Bring to simmer and cook for 1 minute, scraping the bottom of the pot, until the alcohol smell is gone.",
+   "Simmer - Add the remaining ingredients. Stir, bring to a simmer then turn down to medium so it bubbles gently. Cook for 20 - 30 minutes (no lid), adding water if the sauce gets too thick for your taste. Stir occasionally.",
+   "Slow simmer option: really takes this to another level, if you have the time! Add 3/4 cup of water, cover with lid and simmer on very low for 2 - 2.5 hours, stirring every 30 minutes or so. (Note 5) Uncover, simmer 20 minutes to thicken sauce. (Note 6 for slow cooker)",
+   "Taste and add more salt it desired. Serve over spaghetti - though if you have the time, I recommend tossing the sauce and pasta per steps below.",
+   "Bring a large pot of salted water to boil. Add pasta and cook per packet directions MINUS 1 minute.",
+   "Scoop out a mug of pasta cooking water and set aside, then drain the pasta.",
+   "Add pasta into the bolognese sauce with about 1/2 cup (125 ml) of reserved pasta water over medium heat. Toss gently for 1 1/2 - 2 minutes, or until the spaghetti turns red and the sauce thickens.",
+   "Divide between bowls. Garnish with parmesan and parsley if desired."
   ]
  },
  {
@@ -429,6 +558,19 @@ window.RECIPES = [
    "2 – 3 tbsp grated parmesan (, optional)",
    "2 tbsp (30g) unsalted butter (, melted)",
    "Fresh thyme leaves, optional garnish"
+  ],
+  "steps": [
+   "Sauté - Heat oil in a large skillet over medium high heat. Add onion and garlic, cook for 1 minute. Then add carrots, celery, thyme and rosemary. Cook for 3 minutes or until softened and sweet.",
+   "Cook lamb - Turn heat up to high. Add lamb and cook, breaking it up as you go, until browned.",
+   "Make sauce - Add flour and mix in. Add tomato paste, broth, red wine, bouillon cube, Worcestershire sauce and bay leaves. Stir well.",
+   "Simmer and thicken - Bring to simmer, then turn down heat so it is simmering rapidly - I have it on medium. Cook for 30 minutes, stirring occasionally, until it reduces down to a thick gravy consistency (Note 1) (see video).",
+   "Cool - Add salt and pepper, taste, then add more if you like. Transfer Filling to 1.5 litre / 1.5 quart pie baking dish. Stir through peas. Cover, then refrigerate to cool for 1 - 2 hours or overnight (optional, Note 2)",
+   "Preheat oven to 180°C/350°F (both fan and standard).",
+   "Boil potatoes - Place the potatoes in a large pot. Add water so it’s 10cm / 4” above potatoes. Bring to a boil then cook for 15 minutes or until soft. Drain then return potatoes into the pot on the turned off stove. Allow to steam dry for 30 seconds or so (Note 3).",
+   "Mash - Add butter and mash until melted, then add milk, salt and pepper. Mash until it's soft and smooth (ie spreadable, but not sloppy), adjusting with a touch more milk if required.",
+   "Spread mash onto pie, use a fork to draw squiggles over the surface. Sprinkle with parmesan, drizzle with butter.",
+   "Bake for 30 - 40 minutes or until deep golden on top and bubbling on the edges. Stick a knife into the middle to ensure it is piping hot.",
+   "Stand for 5 minutes before serving, garnished with fresh thyme leaves if desired."
   ]
  },
  {
@@ -453,6 +595,18 @@ window.RECIPES = [
    "1/2 tsp salt",
    "Extra melted butter",
    "Chives or parsley (, chopped)"
+  ],
+  "steps": [
+   "Place in a large pot with 1 tbsp salt. Add water so it’s 10cm / 4” above potatoes.",
+   "Bring to a boil over high heat then reduce heat so it’s simmering rapidly. Cook 15 minutes or until potatoes are very soft (jab with fork to test, they should fall apart).",
+   "Drain well, return into pot. Leave for 1 minute, shaking pot every now and then, to encourage evaporation of water.",
+   "Add Flavourings then mash well, using milk to make it looser if desired.",
+   "DO NOT use: a beater, stick blender, food processor or blender. You can pulse with a stand mixer or handheld mixer but be cautious, stop as soon as it's creamy (potatoes will quickly go from perfect to gluey using appliances).",
+   "Transfer to serving bowl, make pretty swirls across the top and drizzle over butter. Sprinkle with chives then serve!",
+   "30 minutes or less - Cover bowl tightly with cling wrap and keep in a warm place (like near the stove), will stay warm for 30 min. Gently stir before serving.",
+   "Up to 2 hours, over hot water - place bowl with mash over a pot of boiling hot water (turn stove on every now and then to keep water hot) or keep about 3 cm / 1\" water gently simmering. Bowl should not touch water.",
+   "Up to 4 hours, slow cooker warm seeting - press baking paper/parchment paper onto potato surface, then cover tightly with foil. Keep in slow cooker on WARM setting (60C/140F or less).",
+   "Day before - use this recipe for Make Ahead Mashed Potatoes (uses a restaurant trick!)"
   ]
  },
  {
@@ -480,6 +634,16 @@ window.RECIPES = [
    "1/4 tsp garlic powder",
    "1/2 tsp each salt and pepper",
    "Finely chopped parsley"
+  ],
+  "steps": [
+   "Preheat oven to 425°F/220°C (200°C fan).",
+   "Pound chicken to 1.5cm / 0.6\" at the thickest part - using a rolling pin, meat mallet or even your fist (key tip for even cooking + tender chicken).",
+   "Mix Seasoning.",
+   "Line tray with foil and baking / parchment paper. Place chicken upside down on tray. Drizzle chicken with about 1 tsp oil. Rub over with fingers. Sprinkle with Seasoning.",
+   "Flip chicken. Drizzle with 1 tsp oil, rub with fingers, sprinkle with Seasoning, covering as much of the surface area as you can.",
+   "Bake 18 minutes, or until surface is golden per photos and video, or internal temperature is 165°F/75°C using a meat thermometer.",
+   "Remove from oven and immediately transfer chicken to serving plates.",
+   "Wait 3 - 5 minutes before serving, garnished with freshly chopped parsley if desired. Pictured with a side of Garlic Butter Rice with Kale."
   ]
  },
  {
@@ -510,6 +674,16 @@ window.RECIPES = [
    "Cream or extra virgin olive oil (, for drizzling)",
    "Parsley ((roughly chopped), chervil (if you're feeling a bit fancy), or thyme leaves)",
    "Bread for dunking"
+  ],
+  "steps": [
+   "Chopping mushrooms: Cut mushrooms into 4 slices, then dice into 3 or 4 pieces.",
+   "Saute onion and garlic: Melt butter in a large pot over medium high heat. Add onion and garlic. Cook for 3 minutes until softened, but not golden.",
+   "Cook mushrooms: Add mushrooms and cook for 10 minutes, stirring regularly. Do not try to brown; they won't as the pot is too crowded but we do not need colour.",
+   "Simmer 15 min: Add vegetable stock, salt and pepper. Bring to a boil, then lower heat to medium and simmer gently for 15 minutes without a lid.",
+   "Cream: Stir in cream (or crème fraiche), then simmer for another 5 minutes.",
+   "Blitz: Transfer to a blender (do in batches, if necessary). Remove the cap from the feeding hole in the blender lid (Note 5), cover the hole with a folded tea towel. Blend until completely smooth.",
+   "Return to pot, simmer for a minute or two until bubbles caused by blending largely subside and soup is hot.",
+   "Serve: Ladle into bowls. Garnish with a drizzle of extra virgin olive oil or cream, croutons and parsley or (if you're feeling a bit fancy), chervil. Don't forget bread for dunking!"
   ]
  },
  {
@@ -537,6 +711,14 @@ window.RECIPES = [
    "Ketchup, mustard, relish, sliced pickles",
    "French fries",
    "Baked potato wedges"
+  ],
+  "steps": [
+   "Separate beef into 4 equal portions. Use hands to lightly form into patties the size of your buns (mine are about 10 cm / 4\") - don't press hard, light fingers = soft juicy patties (see video for how I do this).",
+   "Season generously with salt and pepper on both sides. Make a dent on one side (stop burger from become dome shape and shrinking when cooking).",
+   "Heat 1 tbsp oil in a heavy based skillet or BBQ over high heat. Add onion and cook until wilted and caramelised. Season with salt and pepper, then remove.",
+   "Heat 1 tbsp oil until smoking. Add patties and cook for 2 minutes until deep golden with a great crust. Do not press! Flip carefully, cook for 1 minute then top with cheese (if using). Cover with lid and cook for further 1 minute until cheese is melted.",
+   "Meanwhile, toast the cut side of the buns lightly.",
+   "To serve: Spread base of buns with sauce / condiment of choice. Top with lettuce then tomato, then hamburger patty. Pile over onions, sliced pickles, then more sauce/condiments. Top with lid of bun. Serve immediately."
   ]
  },
  {
@@ -568,6 +750,17 @@ window.RECIPES = [
    "2 tsp vanilla extract",
    "1 cup boiling water",
    "1 1/2 batches Chocolate Buttercream Frosting ((slide scaler on recipe))"
+  ],
+  "steps": [
+   "Preheat oven to 180C°/350°F (160°C fan). Read Note 4 regarding shelf positions.",
+   "Grease 2 x 22cm/9\" cake pans with butter, then line the base. (Note 3 re: springform pans and other pan sizes).",
+   "Sift flour, cocoa, baking powder and baking soda into a large bowl. Add Sugar and salt. Whisk briefly to combine.",
+   "Add eggs, milk, oil and vanilla. Whisk well to combine until lump free - about 30 seconds.",
+   "Add boiling water and whisk to incorporate. The batter is VERY thin (see video).",
+   "Pour batter into cake pans.",
+   "Bake for 35 minutes or until a wooden skewer inserted into the centre comes out clean. See Note 4 regarding cook time if pans are on different shelves.",
+   "Cool for 10 minutes, then turn out onto wire racks upside down (Note 5).",
+   "Cool completely before frosting. I frosted the cake with my Chocolate Buttercream Frosting (scale recipe up by 50%)."
   ]
  },
  {
@@ -605,6 +798,19 @@ window.RECIPES = [
    "225g / 1 cup unsalted butter (, softened)",
    "1 tsp vanilla extract",
    "4 cups (480g) icing sugar / powdered sugar (, sifted if clumpy (Note 6))"
+  ],
+  "steps": [
+   "Preheat oven to 180°C/350°F (all oven types). Grease and line two 20-22.5 cm/8 - 9\" round pans OR a 9 x 13\" / 22 x 33cm pan with baking/parchment paper. (Note 7)",
+   "Drain crushed pineapple well, reserving the juice. Measure out 1/4 cup of pineapple juice.",
+   "Whisk Dry ingredients in a large bowl.",
+   "In a separate bowl, whisk together the milk, vinegar, eggs, sugar, oil and the 1/4 cup pinepple juice from Step 2.",
+   "Stir in carrot, crushed pineapple, coconut and pecans into the Wet ingredients bowl.",
+   "Pour Wet into Dry ingredients, stir until flour is incorporated.",
+   "Pour into prepared pan(s). Bake round cakes for 35 minutes, rectangle cake for 40 minutes, or until a skewer inserted into the middle comes out clean and the cake is golden on top.",
+   "Rest for 10 minutes in the pan before turning out onto a cooling rack. Frost once completely cool.",
+   "Beat together cream cheese, butter and vanilla until smooth. Then beat in the icing sugar in 2 batches until it is well incorporated and the frosting is fluffy - about 3 minutes on speed 7 stand mixer.",
+   "Flip one cake upside down on serving platter (for flat surface). Spread with 1/3 frosting. Place 2nd cake upside down on frosting. Frost top and sides with remaining frosting.",
+   "If cooler than 25°C/77°C and not humid, ok to keep cake in airtight container not in fridge. If very humid OR warmer than 25°C/77°C, store in fridge (Note 8)."
   ]
  },
  {
@@ -634,6 +840,22 @@ window.RECIPES = [
    "1 egg yolk",
    "2 tsp vanilla extract",
    "1 1/4 cups chocolate chips (, separated (US: semi sweet chocolate chips or chunks))"
+  ],
+  "steps": [
+   "Preheat oven to 180C / 350F (standard) or 160C/320F (fan / convection). Place oven shelf in the middle of the oven.",
+   "Line 2 trays with baking / parchment paper.",
+   "Whisk the flour, salt and baking soda in a bowl.",
+   "Place the butter in a large heatproof bowl. Microwave until the butter is almost fully melted (25 sec for room temp butter, 40 sec for fridge cold butter on high).",
+   "Whisk to finish melting the butter. (Note 2)",
+   "Add brown and white sugar, whisk energetically for 15 seconds.",
+   "Add egg, yolk and vanilla, whisk well for 15 seconds.",
+   "Add flour mixture and mix until flour is almost fully incorporated.",
+   "Add 1 cup chocolate chips, stir to disperse and flour is fully incorporated. Batter will be quite loose.",
+   "Stand for 5 minutes for batter to firm up a bit so it is scoop-able into mounds. (Note 3)",
+   "LARGE COOKIES: Scoop up a level ice cream scoop / 3 tbsp / 1/4 cup (Note 4) and place on baking trays 5cm / 2\" apart - 13 balls. Top with remaining choc chips (these remain on surface once baked = prettier).",
+   "SMALL COOKIES (26 - 30): Scoop up 1.5 tbsp (heaped tbsp measure) OR 1/2 an ice cream scoop (this works well). Place on baking trays 4cm / 1.75\" apart, top with choc chops.",
+   "Bake 1 tray at a time. LARGE COOKIES: Bake for 8 minutes, then rotate the tray and bake for 3 minutes (11 minutes in total). SMALL COOKIES: Bake 6 minutes, turn then bake 3 minutes (9 min total). The cookies should be just golden on the edges and pale golden on top. They will be slightly puffed up.",
+   "Cool on the tray - they finish cooking. They will lose the puffiness while resting. Dig in and get your cookie fix!"
   ]
  },
  {
@@ -666,6 +888,14 @@ window.RECIPES = [
    "125g / 1/2 cup unsalted butter (, melted)",
    "Pinch of salt",
    "Vanilla ice cream"
+  ],
+  "steps": [
+   "Preheat oven to 180°C / 350°F (both fan and standard).",
+   "Apple - Peel apples, then cut into 1.5cm/ 1/2” cubes.",
+   "Apple filling - Place apples in a bowl. Sprinkle with flour, sugar and cinnamon, then pour over lemon juice. Toss, then spread out evenly in a 1.5 litre/1.5 quart baking dish.",
+   "Crumble topping - Place Topping ingredients in a bowl. Mix until clumps form, like wet sand (see video). Spread over the apples, crumbling with fingers if required to get that crumbly topping.",
+   "Bake for 30 to 40 minutes or until golden brown. Remove, cover loosely with foil to keep warm and let stand for 10 minutes before serving (let's the apple syrup thicken slightly).",
+   "Serve warm with vanilla ice cream!"
   ]
  },
  {
@@ -693,6 +923,16 @@ window.RECIPES = [
    "2 large eggs ((55-60g / 2 oz each))",
    "2/3 cup almond meal / ground almonds ((or almond flour, Note 2))",
    "1/3 cup rice flour ((Note 3))"
+  ],
+  "steps": [
+   "Preheat the oven to 180°C / 325°F (160°C fan-forced) with a rack in the lower third of the oven.",
+   "Preparation: Grease and line a 20cm / 8\" square pan with baking paper (parchment paper) with excess overhang so it's easy to lift out the brownie when cooked.",
+   "Melt butter and chocolate: Place chocolate, butter and salt in a heatproof bowl. Microwave in 3 x 30 second bursts on high, mixing in between, until melted and smooth. You could also do this over simmering water on the stove.",
+   "Cool 5 minutes: Mix well to combine the chocolate and butter then leave to cool for 5 minutes.",
+   "Add vanilla, sugar and eggs: Stir in the vanilla and sugar. Crack the eggs straight into the bowl, and stir until combined.",
+   "Add dry: Add almond meal and rice flour, and mix very well until fully combined.",
+   "Bake: Pour the batter into the prepared pan and smooth the surface. Bake for 25 minutes or until the brownies are slightly puffed all over and a toothpick inserted into the center comes out moist but clean. You want it to be moist!",
+   "Cool and serve: Cool brownies for at least 30 minutes in the pan. Remove the brownie by holding the edges of the baking paper, fully cool on a rack. Then cut into squares (3 x 3 for gigantic ones, 4 x 4 for sensible ones). See Note 4 for more cutting tips."
   ]
  },
  {
@@ -728,6 +968,19 @@ window.RECIPES = [
    "50g dark chocolate",
    "25g milk chocolate",
    "25g white chocolate"
+  ],
+  "steps": [
+   "Heat oven to 190C/170C fan/gas 5. Butter the base and sides of two 20cm round sandwich tins and line the bases with baking parchment.",
+   "In a large bowl, beat together 200g golden caster sugar, 200g softened unsalted butter, 4 large eggs, 200g self-raising flour, 2 tbsp cocoa powder, 1 tsp baking powder, ½ tsp vanilla extract, 2 tbsp milk and a pinch of salt until pale.",
+   "Divide the mixture between the prepared tins. Bake for 20 mins or until a skewer inserted into the centre of the cake comes out clean.",
+   "Leave to cool in the tin for 10 mins, then turn out onto a wire rack to cool completely.",
+   "For the buttercream, put 100g chopped milk chocolate in a heatproof bowl and melt in the microwave, stirring every 30 secs. Leave the melted chocolate to cool for 5 mins.",
+   "Mash 200g softened butter and 400g icing sugar together with a fork, then switch to a wooden spoon or electric beaters, if you have them.",
+   "Sift in 5 tbsp cocoa powder with a pinch of salt and pour in the melted chocolate and 2 tbsp milk. Mix again until smooth.",
+   "On a cake stand or large plate, sandwich the cakes together with half of the buttercream, then spread the rest on top. Decorate with chocolate shards, if you like.",
+   "To make chocolate shards: melt 50g dark chocolate and pour it onto a tray lined with baking parchment or foil.",
+   "Now melt 25g milk chocolate and 25g white chocolate and drizzle them over the dark chocolate before it sets.",
+   "Shake the tray gently to level the mixture then leave to set somewhere cool. Chop into shards."
   ]
  },
  {
@@ -755,6 +1008,23 @@ window.RECIPES = [
    "50g milk chocolate",
    "3 large eggs",
    "275g golden caster sugar"
+  ],
+  "steps": [
+   "Cut 185g unsalted butter into small cubes and tip into a medium bowl. Break 185g dark chocolate into small pieces and drop into the bowl.",
+   "Fill a small saucepan about a quarter full with hot water, then sit the bowl on top so it rests on the rim of the pan, not touching the water. Put over a low heat until the butter and chocolate have melted, stirring occasionally to mix them.",
+   "Remove the bowl from the pan. Alternatively, cover the bowl loosely with cling film and put in the microwave for 2 minutes on High. Leave the melted mixture to cool to room temperature.",
+   "While you wait for the chocolate to cool, position a shelf in the middle of your oven and turn the oven on to 180C/160C fan/gas 4.",
+   "Using a shallow 20cm square tin, cut out a square of kitchen foil (or non-stick baking parchment) to line the base. Tip 85g plain flour and 40g cocoa powder into a sieve held over a medium bowl. Tap and shake the sieve so they run through together and you get rid of any lumps.",
+   "Chop 50g white chocolate and 50g milk chocolate into chunks on a board.",
+   "Break 3 large eggs into a large bowl and tip in 275g golden caster sugar. With an electric mixer on maximum speed, whisk the eggs and sugar. They will look thick and creamy, like a milk shake. This can take 3-8 minutes, depending on how powerful your mixer is. You’ll know it’s ready when the mixture becomes really pale and about double its original volume. Another check is to turn off the mixer, lift out the beaters and wiggle them from side to side. If the mixture that runs off the beaters leaves a trail on the surface of the mixture in the bowl for a second or two, you’re there.",
+   "Pour the cooled chocolate mixture over the eggy mousse, then gently fold together with a rubber spatula. Plunge the spatula in at one side, take it underneath and bring it up the opposite side and in again at the middle. Continue going under and over in a figure of eight, moving the bowl round after each folding so you can get at it from all sides, until the two mixtures are one and the colour is a mottled dark brown. The idea is to marry them without knocking out the air, so be as gentle and slow as you like.",
+   "Hold the sieve over the bowl of eggy chocolate mixture and resift the cocoa and flour mixture, shaking the sieve from side to side, to cover the top evenly.",
+   "Gently fold in this powder using the same figure of eight action as before. The mixture will look dry and dusty at first, and a bit unpromising, but if you keep going very gently and patiently, it will end up looking gungy and fudgy. Stop just before you feel you should, as you don’t want to overdo this mixing.",
+   "Finally, stir in the white and milk chocolate chunks until they’re dotted throughout.",
+   "Pour the mixture into the prepared tin, scraping every bit out of the bowl with the spatula. Gently ease the mixture into the corners of the tin and paddle the spatula from side to side across the top to level it.",
+   "Put in the oven and set your timer for 25 mins. When the buzzer goes, open the oven, pull the shelf out a bit and gently shake the tin. If the brownie wobbles in the middle, it’s not quite done, so slide it back in and bake for another 5 minutes until the top has a shiny, papery crust and the sides are just beginning to come away from the tin. Take out of the oven.",
+   "Leave the whole thing in the tin until completely cold, then, if you’re using the brownie tin, lift up the protruding rim slightly and slide the uncut brownie out on its base. If you’re using a normal tin, lift out the brownie with the foil (or parchment). Cut into quarters, then cut each quarter into four squares and finally into triangles.",
+   "They’ll keep in an airtight container for a good two weeks and in the freezer for up to a month."
   ]
  },
  {
@@ -785,6 +1055,16 @@ window.RECIPES = [
    "drop vanilla extract (optional)",
    "half a 340g jar good-quality strawberry jam",
    "icing sugar to decorate"
+  ],
+  "steps": [
+   "Heat oven to 190C/fan 170C/gas 5. Butter two 20cm sandwich tins and line with non-stick baking paper.",
+   "In a large bowl, beat 200g caster sugar, 200g softened butter, 4 beaten eggs, 200g self-raising flour, 1 tsp baking powder and 2 tbsp milk together until you have a smooth, soft batter.",
+   "Divide the mixture between the tins, smooth the surface with a spatula or the back of a spoon.",
+   "Bake for about 20 mins until golden and the cake springs back when pressed.",
+   "Turn onto a cooling rack and leave to cool completely.",
+   "To make the filling, beat the 100g softened butter until smooth and creamy, then gradually beat in 140g sifted icing sugar and a drop of vanilla extract (if you’re using it).",
+   "Spread the buttercream over the bottom of one of the sponges. Top it with 170g strawberry jam and sandwich the second sponge on top.",
+   "Dust with a little icing sugar before serving. Keep in an airtight container and eat within 2 days."
   ]
  },
  {
@@ -811,6 +1091,16 @@ window.RECIPES = [
    "1 lemon zested",
    "1½ lemons juiced",
    "85g caster sugar"
+  ],
+  "steps": [
+   "Heat the oven to 180C/160C fan/gas 4.",
+   "Beat together the butter and caster sugar until pale and creamy, then add the eggs, one at a time, slowly mixing through.",
+   "Sift in the self-raising flour, then add the lemon zest and mix until well combined.",
+   "Line a 2 lb (about 14 x 24cm) loaf tin with greaseproof paper, then spoon in the mixture and level the top with a spoon.",
+   "Bake for 45-50 mins until a thin skewer inserted into the centre of the cake comes out clean.",
+   "While the cake is cooling in its tin, mix together the lemon juice and caster sugar to make the drizzle.",
+   "Prick the warm cake all over with a skewer or fork, then pour over the drizzle – the juice will sink in and the sugar will form a lovely, crisp topping.",
+   "Leave in the tin until completely cool, then remove and serve. Will keep in an airtight container for 3-4 days, or freeze for up to 1 month."
   ]
  },
  {
@@ -839,6 +1129,15 @@ window.RECIPES = [
    "2 very ripe bananas mashed",
    "50g icing sugar",
    "handful dried banana chips for decoration"
+  ],
+  "steps": [
+   "Heat oven to 180C/160C fan/gas 4. Butter a 2lb loaf tin and line the base and sides with baking parchment.",
+   "Cream 140g softened butter and 140g caster sugar until light and fluffy, then slowly add 2 beaten large eggs with a little of the 140g flour.",
+   "Fold in the remaining flour, 1 tsp baking powder and 2 mashed bananas.",
+   "Pour the mixture into the prepared tin and bake for about 50 mins, or until cooked through. Check the loaf at 5-min intervals from around 30-40 mins in the oven by testing it with a skewer (it should be able to be inserted and removed cleanly), as the time may vary depending on the shape of your loaf tin.",
+   "Cool in the tin for 10 mins, then remove to a wire rack.",
+   "Mix 50g icing sugar with 2-3 tsp water to make a runny icing.",
+   "Drizzle the icing across the top of the cake and decorate with a handful of banana chips."
   ]
  },
  {
@@ -871,6 +1170,15 @@ window.RECIPES = [
    "salt and pepper, to taste and if needed",
    "chopped cilantro, for garnish",
    "2 tbsps cooking oil"
+  ],
+  "steps": [
+   "Marinate the Chicken: In a bowl, mix the chicken pieces with turmeric powder and salt. Let marinade for 10 minutes, or while you prepare the rest of the ingredients.",
+   "In a pan or wok, heat the cooking oil over medium heat. Add chicken and allow to sear for about 2 minutes, or until surface is not pink anymore.",
+   "Add the minced garlic, chopped onion, and chillies if using to the pan. Add the dry spices as well: star anise, cinnamon, cloves, cardamom. Sauté with the chicken until fragrant.",
+   "Add kicap manis/dark sweet soy sauce and water or stock to create a sauce. Stir well to combine.",
+   "Lower the heat to medium-low and let the chicken simmer in the sauce until it's fully cooked and tender. This should take just about 5 minutes.",
+   "Adjust Seasoning: Taste the sauce and season with salt and pepper -only if needed. You can also adjust the sweetness to your preference by adding more kicap manis or sugar.",
+   "Once the chicken is cooked, turn off the heat. Garnish with chopped spring onions or cilantro for a fresh touch. Serve your Ayam Masak Kicap hot over steamed white rice."
   ]
  },
  {
@@ -908,6 +1216,15 @@ window.RECIPES = [
    "2 hard boiled eggs (cut into halves)",
    "1 cup roasted peanuts",
    "1 small cucumber (cut into slices and then quartered)"
+  ],
+  "steps": [
+   "Coconut Rice. Rinse the rice with running tap water, repeating the process a few times until the water turns clear. Drain the water completely. Add 1 ½ cups of water to the washed rice, followed by the coconut milk and a pinch of salt. Add the pandan leaves into the rice and cook your rice. Discard the pandan leaves after rice is cooked.",
+   "Spice Paste. Pound the shallots, garlic, dried chilies, and prawn paste with a mortar and pestle. Alternatively, you can grind them with a food processor.",
+   "Tamarind Water. Soak the tamarind pulp in water for 15 minutes. Constantly squeeze the tamarind to extract its flavor into the water. Drain the pulp and save the tamarind juice.",
+   "Fried Anchovies. Rinse the dried anchovies with tap water a few times and let them drain. Heat 2 cups of oil in a pan, fry the anchovies until they've become light brown and crispy. Remove from oil with a strainer and drain on a paper towel-lined plate. You can serve them as is, or add them into sambal to make sambal anchovies.",
+   "Sambal Ikan Bilis (Sambal Anchovies). On medium to low heat, heat 2 tablespoons of frying oil in a pan. Stir-fry the spice paste until fragrant, turning reddish in color. Add the onion rings and fried anchovies, stirring well. Pour in the tamarind juice, salt, and sugar. Simmer on low heat until the sauce thickens. Set it aside.",
+   "Fried Fish. Clean the small fish and season them with salt. Deep fry with the remaining frying oil.",
+   "Assembling Nasi Lemak. To serve, scope out a small bowl of rice and place onto the center of a plate. Arrange the fried fish, hard boiled egg, roasted peanuts, and cucumber around the rice. Add 2 spoons of the sambal on top of the rice. Serve immediately."
   ]
  },
  {
@@ -945,6 +1262,12 @@ window.RECIPES = [
    "5 cloves garlic",
    "1 inch ginger",
    "10-12 dried chilies (soaked in warm water and seeded)"
+  ],
+  "steps": [
+   "Chop the spice paste ingredients and then blend in a food processor until fine.",
+   "Heat the oil in a stew pot, add the spice paste, cinnamon, cloves, star anise, and cardamom and stir-fry until aromatic. Add the beef and the pounded lemongrass and stir for 1 minute. Add the coconut milk, tamarind juice, water, and simmer on medium heat, stirring frequently until the meat is almost cooked.",
+   "Add the kaffir lime leaves, kerisik (toasted coconut), sugar, or palm sugar, stirring to blend well with the meat.",
+   "Lower the heat to low, cover the lid, and simmer for 1 to 1 1/2 hours or until the meat is really tender and the gravy has dried up. Add more salt and sugar to taste. Serve immediately with steamed rice and save some for storage."
   ]
  },
  {
@@ -978,6 +1301,12 @@ window.RECIPES = [
    "1 teaspoon ground cardamom",
    "1 can tomato soup",
    "1 can coconut milk"
+  ],
+  "steps": [
+   "Preparing Chicken: Rub the chicken with turmeric and salt, and set aside for 30 minutes. Heat oil in a wok and deep fry the chicken pieces until golden brown. Set aside.",
+   "Roughly chop the red onion, ginger, galangal, and lemongrass, then transfer them to a blender or food processor. Add the chilies and garlic, and process into a paste.",
+   "Heat the wok with ½ cup of oil. Sauté the spices—cinnamon, star anise, cloves, and cardamom—until fragrant. Add the blended paste and increase the heat until it bubbles. Then, reduce the heat and simmer until the paste is fully cooked, fragrant, and the oil separates from the paste (pecah minyak).",
+   "Add the canned tomato soup, coconut milk, and chicken pieces. Raise the heat to bring it to a quick boil, then reduce to a simmer and cook until the sauce thickens. Season with salt to taste and garnish with spring onions before serving."
   ]
  },
  {
@@ -1010,6 +1339,16 @@ window.RECIPES = [
    "Tomatos and cucumbers, (cut into wedges/chunks)",
    "Fried shallots (, store bought (optional) (Note 3))",
    "Lime wedges"
+  ],
+  "steps": [
+   "Heat oil in a large skillet or wok over high heat.",
+   "Add chilli and garlic, stir for 10 seconds.",
+   "Add onion, cook for 1 minute.",
+   "Add chicken, cook until it mostly turns white, then add 1 tbsp kecap manis and cook for a further 1 minute or until chicken is mostly cooked through and a bit caramelised.",
+   "Add rice, 2 tbsp kecap manis and shrimp paste, if using. Cook, stirring constantly, for 2 minutes until sauce reduces down and rice grains start to caramelise (key for flavour!).",
+   "Serve, garnished with garnishes of choice (green onions, red chilli, fried shallots).",
+   "Serve as a side for Asian main dishes or as part of a large spread, Asian or not! :) See in post for suggestions.",
+   "Make it a meal - traditional Indonesian style!: Serve with a fried egg sunny side up (runny yolk!), tomato wedges and slices of cucumber on the side."
   ]
  },
  {
@@ -1053,6 +1392,18 @@ window.RECIPES = [
    "Peanuts (, chopped)",
    "Cilantro / coriander leaves",
    "Fresh chilli, finely chopped"
+  ],
+  "steps": [
+   "Combine Satay Seasoning ingredients in a small bowl.",
+   "Marinate - Combine chicken with 3 1/2 TABLESPOONS Satay Seasoning and onion in a bowl. Marinate for at least 3 hours, preferably overnight, minimum 20 minutes (Note 6)",
+   "Cook - Heat 1 tbsp oil in a non stick skillet over high heat (Note 7). Cook chicken in 2 batches until browned all over but still raw inside. Transfer to bowl, cover and keep warm.",
+   "Saute aromatics - Using the same skillet, turn heat down to medium and heat 1 tbsp oil. Add chill, onion and garlic cloves. Sauté until onion is translucent - around 2 minutes.",
+   "Satay Seasoning - Add remaining Satay Seasoning and cook for 1 minute.",
+   "Blitz - Transfer to a blender or small food processor (I use a Nutribullet). Add chicken stock and 1/2 cup of the peanuts (rest gets added later). Puree until pretty smooth - some peanut chunks can remain. Pour mixture back into the skillet.",
+   "Add remaining ingredients into sauce - Add remaining 1/4 cup peanuts, kecap manis, dark soy sauce, coconut milk and peanut butter. Stir to combine.",
+   "Add lime leaf or lemongrass - Crush makrut lime leaf in hand a bit (to break leaf to release the flavour). Add lime leaf OR lemongrass and chicken to sauce.",
+   "Simmer - Bring to simmer, turn heat down to medium low and simmer for 15 minutes until thickened.",
+   "Serve - Add lime juice to taste. Serve with rice (jasmine, white rice or brown rice). Garnish with peanuts, cilantro/coriander leaves and more chilli if desired. See Note 9 for suggested sides."
   ]
  },
  {
@@ -1080,6 +1431,12 @@ window.RECIPES = [
    "10 dried red chilies ( seeded)",
    "10 shallots (peeled)",
    "30 g belacan"
+  ],
+  "steps": [
+   "Pound the Spice Paste using a mortar and pestle or grind with a food processor. Set aside.",
+   "Heat the cooking oil in a wok. Add the Spice Paste and stir-fry (or tumis) until aromatic.",
+   "Add the prawns and continue to stir-fry for about 2-3 minutes.",
+   "Add the water and tamarind juice, and bring it to a quick boil. Then add the kaffir lime leaves, salt, and sugar. Dish out and serve immediately with steamed rice."
   ]
  },
  {
@@ -1111,6 +1468,16 @@ window.RECIPES = [
    "1/2 tsp pepper, or to taste",
    "1 tsp of Maggi seasoning sauce",
    "1/4 tsp sugar (optional)"
+  ],
+  "steps": [
+   "Mash the onions, garlic, chillies and dried anchovies to a rough paste. Give the dried anchovies a quick rinse before using. You can use a pestle and mortar, or food processor. Roughly chop up ingredients for easier blending.",
+   "In a pan with oil, fry the dried anchovies over low to medium heat. Stir occasionally to not burn the ikan bilis. Once ikan bilis crisp up and gets golden brown, remove from the oil and keep it to one side.",
+   "In now dried-anchovy-flavoured oil, fry the blended base paste over medium heat.",
+   "Once fragrant, add in chicken or protein of choice. Stir fry to combine with the base paste and cook. eggs. If you are using proteins, add that before the egg and let it cook first.",
+   "Add eggs next, and scramble to cook. Let the eggs almost cook so that you don't end up with soggy rice.",
+   "Add in cooked rice, and season with salt, pepper, sugar and a dash of the seasoning sauce. Toss to combine.",
+   "Once incorporated, toss in leafy vegetables. Toss to combine.",
+   "Once vegetables wilt, the nasi goreng is done! Garnish with the fried anchovies before serving."
   ]
  },
  {
@@ -1143,6 +1510,22 @@ window.RECIPES = [
    "1 tsp salt (or to taste)",
    "0.5 tsp MSG (optional, but recommended for hawker-style flavour)",
    "2 tsp red food colouring (optional)"
+  ],
+  "steps": [
+   "Combine sauce: Mix kicap manis, ketchup, chili sauce, salt, MSG, and colouring in a bowl. Set aside.",
+   "Make chilli paste: Blend soaked chillies, shallots, garlic, and water until smooth.",
+   "Fry chilli base: Heat oil over low-medium heat. Cook paste 10–15 mins until dark, thick, and oil separates.",
+   "Cook protein: Push sauce to one side. Scramble eggs to cook. If using other proteins such as chicken, add first before eggs and stir-fry in wok until just cooked.",
+   "Add noodles: Add noodles and vegetables. Pour in sauce.",
+   "Toss: Stir-fry over high heat until evenly coated. Add 1–2 tbsp (15–30 ml) water for easier tossing, if needed.",
+   "Finish: Toss until glossy, hot, and well coated. Serve immediately.",
+   "Make chilli paste: Blend chillies, shallots, garlic, and water until smooth.",
+   "Cook chilli base (batch): Fry in oil over low heat until dark, thick, and oil separates.",
+   "Cook sauce base: Stir in kicap manis, ketchup, chili sauce, salt, MSG, and red food colouring. Simmer briefly until glossy. Set to one side.",
+   "Cook protein: In a separate pan, add oil over medium-high heat. Scramble eggs to cook. If using other proteins such as chicken, add first before eggs and stir-fry in wok until just cooked.",
+   "Cook noodles, veggies and sauce: Add noodles, vegetables and the cooked pre-made sauce. Each serving of noodle (150g) is about 2-3 tablespoons of pre-made sauce.",
+   "Toss: Toss noodles with sauce over high heat. Add splash of water for easier tossing, if needed.",
+   "Finish: Once noodles glossy, hot, and evenly coated, Mee Goreng Mamak is ready. Serve immediately."
   ]
  },
  {
@@ -1176,6 +1559,28 @@ window.RECIPES = [
    "2 inches ginger, peeled and sliced",
    "3 stalks lemongrass, blended separately",
    "1/4 cup water (or just enough to help with blending)"
+  ],
+  "steps": [
+   "Shallots, Garlic, and Ginger: Peel and roughly chop before blending.",
+   "Lemongrass: Trim off the root, remove the tough outer layer, and cut into 1-inch lengths.",
+   "Whole Spices: If using whole coriander, fennel, and cumin seeds, coarsely grind them using a spice mill or mortar and pestle. Alternatively, use pre-ground spices.",
+   "Blend the coriander, fennel, and cumin seeds into a coarse grind using a spice grinder or mortar and pestle. Remove from the jar.",
+   "Add the lemongrass to the same blender (no need to clean it) with 1-2 tablespoons of water. Blend until fibrous but not too smooth. Remove from the jar.",
+   "Blend the shallots, garlic, and ginger into a smooth paste, adding a small splash of water if needed.",
+   "In a large bowl, combine the chicken with the blended spice paste, curry powder, chili powder, turmeric, ground spices, and salt.",
+   "Stir in the rice flour and blended lemongrass fibers.",
+   "Add the curry leaves and mix well, ensuring the chicken is evenly coated.",
+   "Let it marinate for at least 1 hour, preferably overnight for deeper flavor. Store in the fridge.",
+   "Remove the marinated chicken from the refrigerator and let it sit at room temperature for about 20 minutes before frying.",
+   "Heat oil in a deep pan or wok over medium heat until it reaches 170-180°C (340-360°F).",
+   "Fry the chicken in batches, making sure to shake off excess marinade before adding to the oil.",
+   "Cook for 8-12 minutes or until golden brown and crispy. Drain the fried chicken on a wire rack or paper towels.Note: Malaysian-style fried chicken is often fried slightly longer for extra crispiness and deep brown color!",
+   "After each batch, scoop up any floating marinade bits in the oil.",
+   "Scoop up the remaining marinade and fry it in the same oil. Note: If the leftover marinade in the bowl appears too watery, add 1-2 tablespoons of rice flour to thicken it.",
+   "Use tongs or a spatula to immediately and carefully 'agitate' the bits to separate them as they cook, preventing them from clumping together.",
+   "Once golden brown and crispy, remove from the oil and drain on paper towels.",
+   "Remove the marinated chicken from the fridge and let it sit at room temperature for 20 minutes.",
+   "Preheat the air fryer to 180°C (350°F)."
   ]
  },
  {
@@ -1203,6 +1608,13 @@ window.RECIPES = [
    "8 egg whites",
    "5 oz fine sugar",
    "1 pinch salt"
+  ],
+  "steps": [
+   "Beat the egg yolks and sugar gently with a hand whisk until the sugar dissolves. Stir in the pandan juice and corn oil. Fold the self-raising flour into the egg mixture and set aside.",
+   "Beat the egg whites with a hand mixer until frothy. Slowly add the sugar and a pinch of salt while beating at high speed. Continue beating until the egg whites are stiff and shiny, but not dry. This should take about 3 minutes to form meringue.",
+   "Preheat the oven to 175°C (347°F). Use a spatula to gently fold the egg yolk mixture into the meringue (egg white mixture).",
+   "Pour the batter into an ungreased 25 cm tube pan. Bake for 40-45 minutes.",
+   "Once the cake is cooked, remove it from the oven immediately and invert the tube pan onto a wire rack. Allow it to cool before removing the cake from the pan."
   ]
  },
  {
@@ -1228,6 +1640,13 @@ window.RECIPES = [
    "1¼ cups all-purpose flour (sifted)",
    "¼ teaspoon baking powder",
    "3 tablespoons cooking oil ( or unsalted butter melted)"
+  ],
+  "steps": [
+   "Preheat the oven to 375°F (190°C). Grease the kuih bahulu mold with some oil and preheat the mold in the oven. Remove from the oven and keep warm until ready to use.",
+   "Beat the eggs with an electric hand mixer until light and fluffy. Add the sugar and continue to beat until it’s fully dissolved and the mixture becomes sticky.",
+   "Add the vanilla extract and fold in the flour and baking powder. Then, add the cooking oil or butter and continue to beat the batter with the hand mixer until well blended.",
+   "Fill the mold with the batter, about 90% full. Bake for about 15 minutes, or until golden brown.",
+   "Remove the cake from the mold and let it cool on a wire rack. Dust with powdered sugar, if desired."
   ]
  },
  {
@@ -1261,6 +1680,13 @@ window.RECIPES = [
    "50 ml water",
    "120 g grated coconut",
    "1 teaspoon cornstarch"
+  ],
+  "steps": [
+   "Pandan Juice: Combine the pandan leaves and water in an electric blender and blend for about a minute. Wrap the blended pandan leaves in cheesecloth or muslin cloth and squeeze to extract the juice, or strain through a fine sieve. Set aside.",
+   "Crepe Batter: Sift the flour into a mixing bowl. Make a well in the center and crack in the egg. Slowly stir in the coconut milk, salt and 3 tablespoons of pandan juice. Set aside.",
+   "Coconut Filling: Break up the palm sugar and combine it with the sugar, pandan leaf, and water in a pot. Cook over medium heat until the sugar dissolves. Strain the syrup and return it to the pot. Add the grated coconut and cornstarch, then continue to cook for a few minutes. Transfer to a bowl.",
+   "Heat a shallow frying pan over low heat and lightly grease it with oil. Pour 2 tablespoons of the batter into the center and swirl the pan to evenly coat, forming a thin crepe about 13 cm (5.1 inches) in diameter. Repeat until all the batter is used up, then stack the crepes for filling.",
+   "Place 2 heaping teaspoons of the filling onto each crepe, then roll it up tightly like a spring roll. Repeat until all the crepes and filling are used up. Serve immediately."
   ]
  },
  {
@@ -1289,6 +1715,15 @@ window.RECIPES = [
    "250g / 8 oz strawberries, halved",
    "1 tbsp white sugar",
    "Maple syrup, butter"
+  ],
+  "steps": [
+   "Whisk together Egg Mixture in a bowl. Vigorous whisk = avoid cinnamon floating on top.",
+   "Melt 15g / 1 tbsp butter in a non stick skillet over medium heat.",
+   "Dunk a piece of bread quickly into the egg mixture, coating both sides. Place in pan. Repeat with more slices to fill the pan, but don’t crowd it (do 2 or 3 at a time).",
+   "Cook for 2 ½ - 3 minutes on each side until the surface is golden, then transfer to serving plates.",
+   "Add more butter into the pan and cook remaining bread.",
+   "Serve with butter and plenty of maple syrup, and Macerated Strawberries if using!",
+   "Toss strawberries with sugar, set aside for 20 minutes+. The strawberries will soften and sweat, and create a bit of syrup."
   ]
  },
  {
@@ -1317,6 +1752,18 @@ window.RECIPES = [
    "6 - 8 slices French baguette (or other softish bread (Note 4))",
    "100 g / 3.5 oz gruyere (or mozzarella cheese, or other melting cheese of choice)",
    "Fresh parsley or thyme leaves (, for garnish (optional))"
+  ],
+  "steps": [
+   "Melt butter in a heavy based casserole pot over medium heat. When it starts to foam, add onions and stir to coat in butter.",
+   "30 min on medium low: Turn heat down to medium low. Cook for 30 minutes stirring every few minutes, until the onions have softened and are semi transparent.",
+   "Salt, 20 min on medium high: Turn heat up to medium or medium high. Add salt, and cook for a further 20 - 30 minutes, stirring more regularly, until onions are deep golden and sweet.",
+   "Deglaze: Add wine, then simmer rapidly for 2 minutes until mostly evaporated, stirring to scrape the bottom of the pot.",
+   "Flour: Sprinkle flour over the onion and cook for 1 minute.",
+   "Add broth & herbs: Add broth, thyme and bay leaves.",
+   "Simmer: Cover, lower heat so it's simmering gently then simmer for 30 minutes.",
+   "Serve: Season to taste with salt and pepper. Ladle into bowls. Top with 1 or 2 slices of cheesy toast.",
+   "Preheat grill / broiler to high.Toast each side of bread until light golden.",
+   "Top bread with cheese, then grill until melted and some brown spots appear."
   ]
  },
  {
@@ -1346,6 +1793,19 @@ window.RECIPES = [
    "Pinch of salt & pepper",
    "1 1/4 cups (125g) grated gruyere cheese (or tasty, cheddar, monterey jack)",
    "50g / 2 oz bacon, chopped and cooked until golden"
+  ],
+  "steps": [
+   "Frozen shortcrust pastry or homemade quiche crust - prepare and bake the crust per Quiche Crust recipe (23cm / 9\" quiche tin).",
+   "Prepared pie shell - bake per packet directions.",
+   "Preheat oven to 200C/390F (standard) or 180C/350F (fan / convection).",
+   "Melt butter in a skillet over medium high heat. Add onion, garlic and bacon. Cook until bacon is light golden.",
+   "Transfer to a paper towel lined bowl and leave to cool.",
+   "Place ingredients in a bowl and whisk to combine.",
+   "Place quiche tin with cooked quiche crust on tray. Scatter cooled Bacon Filling evenly across base of cooked quiche crust.",
+   "Scatter cheese evenly across top.",
+   "Carefully pour Egg mixture over the top. Push some of the cheese/bacon below the surface.",
+   "Bake for 35 - 40 minutes until the top is golden. The centre should still jiggly.",
+   "Garnish with Extra Bacon, if using. Rest for 10 minutes before removing from the pan to cut and serve."
   ]
  },
  {
@@ -1377,6 +1837,17 @@ window.RECIPES = [
    "20 black olives (, pitted, halved)",
    "1 tbsp fresh basil (, finely chopped, plus more for garnish (Note 2 subs))",
    "Extra virgin olive oil (, for drizzling)"
+  ],
+  "steps": [
+   "Sweat eggplant: Place eggplant in a colander set over a bowl. Sprinkle with salt, toss with hands. Leave for 30 minutes to sweat (no need to wipe off water that beads on surface).",
+   "Make tomato puree: Place tomato in a blender, food processor or other appliance of choice. Blitz until smooth. (No need to do this if using passata or crushed tomato.)",
+   "Cook eggplant: Heat 2 tbsp oil in a large skillet over medium high heat. Add eggplant and cook for 4 to 5 minutes, stirring regularly, until it's golden on the surface but still somewhat firm and raw inside. Transfer to a large pot.",
+   "Cook onion and garlic: In the same skillet, add another 1 tbsp olive oil. Add onion and garlic with a pinch of the salt. Cook for 3 minutes until onion is soft with a hint of golden on the edges. Add to pot holding eggplant.",
+   "Cook capsicum: Add another 1 tbsp of olive oil and cook the capsicum with a pinch of salt for 3 minutes. It should still be firm inside. You won't get much colour on the capsicum, this is OK. Add to pot.",
+   "Cook zucchini: Add another 1 tbsp olive oil and cook the zucchini with a pinch of salt for 3 minutes. Make sure it stays firm (ie. raw inside). Like the capsicum, it won't go golden. Add to pot.",
+   "Add remaining ingredients to pot: Turn the stove under the pot to medium-high. Add tomato, thyme, olives, remaining salt and all the pepper, and mix. Once the mixture is hot, reduce heat to a low simmer.",
+   "Braise: Cook for 20 - 25 minutes with the pot lid off, stirring every now and then, until all the vegetables are cooked through and the liquid has reduced. The mixture should be thick enough so you can pile it on a plate (ie. not watery), but still very moist and juicy.",
+   "Basil and salt: Taste and add more salt if needed; vegetables can taste bland if not enough salt is added. Stir through basil then serve immediately, drizzled with extra virgin olive oil and a sprinkle of extra basil on top, if desired. Serve as a main with crusty bread, or as a side dish. See above recipe card for more ideas!"
   ]
  },
  {
@@ -1407,6 +1878,20 @@ window.RECIPES = [
    "Icing sugar then rolled - simple French home style",
    "Berries, whipped cream, melted chocolate or Nutella, icing sugar - as pictured in the post",
    "More suggestions listed in the post - see above"
+  ],
+  "steps": [
+   "Whisk flour, sugar and salt. Add eggs then milk, water, oil and whisk into a smooth batter. Cover and rest for an hour. Cook in a lightly buttered non-stick pan, swirling ¼ cup batter to cover the surface. Cook for 1 minute. Flip, cook for 30 seconds, remove once golden and stack as you go.",
+   "Sift flour into a large mixing bowl. Add sugar and salt, then whisk to combine.",
+   "Make a well in the centre and add the eggs. Whisk gently and only mix in a bit of the flour. You can’t blend all the flour with just the eggs yet, so just mix in enough to make a thick paste.",
+   "Gradually add the milk, whisking between each addition to create a smooth batter with no lumps.",
+   "Whisk in the water and oil until the batter is glossy and pourable. When you dip a spoon in, it should coat the back lightly. Not too thick, not too runny. (Note 1)",
+   "Cover and rest for 1 hour at room temperature. (Note 2)",
+   "Heat a 24cm / 9.5\" non-stick crêpe pan over medium-high heat (medium if your stove runs hot). If you don’t have one, any good non-stick pan will work, just adjust how much batter you pour in depending on the size, so it spreads nicely without being too thick or thin.",
+   "Melt about 1/2 tsp butter, then wipe it off with a paper towel, you want just a little of butter left, no visible pools. (Note 3)",
+   "Pour the batter - Using a ladle, scoop up ¼ cup of batter, lift the pan off the heat, ladle most of the batter into the centre, and immediately swirl the pan so the batter coats the surface in a thin, even layer. Still while swirling, use the rest of the batter to fill up the empty spots before it sets. Tilting quickly gives you uniform crêpes.",
+   "Cook for 45 seconds to 1 minute until the underside is lightly golden and flip using a long spatula and cook the other side for about 30 seconds. (Note 4 & 5)",
+   "Slide onto a plate, then repeat, adding butter each time.",
+   "Stack your crêpes as you go, they’ll stay soft and flexible. Serve warm either rolled burrito style with the ends tucked in to hold everything or folded into quarters with your favourite topping! (see ingredients)"
   ]
  },
  {
@@ -1438,6 +1923,22 @@ window.RECIPES = [
    "30g / 2 tbsp unsalted butter",
    "1/2 cup gruyere cheese (, shredded (packed cup, Note 2))",
    "3 tbsp parmesan (, finely shredded (Note 2))"
+  ],
+  "steps": [
+   "Preheat oven to 200°C/390°F (180°C fan).",
+   "Heat milk and cream: Place milk and cream in a saucepan over medium heat. Heat until steaming, but don't let it boil. Set aside.",
+   "Make roux: Melt butter in a separate small saucepan over medium heat, then turn the heat down to low. Add flour and cook, stirring almost constantly, for 3 minutes. Don't let it brown.",
+   "Add hot milk: While stirring, add half the milk. Once incorporated into the roux, mix in remaining milk, nutmeg, salt and pepper.",
+   "Thicken: Mix for 30 seconds to a minute or until it thickens into a spreadable and soft butter-like consistency (ie. not runny). If you have lumps, whisk until gone. Remove from heat (it is OK if it cools).",
+   "Spread with Bechamel: Spread half the béchamel over the 4 slices of bread, as though you are buttering them to make normal sandwiches! (Reserve half the béchamel for topping)",
+   "Cheese + Dijon: Top two pieces of bread with 2 slices of gruyere or Swiss cheese each (fold as needed to make them fit). Then spread the cheese with half the Dijon Mustard (this might sound weird, but see in post for why we do this!).",
+   "Ham + Dijon: Top with ham, then spread ham with remaining Dijon mustard.",
+   "Top each of the two slices with 2 more slices of cheese (again, folding as needed), then close sandwiches with the other slices.",
+   "Melt butter in a skillet over medium to medium-high heat. Place sandwiches in the skillet, and cook for 2 minutes, pressing down lightly with an egg flip or spatula, until a deep golden brown.",
+   "Turn and cook the other side until golden brown. Transfer to a baking tray.",
+   "Topping: Slather remaining béchamel thickly on the upper pieces of bread. Sprinkle with Gruyere, then parmesan.",
+   "Bake and broil: Bake 15 minutes, then switch to the grill/broiler for 3 minutes and grill until the top is golden and bubbling.",
+   "Immediately transfer to warmed serving plates, with knives and fork for serving (it's too messy to eat with hands.) For a traditional French bistro experience, add a side of fries and leafy greens lightly dressed in French Dressing or a basic vinaigrette. Devour and weep with joy! (Over the sandwich that is, not the salad!)"
   ]
  },
  {
@@ -1474,6 +1975,18 @@ window.RECIPES = [
    "30g / 2 tbsp unsalted butter (, COLD and cubed (KEEP REFRIGERATED until required) )",
    "1 tbsp fresh tarragon (, finely chopped (Note 5))",
    "Creamy mashed potato ((or rice or small pasta))"
+  ],
+  "steps": [
+   "Season and flour the chicken, then brown in oil and butter. Remove. Sauté mushrooms and onion, add garlic briefly, then pour in brandy and wine to reduce. Stir in tomato paste for 1 minute, then stock, salt, and pepper. Return chicken, simmer covered 10 minutes then uncovered for 20 minutes until tender. Finish with cold butter and fresh tarragon.",
+   "Season the chicken - Pat the chicken dry thoroughly with paper towels. This removes surface moisture, allowing the skin to brown properly and avoiding splatter. Season with salt and pepper on all sides. Coat in flour, shaking off excess. This helps develop a golden crust and also thickens the sauce later.",
+   "Brown the Chicken - Heat vegetable oil in a large (30cm/12\") skillet (with lid) over medium-high heat. Add butter, once melted and foaming, place thighs skin-side down. Sear for 5 minutes until golden and crispy. Flip and cook the other side for 1 minute. Transfer to a plate. Add the drumsticks and brown them on 3 sides, about 2 minutes per side. Don’t rush this step – browning adds depth of flavour. Transfer drumsticks to the plate with the thighs. ⚠️ Be mindful when searing skin-on chicken pieces, the skin can pop and hot oil may splash.",
+   "Onion, mushrooms and garlic - In the same pan, increase the heat to high and add the mushrooms and onions. Cook for 5 minutes, stirring occasionally, until the mushrooms start to wilt. Add the garlic and cook for 30 seconds until fragrant.",
+   "Brandy and wine - Pour in the brandy. Carefully flambé (ignite) if desired - let it burn until the flame dies out by itself (~10 seconds). Flambéing intensifies the aroma - and puts on a show! Or simply let it bubble for 20–30 seconds until the alcohol burns off. Add the white wine. Let it simmer rapidly to reduce by half. Use a wooden spoon to scrape up the fond (the browned bits stuck to the bottom), which is a crucial ingredient to the creation of our sauce. It will make it rich and complex.",
+   "Tomato and stock - Stir in the tomato paste, cook for 1 minute. Then add the stock, salt, and pepper.",
+   "Simmer - Return the chicken to the pan skin-side up, nestling them into the stock. Bring the sauce to a simmer, then reduce the heat to medium (bubbling constantly but not rapidly). Cover with a lid and simmer for 10 minutes. Then remove the lid and simmer uncovered for a further 20 minutes. This allows the sauce to reduce and concentrate while the chicken finishes cooking.",
+   "Reduce sauce slightly - Transfer the cooked chicken to a plate. Turn the heat to medium-high, and simmer the sauce for 3 minutes to reduce slightly.",
+   "Finish the sauce - Turn off the heat. Scatter half of the COLD butter cubes in then stir until melted. Scatter the rest of the butter cubes in then stir again until melted. This is a classic emulsification technique that gives the sauce a silky, glossy finish (monter au beurre) as well as thickening it slightly. (Note 6)",
+   "Serve - Bring the sauce to a gentle simmer again. Return the chicken to the sauce and sprinkle over the fresh tarragon. Take it to the table and serve out of the pan with creamy mashed potato."
   ]
  },
  {
@@ -1503,6 +2016,16 @@ window.RECIPES = [
    "1/2 tsp salt and pepper (, each)",
    "Extra parmesan (, for serving)",
    "Parsley (, roughly chopped (optional))"
+  ],
+  "steps": [
+   "Cook pasta in salted water for 1 minute less than time per packet (start this mid mushroom cook). Just before draining, scoop out 1 cup cooking water, then drain.",
+   "Melt butter and heat oil in a large skillet over high heat.",
+   "Add mushrooms and cook, stirring regularly. When they start to sweat, add a pinch of salt and pepper.",
+   "When pretty golden (about 4 - 5 minutes), add garlic and cook until garlic is golden and mushroom is golden.",
+   "Stand back and add wine (it will be steamy!!), stir, scraping the bottom of the skillet. Simmer rapidly until wine is mostly evaporated and winey smell is gone.",
+   "Add broth, cream, parmesan, salt and pepper. Stir to dissolve parmesan and simmer for 2 minutes, stirring regularly.",
+   "Transfer pasta into sauce, toss for 1 - 2 minutes until sauce thickens and coats pasta. If sauce gets too thick (rather than slick, see video), add a splash of reserved pasta cooking water.",
+   "Garnish with parsley and serve immediately with extra parmesan!"
   ]
  },
  {
@@ -1542,6 +2065,18 @@ window.RECIPES = [
    "More parmesan",
    "Chopped parsley",
    "Crusty bread for dunking!"
+  ],
+  "steps": [
+   "Heat oil over high heat in a very large pot.",
+   "Add bacon, cook until starting to turn golden (~2 min) then add garlic and onion.",
+   "Cook until onion is translucent and bacon is light golden ~ 2minutes.",
+   "Add carrot, celery and zucchini. Stir for 1 minute to coat in flavour.",
+   "Add crushed tomato, chicken stock, water, tomato paste, Worcestershire sauce, kidney beans, salt and pepper.",
+   "Stir, bring to simmer, then place lid on and adjust heat so it's simmering gently.",
+   "Simmer 20 minutes, then add potato and beans.",
+   "Simmer 5 minutes, then add pasta. Cook for time per pasta packet MINUS 1 1/2 minutes.",
+   "Remove from stove, stir through parmesan and baby spinach. Taste and adjust for salt and pepper.",
+   "Serve, garnished with extra parmesan and a sprinkle of parsley if desired. Warm crusty bread on the side would certainly be the cherry on top!"
   ]
  },
  {
@@ -1577,6 +2112,23 @@ window.RECIPES = [
    "1/2 tsp salt and pepper (, each)",
    "Finely chopped parsley or chives",
    "Parmesan (, freshly grated)"
+  ],
+  "steps": [
+   "Add 1 tbsp oil and half the butter in a large heavy based pot over high heat (Note 5). Once melted, add half the mushrooms and cook until pretty golden brown (~4 min).",
+   "Add 1/2 the garlic, 1/4 tsp each salt and pepper, then continue to cook until golden brown (~1.5 min). Then remove into bowl.",
+   "Repeat with remaining mushrooms, then remove.",
+   "Turn heat down to medium. In the same pot, melt butter then add garlic and onion.",
+   "Cook 2 minutes until onion is translucent but not golden.",
+   "Add wine and allow to simmer rapidly for 2 minutes, scraping the base of the pot, until mostly evaporated.",
+   "Add rice and stir for 1 minute until semi translucent.",
+   "Add about 1.5 cups of stock. Stir, then leave for 3 minutes, stirring just a few times, until mostly absorbed (~3 min).",
+   "Add about 1.5 cups stock, stir every now and then until mostly absorbed (~3 min) - no need to stir constantly. Repeat twice more until all stock used up, rice is just cooked but risotto still creamy and sloppy (~10 min, Note 6).",
+   "Add cream and butter, stir vigorously to make creamy.",
+   "Stir in parmesan, salt and pepper.",
+   "Stir through half the mushrooms, then taste and add more salt and pepper if needed. Consistency should be creamy, not stodgy (Note 7).",
+   "Reheat remaining mushrooms (I microwave).",
+   "Spoon risotto into bowls, then top with reserved mushrooms (including a drizzle of buttery juices pooled in bowl!)",
+   "Garnish with parsley if using, and extra parmesan. Serve immediately!"
   ]
  },
  {
@@ -1622,6 +2174,24 @@ window.RECIPES = [
    "3/4 cup parmesan (, finely grated (best to grate your own, Note 6))",
    "1 tbsp extra virgin olive oil",
    "5 basil leaves (, roughly chopped)"
+  ],
+  "steps": [
+   "Sprinkle both sides of chicken with salt, pepper and Italian herbs. Refrigerate for 30 minutes.",
+   "Heat oil in a saucepan over medium heat. Add garlic and onion, cook for 3 minutes until onion is translucent.",
+   "Add red pepper flakes and herbs, stir for 15 seconds. Add wine, turn up heat and let it simmer rapidly until mostly evaporated and winey smell is gone.",
+   "Add tomato, chicken stock, salt and pepper. Cover, then simmer 10 minutes on low until thickened. Cover and keep warm.",
+   "Preheat oven to 180°C/350°F.",
+   "Crumbing set up: Spread flour out in a shallow bowl. Whisk Egg Dredge in a separate shallow bowl. Mix Crumbing ingredients in a third shallow bowl or pan.",
+   "Dredge & crumb: Press both sides of chicken into flour, then shake off excess. Coat in egg, letting excess drip off, then place in Crumbing, pressing to adhere.",
+   "Transfer to plate and repeat with remaining chicken.",
+   "Line a tray with paper towels and place rack on tray.",
+   "Heat 1.5 - 2cm / 2/3\" oil in a skillet over medium high heat to 180°C/350°F (Note 9).",
+   "Carefully place 2 or 3 pieces of chicken in. Cook 2 minutes until underside is golden, then carefully turn and cook the other side for 1 1/2 minutes.",
+   "Transfer to rack, then repeat with remaining chicken. (Note 12 - oil clean and reuse)",
+   "Place chicken on a tray. Spoon 1/3 cup sauce over the chicken - cover around 80% of the chicken, leave the ends crispy.",
+   "Sprinkle sauce with basil, then mozzarella cheese (pile it on in mounds to use it all up), then sprinkle with parmesan. Drizzle oil over parmesan.",
+   "Bake 15 minutes until cheese is melted and there's a few brown spots - no longer, otherwise chicken will overcook.",
+   "Remove from oven, sprinkle with extra basil if desired. Serve immediately (with leftover Tomato Sauce, if you'd like!)"
   ]
  },
  {
@@ -1650,6 +2220,16 @@ window.RECIPES = [
    "1 garlic clove (, finely minced (optional, Note 4))",
    "Parsley (, finely chopped)",
    "Parmigiano reggiano"
+  ],
+  "steps": [
+   "Guanciale - Cut into 0.5cm / 1/5\" thick slices then into batons.",
+   "Carbonara sauce - Place eggs and yolks in a large bowl. Whisk to combine. Then stir in the parmesan and pepper.",
+   "Cook pasta - Bring 4 litres (4 quarts) of water to the boil with the salt. Add pasta and cook per the packet directions.",
+   "Reserve pasta water - Just before draining, scoop out 1 cup of pasta cooking water, then drain the pasta.",
+   "Cook guanciale - While the pasta is cooking, place guanciale in a non stick pan over medium high heat. Cook for 4 to 5 minutes until golden. No oil needed - as the guanciale heats up, the fat will melt so it fries in its own fat. If using garlic, add it in the last minute.",
+   "Pasta in pan - Tip the hot pasta into the pan and toss to coat in guanciale fat.",
+   "Mix pasta in sauce - Transfer the pasta and any residual fat in the pan into the bowl with the egg. Add 1/2 cup (125 ml) pasta cooking water. Stir vigorously using the handle of a wooden spoon for 1 minute and watch as the sauce transforms from watery to creamy and clings to the pasta strands!",
+   "Serve - Transfer into warm bowls. Serve immediately, garnished with a little extra parmigiana reggiano if desired, and a pinch of black pepper and finely chopped parsley."
   ]
  },
  {
@@ -1672,6 +2252,16 @@ window.RECIPES = [
    "2 tsp salt",
    "3/4 cup pasta cooking water",
    "Parmesan, for serving"
+  ],
+  "steps": [
+   "Bring a large pot of water to the boil with the salt.",
+   "Add pasta and cook for the length of time per the packet.",
+   "Just before draining, scoop out 1 cup of of the pasta cooking water.",
+   "Drain pasta in a colander, leave it for a minute.",
+   "Transfer pasta to a bowl (do not use pasta cooking pot, too hot).",
+   "Add pesto and 1/4 cup of pasta water. Toss to coat pasta in pesto, adding more water if required to make pasta silky and saucy, rather than dry and sticky.",
+   "Taste, add more salt and pepper if desired.",
+   "Serve immediately, garnished with fresh parmesan."
   ]
  },
  {
@@ -1694,6 +2284,11 @@ window.RECIPES = [
    "3-4 garlic cloves finely chopped",
    "1/2 small red chilli finely chopped (optional)",
    "a small handful parsley finely chopped"
+  ],
+  "steps": [
+   "Bring a large pan of well-salted water to the boil and cook the spaghetti for about 10 mins, or until al dente – it should retain a little bite.",
+   "When the pasta is nearly ready, heat the oil in a frying pan set over a medium heat and sizzle the garlic and chilli, if using, for 1 minute until fragrant and the garlic is lightly golden but not brown (the garlic will taste bitter if it gets too dark).",
+   "Drain the spaghetti and add it to the garlicky oil with the parsley. Season and toss to combine, then serve."
   ]
  },
  {
@@ -1722,6 +2317,13 @@ window.RECIPES = [
    "1/2 medium onion",
    "1 green chili (sliced, optional)",
    "2 tsp (6 g) toasted sesame seeds (optional)"
+  ],
+  "steps": [
+   "To make the sauce, combine soy sauce, Korean chili flakes, garlic, sugar, sesame oil, black pepper. Pour anchovy stock (or water) and mix well; set aside.",
+   "Slice tofu into 1/2-inch thickness. Press tofu slices slightly firmly with a piece of paper towel to remove excess moisture.",
+   "Heat oil in a skillet over medium heat. Add tofu slices and sear for 3-4 minutes on each side until golden and crisp.",
+   "Add onion and chili on top of tofu. Pour the sauce evenly over the tofu and let it boil. Cover with lid and cook for 4-5 minutes on medium low heat.",
+   "Remove the lid and garnish the braised tofu with chopped green onion and toasted sesame seeds if you wish. Serve with rice."
   ]
  },
  {
@@ -1749,6 +2351,14 @@ window.RECIPES = [
    "2 teaspoons sugar",
    "2 teaspoons gochugaru (Korean hot pepper flakes)",
    "1 tablespoon gochujang (hot pepper paste)"
+  ],
+  "steps": [
+   "Put the anchovies, daikon, green onion roots, and dried kelp in a sauce pan. Add the water and boil for 20 minutes over medium high heat. Lower the heat to low for another 5 minutes. Strain.",
+   "Place the kimchi and kimchi brine in a shallow pot. Add pork and onion. Slice 2 green onions diagonally and add them to the pot.",
+   "Add salt, sugar, hot pepper flakes, and hot pepper paste. Drizzle sesame oil over top and add the anchovy stock",
+   "Cover and cook for 10 minutes over medium high heat.",
+   "Open and mix in the seasonings with a spoon. Lay the tofu over top. Cover and cook another 10 to 15 minutes over medium heat.",
+   "Chop 1 green onion and put it on the top of the stew. Remove from the heat and serve right away with rice."
   ]
  },
  {
@@ -1776,6 +2386,21 @@ window.RECIPES = [
    "vegetable oil",
    "4 ounces spinach, washed and drained",
    "4 ounces of dangmyeon (sweet potato starch noodles)"
+  ],
+  "steps": [
+   "Put the beef and shiitake mushrooms into a bowl and mix with 1 clove of minced garlic, 1 teaspoon sugar, ¼ teaspoon ground black pepper, 2 teaspoons soy sauce, and 1 teaspoon of toasted sesame oil with a wooden spoon or by hand. Cover and keep it in the fridge.",
+   "Crack the egg and separate the egg yolk from the egg white. Remove the white stringy stuff (chalaza) from the yolk. Beat in a pinch of salt with a fork.",
+   "Add 1 teaspoon of vegetable oil to a heated nonstick pan. Swirl the oil around so it covers the pan, and then wipe off the excess heated oil with a kitchen towel so only a thin layer remains on the pan. To keep the jidan as yellow as possible, turn off the heat and pour the egg yolk mixture into the pan. Tilt it around so the mixture spreads thinly. Let it cook using the remaining heat in the pan for about 1 minute. Flip it over and let it sit on the pan for 1 more minute. Let it cool and slice it into thin strips.",
+   "Bring a large pot of water to a boil. Add the spinach and blanch for 30 seconds to 1 minute, then take it out with a slotted spoon or strainer. Let the water keep boiling to cook the noodles.",
+   "Rinse the spinach in cold water to stop it from cooking. Squeeze it with your hands to remove any excess water. Cut it a few times and put it into a bowl. Mix with 1 teaspoon soy sauce and 1 teaspoon toasted sesame oil. Put it into a large mixing bowl.",
+   "Put the noodles into the boiling water, cover and cook for 1 minute. Stir them with a wooden spoon so they don't stick together. Cover and keep cooking for another 7 minutes until the noodles are soft and chewy.",
+   "Strain and cut them a few times with kitchen scissors. Put the noodles into the large bowl next to the spinach. Add 2 teaspoons toasted sesame oil, 1 teaspoon soy sauce, and 1 teaspoon sugar. Mix well by hand or a wooden spoon. This process will season the noodles and also keep the noodles from sticking to each other.",
+   "Heat up a skillet over medium high heat. Add 2 teaspoons vegetable oil with the onion, the green onion, and a pinch of salt. Stir-fry about 2 minutes until the onion looks a little translucent. Transfer to the noodle bowl.",
+   "Heat up the skillet again and add 2 teaspoons vegetable oil. Add the white mushrooms and a pinch of salt. Stir-fry for 2 minutes until softened and a little juicy. Transfer to the noodle bowl.",
+   "Heat up the skillet and add 1 teaspoon vegetable oil. Add the carrot and stir-fry for 20 seconds. Add the red bell pepper strips and stir-fry another 20 seconds. Transfer to the noodle bowl.",
+   "Heat up the skillet and add 2 teaspoons vegetable oil. Add the beef and mushroom mixture and stir fry for a few minutes until the beef is no longer pink and the mushrooms are softened and shiny. Transfer to the noodle bowl.",
+   "Add 1 minced garlic clove, 1 tablespoon soy sauce, 1 tablespoon sugar, ½ teaspoon ground black pepper, and 2 teaspoons of toasted sesame oil to the mixing bowl full of ingredients. Mix all together by hand.",
+   "Add the egg garnish and 1 tablespoon sesame seeds. Mix it and transfer it to a large plate to serve."
   ]
  },
  {
@@ -1803,6 +2428,23 @@ window.RECIPES = [
    "soy sauce",
    "honey (or sugar)",
    "Korean hot pepper paste (gochujang)"
+  ],
+  "steps": [
+   "If you have presoaked or fresh fernbrake you can use it straight away, but if you have dried fernbrake you’ll need to get it ready to eat. It’s fast if you have a pressure cooker. Wash ½ ounce of dried gosari and boil it with 5 cups of water in a pressure cooker for 30 minutes. Drain and rinse in cold water a couple of times. Drain. It should make 4 ounces.",
+   "Put the soy bean sprouts in a pot and add 4 cups water and 2 or 3 teaspoons salt. Cover and cook for 20 minutes over medium high heat. Take out the sprouts with tongs and put them into a bowl, leaving about ½ cup of sprouts in the pot with the water you used to boil them. This is the soup to serve with bibimbap later. In a bowl, mix the sprouts by hand with ½ teaspoons salt, 1 teaspoon minced garlic, and 2 teaspoons toasted sesame oil. Put them on the large platter.",
+   "Cut up the blanched spinach a few times and put it in a bowl. Mix by hand with 1 teaspoon garlic, 1 teaspoon toasted sesame oil, ½ teaspoon kosher salt, and 1 teaspoon sesame seeds. Cover and put it next to the soy bean sprouts on the platter.",
+   "Cut the carrot into matchsticks, put them in a bowl, and mix with a pinch of salt. Let stand for 5 to 10 minutes until sweating. Cut the red bell pepper into halves, deseed, and slice into strips. Put them in a bowl. Cut the zucchini into matchsticks and mix with ½ teaspoon kosher salt. Cut the cucumber into halves lengthwise and slice thinly crosswise. Mix with ¼ teaspoon kosher salt.",
+   "Cut the beef into matchsticks and put them in a bowl. Mix with 1 tablespoon minced garlic, 1 tablespoon soy sauce, 1 tablespoon honey, 2 teaspoons toasted sesame oil, and 1 teaspoon sesame seeds with a spoon. Cover and keep in the fridge until ready to use.",
+   "Cut the fernbrake (gosari) a few times into bite size pieces. Set aside. Put the bellflower roots (doraji) in a large bowl. Add 1 or 2 tablespoons salt. Rub for a minute to wilt slightly and release some of the bitterness. Rinse them in cold water a couple of times and drain. If you find some roots are too thick, split them lengthwise. Set aside.",
+   "Heat up a pan over medium high heat. Squeeze out excess water from the carrot. Add a few drops of cooking oil to the pan and sauté the carrot for 1 minute. Put it on the platter next to the soy bean sprouts and spinach. Clean the pan with wet paper towel or wash it.",
+   "Heat a few drops of cooking oil in the pan and squeeze out the excess water from the cucumber. Sauté with ½ teaspoon minced garlic and a few drops of toasted sesame oil for 30 seconds. Put it on the platter. Clean the pan.",
+   "Heat up the pan with a few drops of cooking oil. Add the red bell pepper and sprinkle a pinch of salt over top. Sauté for 30 seconds. Put it on the platter. Clean the pan.",
+   "Heat up the pan and squeeze out excess water from the zucchini. Add a few drops of cooking oil and sauté with 1 teaspoon minced garlic, 1 tablespoon chopped green onion, a drop of toasted sesame oil for 1 minute until slightly softened. Put it on the platter. Clean the pan.",
+   "Heat up the pan with a few drops of cooking oil. Add the bellflower roots and sauté for 2 to 3 minutes. Lower the heat to medium so as not to brown them. Add 1 teaspoon minced garlic and a drop of toasted sesame oil. Stir for another minute until a little softened. Put it on the platter. Clean the pan.",
+   "Heat up the pan. Add a few drops of cooking oil. Stir the gosari for 2 minutes until a little softened. Add ½ teaspoon of minced garlic, 2 teaspoons soy sauce, and 2 teaspoons sugar, and keep stirring for another minute. Put it on the platter.",
+   "Reheat the soybean sprout soup. Divide the cooked rice into 4 portions. Each portion will be a little more than 1 cup of rice. Put the rice in each of 4 bowls and arrange the vegetables and beef on the rice. Top with the egg yolk and gochujang. If you prefer your eggs and beef cooked, make sunny side up eggs and slightly pan-fry the beef before putting them on the top of rice. Sprinkle the bibimbap with the sesame seeds and drizzle with sesame oil to taste. Ladle the soup to a small bowl and sprinkle some chopped green onion over top. Serve right away with more hot pepper paste on the side.",
+   "Reheat the soybean sprout soup. Put a few drops of toasted sesame oil in the bottom of each of 4 earthenware bowls. They should be big enough to hold 4 to 6 cups each. Divide the rice among the bowls. Arrange the vegetables and beef on the rice. Top each serving with an egg yolk and 1 tablespoon gochujang. If you prefer your eggs and beef cooked, make sunny side up eggs and slightly pan-fry the beef before putting them on the top of rice. Set each pot on a burner. Heat over medium high heat until you hear a ticking, crackling sound coming from the rice. Sprinkle the bibimbap with the sesame seeds, drizzle with sesame oil to taste. Ladle the soup to a small bowl and sprinkle some chopped green onion over top. Serve right away with more hot pepper paste on the side.",
+   "Gently but firmly mix everything together in the bowl with your spoon. Try not to crush the more delicate ingredients. Eat with your spoon."
   ]
  },
  {
@@ -1822,7 +2464,8 @@ window.RECIPES = [
   "minutes": null,
   "serves": "1 serving",
   "blurb": "Gyeranjjim is very easy to make if you use a microwave oven, but my grandmother made her gyeranjjim using her special method. She had a huge pot made of cast ir",
-  "ingredients": []
+  "ingredients": [],
+  "steps": []
  },
  {
   "cuisine": "korean",
@@ -1851,6 +2494,10 @@ window.RECIPES = [
    "2 tbs brown sugar (or 1 tbs of brown sugar and 1½ tbs rice syrup)",
    "a pinch of ground black pepper",
    "1 tbs toasted toasted sesame oil"
+  ],
+  "steps": [
+   "Mix all the marinade ingredients in a bowl. Add the sliced beef and mix well. keep it in the fridge and let it marinate for at least 30 minutes, or overnight for a tougher cut of beef.",
+   "Grill, pan-fry, or BBQ, and serve with ssamjang."
   ]
  },
  {
@@ -1878,6 +2525,14 @@ window.RECIPES = [
    "1 green onion, chopped",
    "1 tablespoon roasted sesame seeds",
    "1 sheet of gim, roasted and shredded"
+  ],
+  "steps": [
+   "Heat up a wide, flat pan or skillet. Add the vegetable oil.",
+   "Add the kimchi and stir fry for 1 minute over medium-high heat.",
+   "Add rice, kimchi juice, water, and gochujang.",
+   "Stir all the ingredients together for about 7 minutes with a wooden spoon.",
+   "Add sesame oil and remove from the heat.",
+   "Sprinkle with chopped green onion, roasted gim, and sesame seeds. Serve right away. If you are serving it in individual bowls, you can top each bowl with a fried egg."
   ]
  },
  {
@@ -1905,6 +2560,12 @@ window.RECIPES = [
    "3 green onions, cut into 3 inch long pieces",
    "2 hard boiled eggs, shelled (optional)",
    "½ pound fish cakes (optional)"
+  ],
+  "steps": [
+   "Add the water, dried anchovies, and dried kelp to a shallow pot or pan. Boil for 15 minutes over medium high heat without the lid.",
+   "Combine hot pepper paste, hot pepper flakes, and sugar in a small bowl. Remove the anchovies and kelp from the pot and add the rice cake, the mixture in the bowl, the green onion, and the optional fish cakes and hard boiled eggs. The stock will be about 2½ cups.",
+   "Stir gently with a wooden spoon when it starts to boil. Keep stirring until the rice cake turns soft and the sauce thickens and looks shiny, which should take about 10 -15 minutes. If the rice cake is not soft enough, add more water and continue stirring until soften. When you use freshly made rice cake, it takes shorter time. If you use frozen rice cake, thaw it out and soak in cold water to soften it before cooking.",
+   "Remove from the heat and serve hot."
   ]
  },
  {
@@ -1932,6 +2593,12 @@ window.RECIPES = [
    "7 dried anchovies, guts removed",
    "5 tablespoons fermented soybean paste (doenjang)",
    "6 ounces medium-firm tofu, cut into ½-inch cubes (about 1 cup)"
+  ],
+  "steps": [
+   "Combine the potato, onion, zucchini, chili pepper, garlic, and shrimp in a 1½-quart (6 cups) earthenware pot or other heavy pot. Wrap the dried anchovies in cheesecloth (or a dashi bag, a pouch for stock-making sold at a Korean grocery store), and put them into the pot with other ingredients Add water and cover.",
+   "Cook over medium-high heat for 15 minutes until it starts boiling. If you use a stainless steel pot, it will take less than 15 minutes, about 7 to 8 minutes.",
+   "Stir in the soybean paste, mixing well. Cover and cook for 20 minutes longer over medium heat. Add the tofu and cook for another 3 minutes. Remove the anchovy pouch and discard.",
+   "Sprinkle with the green onions and serve as a side dish to rice. Serve it directly from the pot, or transfer to a serving bowl. Everybody can eat together out of the pot, or portions can be ladled out in individual bowls for each person."
   ]
  },
  {
@@ -1948,7 +2615,8 @@ window.RECIPES = [
   "minutes": null,
   "serves": null,
   "blurb": "Kongnamulmuchim made with homegrown soybean sprouts Kongnamulmuchim made with store-sold soybean sprouts Kongnamulppuribokkeum (stir-fried soybean sprout roots)",
-  "ingredients": []
+  "ingredients": [],
+  "steps": []
  },
  {
   "cuisine": "korean",
@@ -1964,7 +2632,8 @@ window.RECIPES = [
   "minutes": null,
   "serves": null,
   "blurb": "Ever since I blogged about a pancake I made with wild green onions I picked in Central Park, many people expressed interest in the recipe through my blog, email",
-  "ingredients": []
+  "ingredients": [],
+  "steps": []
  },
  {
   "cuisine": "korean",
@@ -1991,6 +2660,18 @@ window.RECIPES = [
    "3 garlic cloves",
    "2 teaspoons soy sauce",
    "1 tablespoon plus 1 teaspoon brown (or white) sugar"
+  ],
+  "steps": [
+   "Place freshly made rice in a large, shallow bowl. Gently mix in ½ teaspoon kosher salt and 2 teaspoons toasted sesame oil over top with a rice scoop or a wooden spoon. Let it cool down enough so it’s no longer steaming. Cover and set aside.",
+   "Combine the blanched spinach, 2 minced garlic cloves, ½ teaspoon kosher salt, and 2 teaspoons toasted sesame oil in a bowl. Mix well by hand and put it on a large platter with the sliced yellow pickled radish.",
+   "Combine the carrot matchsticks with ¼ teaspoon kosher salt. Mix well and let it sweat for 5 to 10 minutes. Heat a pan and add a few drops vegetable oil. Squeeze out excess water from the carrot, then saute for about 1 minute. Put it on the platter next to the spinach.",
+   "Trim the fat from the skirt steaks and slice into ¼ inch wide, 3 to 5 inch strips. Put the strips into a bowl. Add 2 teaspoons soy sauce, 1 minced garlic clove, ¼ teaspoon ground black pepper,1 tablespoon plus 1 teaspoon brown (or white) sugar, and 2 teaspoons toasted sesame oil. Mix well by hand. Set aside, and let them marinate while we do the egg strips.",
+   "Crack 3 eggs in a bowl and add ¼ teaspoon kosher salt. Beat it with fork and remove the stringy chalaza. Drizzle a few drops of oil on a heated 10 to 12 inch non-stick pan. Wipe off the excess with a paper towel so only a thin sheen of oil remains. Turn down the heat to low and pour the egg mixture into the pan. Spread it into a large circle so it fills the pan.",
+   "When the bottom of the egg is cooked, flip it over with a spatula. Remove from the heat and let it cook slowly in the hot pan for about 5 minutes, with the ultimate goal of keeping the egg as yellow as possible, and not brown. Cut it into ½ inch wide strips. Put it next to the spinach on the platter.",
+   "Heat up a pan over medium high heat and cook the marinated beef, stirring it with a wooden spoon until well cooked. Set aside.",
+   "Place a sheet of gim on a bamboo mat with the shiny side down. Evenly spread about ¾ cup of cooked rice over top of it, leaving about 2 inches uncovered on one side of the gim. Place beef, carrot, yellow pickled radish strip, a few egg strips, and spinach in the center of the rice. Use both hands to roll the mat (along with gim and rice) over the fillings, so one edge of the rice and gim reaches the opposite edge. This centers the fillings in the roll, so they’ll be nicely in the middle when you slice it. Grab the mat with both hands and and press it tightly as you continue rolling the gimbap. Push out the mat as you roll, so it doesn’t get wrapped in the gimbap. Remove the roll from the mat at the end and set the finished roll aside with the seam down, to seal it nicely. Repeat 4 more times with the remaining ingredients.",
+   "Put some toasted sesame oil on the finished rolls and sprinkle some sesame seeds over top. Cut each roll into ¼ inch bite size pieces with a sharp knife, occasionally wiping it with a wet paper towel or cloth to clean the starch off and to ease cutting.",
+   "Put it on a plate and serve immediately or pack it in a lunchbox."
   ]
  },
  {
@@ -2019,6 +2700,12 @@ window.RECIPES = [
    "½ cup turbinado sugar (or brown sugar)",
    "1 ts cinnamon powder",
    "2 tbs chopped walnuts"
+  ],
+  "steps": [
+   "Place 1 cup of lukewarm water into a mixing bowl. Add white sugar, yeast, kosher salt, vegetable oil, and stir it well. Add 2 cups all purpose flour and mix it with a rice scoop, or by hand. Let the dough rise. It should sit with the lid closed at room temperature for 1 hour. After an hour the dough will rise to double its size. Knead it to remove the gas bubbles in the dough. Let it rise for another 10-20 minutes.",
+   "Mix the turbinado sugar, cinnamon powder, and walnuts in a bowl.",
+   "Knead the dough again to remove the gas bubbles. Place and spread about ½ cup flour on your cutting board. Put the dough on your cutting board and knead it. Make it into a lump, and cut it into 8 equal-sized balls. Take 1 dough ball, flatten it, put some filling in the center of the dough, and then seal it to make a ball. Repeat this 8 times to make 8 stuffed balls.",
+   "Place 1 ball on the pan and let it cook for 30 seconds. When the bottom of the dough ball is light golden brown, turn it over and press the dough with a spatula to make a thin and wide circle (about the size of a CD). Let it cook about 1 minute until the bottom is golden brown. Turn it over again and turn down the heat very low. Place the lid on the pan and cook 1 more minute. The brown sugar filling mixture will be melted to syrup! Serve hot!"
   ]
  },
  {
@@ -2048,6 +2735,27 @@ window.RECIPES = [
    "1 Tbsp all-purpose flour (plain flour)",
    "1-2 Tbsp neutral oil",
    "freshly ground black pepper ((optional))"
+  ],
+  "steps": [
+   "Gather all the ingredients.",
+   "In a small bowl, combine 2 Tbsp soy sauce, 2 Tbsp mirin, 2 Tbsp sake, and 1 tsp sugar for the ginger sauce.",
+   "Scrape off the outer ginger skin with a knife (or spoon) and cut off any tough parts.",
+   "Using a grater (I use a ceramic grater that I love), grate the ginger, keeping the juice. Collect the grated ginger and squeeze 1 Tbsp ginger juice. Divide the juice. (Reserve the other half of the juice to marinate the pork later.)",
+   "Add half of the ginger juice to the sauce bowl. Then, add as much of the leftover grated ginger (optional) as you like to the sauce. My family likes a strong ginger taste, so we add about 2-3 tsp ginger, grated.",
+   "Next, grate ½ onion until you get 1 Tbsp grated onion with juice. (Use the remaining onion to stir-fry later.)",
+   "Add the grated onion with juice to the ginger sauce and mix it all together.",
+   "Cut the rest of the ½ onion into thin slices.",
+   "Now, prepare ¾ lb thinly sliced pork loin. If your pork slices are thicker than ⅛ inch (3 mm), cut several slits on the connective tissue (the white area) between the meat and fat. Red meat and fat have different elasticities, and they will shrink and expand at different rates as they cook. These slits will allow the pork to stay flat while pan-frying and prevent it from curling up.",
+   "Sprinkle the other half of the ginger juice and 1 Tbsp sake on the pork slices. Set aside for 5 minutes. Tip: Sake and ginger juice helps to remove the pork‘s gamey odor.",
+   "When you‘re ready to cook the pork slices, lightly sprinkle them with 1 Tbsp all-purpose flour (plain flour). If your pork slices are paper thin—less than ⅛ inch (3 mm) thick—you do not need to dust with flour. Tip: Dusting with flour prevents the pork from drying up and keeps the juices inside the meat.",
+   "Preheat a large frying pan over medium-high heat. When the pan is hot, add 1-2 Tbsp neutral oil. Then, add the pork slices in a single layer, turning them over once the bottom is golden brown. Cook in batches so the meat sears properly; you don‘t want to steam the pork in an overcrowded pan.",
+   "When the pork is no longer pink, transfer to a plate. Make sure not to overcook the pork at this stage as we will continue to cook it in the sauce later.",
+   "Once you‘ve removed the pork, add more oil to the pan (especially if your pan is not non-stick) and add the onion slices.",
+   "Sauté the onion slices on medium heat until golden brown, about 6–8 minutes. When the onion slices are tender and translucent, add the pork back to the pan.",
+   "Stir the sauce one last time to make sure the sugar is not at the bottom of the bowl and pour it over the pork. Bring the sauce to a simmer and spoon it over the pork for about 2 minutes. Season with freshly ground black pepper to taste (optional).",
+   "When the sauce has thickened, the Ginger Pork is done. Transfer it to a serving plate and enjoy.",
+   "We often serve Ginger Pork with thinly shredded cabbage. I use a cabbage slicer to shred it finely. I love eating the shredded cabbage with extra ginger sauce from the ginger pork, or serve it with a salad dressing of your choice, such as Japanese Sesame Dressing.",
+   "You can keep the leftovers in an airtight container and store in the refrigerator for up to 3 days or in the freezer for a month."
   ]
  },
  {
@@ -2076,6 +2784,25 @@ window.RECIPES = [
    "2 cubes Japanese curry roux ((about 2 oz, 55 g))",
    "1 serving cooked Japanese short-grain rice",
    "fukujinzuke (Japanese red pickled vegetables) ((optional))"
+  ],
+  "steps": [
+   "Gather all the ingredients. I use an electric pot for this recipe and others in the 10-Minute Meal series. You also could use a regular saucepan on the stove.",
+   "Use a knife to cut ½ onion into thin slices.",
+   "Peel ½ carrot (I love using my Japanese peeler). Then, cut it in a rangiri shape by rotating the carrot a quarter turn between diagonal cuts. The rangiri Japanese cutting technique creates an attractive shape with more surface area to absorb the seasonings.",
+   "Peel ½ russet potato and cut it into small chunks about 1 inch (2.5 cm) wide.",
+   "Cut 5 oz boneless, skinless chicken thigh into bite-size pieces, about 1 inch (2.5 cm) square. To do so, cut the chicken along the grain into strips 1 inch (2.5 cm) wide. Then, angle your knife back diagonally and slice the chicken strips against the grain into flat pieces. This Japanese cutting technique called sogigiri creates pieces of equal thickness and more surface area for faster cooking and better flavor absorption.",
+   "Season the chicken pieces with ⅛ tsp freshly ground black pepper and ⅛ tsp Diamond Crystal kosher salt.",
+   "Turn on the heat to medium-high on the stove or Mode II (600W) on the electric pot. Add 1 Tbsp neutral oil to the pot. When the oil is hot, add the onions.",
+   "Cook the onions until tender and slightly charred.",
+   "Add the chicken and stir to cook until it is no longer pink on the outside.",
+   "Add the carrots and potatoes and coat them with the oil. Tip: Coating with oil seals in the nutrients and flavor and prevents the vegetables from breaking apart.",
+   "Add 2 cups water. Level the ingredients so they are completely submerged under the water.",
+   "Cover with a lid and cook for 13 minutes.",
+   "Check for doneness. If a wooden skewer pierces a potato and carrot easily, it's done cooking. Turn off the heat. Add one of the 2 cubes Japanese curry roux to a ladle (I use a draining ladle) along with some cooking liquid. Completely dissolve the roux in the liquid with chopsticks before stirring it into the pot.",
+   "Repeat with the remaining cube of roux.",
+   "Turn on the heat again, this time to medium or Mode I (250W). Let the curry sauce thicken, stirring frequently so that it does not burn on the bottom of the pot. Turn off the heat once the curry is an ideal consistency, about 2–3 minutes.",
+   "Add 1 serving cooked Japanese short-grain rice to one half of an individual bowl or curry plate and ladle the Japanese curry on the other half. Serve with optional fukujinzuke (Japanese red pickled vegetables).",
+   "Keep any leftovers in an airtight glass container (so no stains!) and store in the refrigerator for up to 3 days or in the freezer for a month. Remove the potatoes before freezing, as their texture will change. Defrost the frozen curry in the refrigerator for 24 hours before you want to serve it. Stir in a bit of water to loosen the thickened sauce, then gently reheat on low heat, stirring frequently to avoid burning the sauce."
   ]
  },
  {
@@ -2103,6 +2830,12 @@ window.RECIPES = [
    "1 Tbsp mirin",
    "2 stems Mitsuba leaves",
    "4 Tbsp Ikura (salmon roe)"
+  ],
+  "steps": [
+   "Sprinkle 1/4 teaspoon of salt evenly over the salmon fillets, then pour sake over them. Let sit for 10 minutes.",
+   "Wash the rice and place it in the rice cooker’s inner bowl. Add salt, soy sauce, sake, and mirin, then add water up to the 2-cup line. Lay the salmon fillets on top of the rice and cook as you would for white rice.",
+   "Coarsely cut Mitsuba leaves.",
+   "Remove the salmon skin, then flake the salmon and mix it with the rice. Serve topped with ikura (salmon roe) and Mitsuba leaves."
   ]
  },
  {
@@ -2134,6 +2867,28 @@ window.RECIPES = [
    "4 sprigs mitsuba (Japanese parsley) ((or green onion/scallion))",
    "shichimi togarashi (Japanese seven spice) ((optional))",
    "Japanese sansho pepper ((optional))"
+  ],
+  "steps": [
+   "For the steamed rice, please note that 1½ cups (300 g, 2 rice cooker cups) of uncooked Japanese short-grain rice yield 4⅓ cups (660 g) of cooked rice, enough for 2 donburi servings (3⅓ cups, 500 g). See how to cook short-grain rice with a rice cooker, pot over the stove, Instant Pot, or donabe.",
+   "This recipe includes both cooking methods—using a medium frying pan (about 10 inches/25 cm) and an oyakodon pan or small frying pan (8 inches/20 cm). Typically, oyakodon is made individually for each serving using an oyakodon pan, which lets you slide the cooked ingredients onto the rice bowl easily. See the separate cooking instructions below.",
+   "Gather all the ingredients. Do not make more than two servings in a medium frying pan. I explained a bit more in the blog post (under Oyakodon Cooking Tips). If you are making four servings, use two medium frying pans.",
+   "Combine ½ cup dashi (Japanese soup stock), 2 Tbsp soy sauce, 2 Tbsp mirin, and 2 tsp sugar in a bowl or a liquid measuring cup and mix all together until the sugar is dissolved.",
+   "Slice ½ onion lengthwise, about ¼ inch (6 mm) wide.",
+   "Chop 4 sprigs mitsuba (Japanese parsley) ½ inch (1.3 cm) wide.",
+   "Trim the extra bits of fat and connective tissue from 10 oz boneless, skinless chicken thighs with the knife.",
+   "Cut the chicken thigh along the grain into strips ¾–1 inch (2–2.5 cm) wide. Next, angle your knife back and diagonally (nearly parallel to the cutting board), and then slice the chicken strips against the grain into pieces about ¾–1 inch (2–2.5 cm) square. Nami's Tip: This sogigiri cutting technique creates pieces of equal thickness with more surface area for fast cooking and better absorption of the flavors.",
+   "Transfer the chicken to a bowl or tray and sprinkle with 1 Tbsp sake. Set aside for 5 minutes.",
+   "Crack 3-4 large eggs (50 g each w/o shell) into a bowl. Using a pair of chopsticks, lift the egg whites to “cut“ them 5–6 times into a few smaller clumps. This will prevent the egg whites from falling into the frying pan all at once. Do not whisk or beat the eggs together. Nami's Tip: Aim for high color contrast between the white and yellow parts of the eggs in your finished dish.",
+   "While “cutting“ the egg whites, you may have accidentally broken some of the egg yolks. That‘s okay. If the yolks haven‘t broken yet, you can poke them to gently break them, but do not blend the egg whites and yolks. The eggs should resemble a marble pattern.",
+   "With the stove off, add the sliced onions to a medium frying pan (I use a well-seasoned 11” carbon steel pan) in a single layer. Then, add the seasonings mixture. It should just cover the onions. If not, your frying pan is too big and you need to either increase the seasoning or use a smaller pan.",
+   "Turn on the heat to medium and bring it to a simmer. Once simmering, add the chicken on top of the onions.",
+   "Make sure the onions and chicken are evenly distributed. Once simmering again, lower the heat to medium low. Cook, uncovered, for 5 minutes or until the chicken is no longer pink and the onions are tender. Halfway through, flip the chicken. Nami's Tip: Evaporation reduces the sauce and intensifies the flavor.",
+   "We will add the eggs in two stages: Two-thirds of the eggs first, then the remaining one-third later. Now, increase the heat to medium. With the cooking liquid simmering (small bubbles around the edges), drizzle two-thirds of the eggs in a circular pattern over the chicken and onions, avoiding the edges of the pan where the eggs can easily overcook. Nami's Tip: Only drizzle the eggs if the cooking liquid is simmering, as with Egg Drop Soup. Also, try to add more egg whites at this stage, as the whites take longer to cook than the yolks. Ideally, we want to keep the yolks soft and runny for the final presentation.",
+   "If the heat is too strong, lower the heat. If the egg is moving toward the edges of the pan, gently gather it toward the center where the heat is not as strong. Optionally, you can cover the pan if the egg whites are taking a long time to set.",
+   "When the eggs are still runny but just set, add the rest of the eggs to the center and around the edges of the pan. Add the mitsuba (or green onion) on top and cook on medium low until the egg is done to your liking. Usually, oyakodon in Japan is served while the egg is almost set but still runny (raw eggs are safe to consume in Japan). Nami's Tip: For the remaining one-third of the egg, try to distribute more egg yolks so the oyakodon will have a bright yellow color on top. For a good presentation, you can add an extra beaten yolk at the end.",
+   "Serve steamed rice in individual serving bowls. Spoon the cooked chicken and egg mixture onto the steamed rice and drizzle the desired amount of pan sauce on top.",
+   "Cook the chicken and egg in two batches, one serving at a time. Make sure to divide the ingredients in half. With the stove off, add half of the sliced onions to the pan in a single layer. Add half of the seasonings mixture (it should just cover the onions).",
+   "Turn on the heat to medium and bring it to a simmer. Once simmering, add half of the chicken on top of the onions."
   ]
  },
  {
@@ -2161,6 +2916,21 @@ window.RECIPES = [
    "2 Tbsp sake",
    "1 Tbsp mirin",
    "1 Tbsp sugar"
+  ],
+  "steps": [
+   "Gather all the ingredients.",
+   "From 1 lb boneless, skin-on chicken thighs, cut each chicken thigh into 2 pieces (as you see, this chicken thigh is large). Cut off any excess fat. Prick the skin with the tip of the knife to help distribute the flavors and heat faster.",
+   "Lightly sprinkle both sides with ¼ tsp Diamond Crystal kosher salt and ⅛ tsp freshly ground black pepper.",
+   "Combine the sauce ingredients in a small bowl: 2½ Tbsp soy sauce, 2 Tbsp sake, 1 Tbsp mirin, and 1 Tbsp sugar. Whisk until the sugar is dissolved. Set aside.",
+   "Heat a large frying pan over medium heat. When it‘s hot, add 1 Tbsp neutral oil and distribute it evenly. Add the chicken, skin side down, to the hot pan. (If you‘re doubling the recipe, fry the chicken in batches and return it to the pan before continuing to the next section.)",
+   "Cook the chicken until golden brown, roughly 4–5 minutes.",
+   "When the bottom side is nicely brown and crisp, flip over and cook the other side for 3 minutes.",
+   "Add 4 Tbsp sake and cook, covered, until cooking liquid is gone.",
+   "Remove the lid and wipe off any excess oil from the frying pan with a paper towel.",
+   "Add the sauce ingredients and 1 Tbsp unsalted butter.",
+   "Coat the chicken well with the sauce. Spoon it over the chicken a few times.",
+   "Serve the chicken onto a plate and drizzle it with some sauce. I usually serve simple veggies like blanched broccoli and tomatoes (serve with homemade Wafu Dressing or Sesame Dressing).",
+   "You can keep the leftovers in an airtight container and store in the refrigerator for up to 3 days and in the freezer for a month."
   ]
  },
  {
@@ -2185,6 +2955,27 @@ window.RECIPES = [
    "4 Tbsp miso ((use 1 Tbsp, 18 g for every 1 cup, 240 ml of dashi))",
    "1 Tbsp dried wakame seaweed",
    "1 green onion/scallion"
+  ],
+  "steps": [
+   "Before we start... If you want to make miso soup in less than 10 minutes, follow my Easy Miso Soup recipe, using a dashi packet or powder.In this recipe, I make Awase Dashi from scratch with kombu and katsuobushi.For vegan/vegetarian, make the Kombu Dashi I showed below, or make Vegan Dashi with kombu and dried shiitake mushrooms.",
+   "Gather all the ingredients.",
+   "Cut 1 green onion/scallion into thin rounds.",
+   "Add 4 cups water and 1 piece kombu (dried kelp) to a medium saucepan. If you have time, soak the kombu in water for 30 minutes. NEVER wash kombu and do not remove the white substance—that’s umami! These days, it‘s pretty clean, so just make sure there are no dirt particles.",
+   "SLOWLY bring it to a boil (about 10 minutes) on medium-low heat so you can extract as much umami from the kombu as possible. Right before the stock boils, remove the kombu and set it aside for another use. (If you leave the kombu, it gets slimy and yields a bitter taste.) Now, what you have is Kombu Dashi. If you’re vegetarian/vegan, use this kombu dashi for your miso soup.",
+   "If you‘re not vegetarian/vegan, add 1 cup katsuobushi (dried bonito flakes) to the kombu dashi and bring it back to a boil again. Once the dashi is boiling, reduce the heat, simmer for just 30 seconds.",
+   "Turn off the heat and let the katsuobushi sink to the bottom, about 10 minutes. Then, strain through a fine-mesh sieve.",
+   "Now you have roughly 4 cups of Awase Dashi. You can store the dashi in the refrigerator for up to 3–5 days and in the freezer for up to 2 weeks. Reserve the spent katsuobushi and repurpose it; see the suggested recipes that follow at the end of the instructions.",
+   "Add the dashi to the saucepan. If you are using dashi from the refrigerator, bring it to a slow boil (205°F/96°C) over medium heat and turn off the heat.",
+   "Add 4 Tbsp miso. Put the miso in a ladle, slowly add the dashi into the ladle, and stir with chopsticks to dissolve completely. Here, I‘m using a miso muddler. If you accidentally add too much miso, dilute the miso soup with dashi (or water).",
+   "Here, I‘m using a fine-mesh miso strainer, which helps you dissolve the miso faster. After dissolving the miso in the strainer, you may see rice koji (especially when it‘s koji miso). It‘s up to you if you want to include it in the miso soup or discard it (personal preference).",
+   "Cut 7 oz soft/silken tofu (kinugoshi dofu) into ½-inch (1.3 cm) cubes and add to the miso soup. Tip: Add the tofu after the miso is completely dissolved; otherwise, you might break the tofu when stirring in the miso. Note: It is very common to cut tofu on your palm in Japan. However, I recommend using a cutting board if you have never done this.",
+   "Add 1 Tbsp dried wakame seaweed and the chopped green onions to the pot right before serving to keep their fresh fragrance and color. Tip: If you worry about salt intake, I recommend rehydrating the dried wakame in a separate bowl of water to get rid of the saltiness, instead of rehydrating it in the soup itself. If reheating, warm up the miso soup until it is just hot. NEVER BOIL miso soup because it loses flavor and aroma.",
+   "Serve immediately. Place on the right side of the table setting; you can read about this in my post Ichiju Sansai (One Soup Three Dishes).",
+   "In general, it‘s best to consume all the miso soup right away because it will lose its aroma and taste as time passes. Let your miso soup cool to room temperature (up to 4 hours; any longer and it will spoil) and then refrigerate. Keep for up to 2 days in the refrigerator. If you want to make a big batch to store for later, it‘s best to refrigerate the soup without adding the miso. When ready to use, add the miso only for the portion you need. You can freeze miso soup for up to 2 weeks. However, you have to remove the tofu before freezing as the texture will change.",
+   "Heat the miso soup in a pot over medium heat, but do not boil. Miso loses its nutrients, flavor, and aroma at high temperatures.",
+   "Save the spent kombu and katsuobushi in an airtight container and store it in the refrigerator for a week or in the freezer for up to a month.",
+   "With the spent kombu, you can make Simmered Kombu (Kombu Tsukudani).",
+   "You can also make Homemade Furikake (Rice Seasoning)."
   ]
  },
  {
@@ -2212,6 +3003,25 @@ window.RECIPES = [
    "1 tsp mirin",
    "2 pinches Diamond Crystal kosher salt",
    "2 Tbsp neutral oil ((for cooking))"
+  ],
+  "steps": [
+   "Tamagoyaki with dashi is the most challenging to roll as the egg mixture is watery. If you're a beginner, practice first with my 3-Ingredient Simple Tamagoyaki recipe.Gather all the ingredients.",
+   "Crack 3 large eggs (50 g w/o shell) into a bowl. Whisk by \"cutting\" through the eggs with chopsticks in a zig-zag motion, taking care not to overmix.",
+   "Combine the seasonings in another bowl: 3 Tbsp dashi (Japanese soup stock), 2 tsp sugar, 1 tsp soy sauce, 1 tsp mirin, and 2 pinches Diamond Crystal kosher salt. Mix well.",
+   "Add the seasonings to the eggs and whisk to combine. Don't overmix. Transfer the mixture to a measuring cup with a spout.",
+   "Heat the pan over medium heat. Dip a folded paper towel in 2 Tbsp neutral oil and apply a thin layer to the pan. Add a drop of egg mixture — if it sizzles, the pan is ready.",
+   "Pour a thin layer of egg into the pan and quickly tilt it so the mixture coats the entire cooking surface. Poke any air bubbles with cooking chopsticks.",
+   "When the bottom is set but the top is still runny, roll the egg into a log shape using chopsticks or a spatula, starting from the far side of the pan toward the handle. Move the rolled omelette to the far side. Apply more oil to the pan with a paper towel, even under the omelette.Nami's Tip: Don't worry about rolling perfectly at this stage, since the inner layers will be hidden inside.",
+   "Pour the second thin layer of egg, just enough to cover the bottom of the pan. Lift the rolled omelette and tilt the pan to spread the egg mixture underneath. When the new layer of egg has set and is still soft on top, roll it as before from the far side toward the handle.Nami's Tip: Control the cooking temperature by lifting the frying pan rather than adjusting the stove heat. If the heat is too weak, the egg will stick to the frying pan, so be careful.",
+   "Move the rolled omelette to the far side. Reapply oil on the pan and under the omelette. Pour the next thin layer of egg and tilt to coat the entire surface—including under the omelette.",
+   "Roll again when the bottom is set and the top is still soft.",
+   "Repeat until all the egg mixture is used.",
+   "On the final round, brown the omelette lightly on each side, if desired.",
+   "Remove the omelette from the pan. While still hot, place it on a bamboo sushi mat and roll tightly to set the shape. Let stand for 5 minutes.Nami's Tip: Rolling in the bamboo mat is optional but recommended for a neat log shape.",
+   "Slice the omelette crosswise into ½-inch (1-cm) pieces. Optionally, serve with a mound of grated daikon and a splash of soy sauce on the side.Nami's Tip: Gently squeeze out any excess water from grated daikon.",
+   "Cool and transfer to an airtight container. Refrigerate for up to 1–2 days or freeze for up to 2 weeks. Thaw overnight in the refrigerator, or reheat directly from frozen in the microwave.",
+   "If you don't have a rectangular tamagoyaki pan, a round frying pan works too. As you roll, tuck in both rounded edges of the egg layer before each roll to keep the shape straight—or trim the edges with a knife once finished. The roll will be shorter, but just as delicious.",
+   "If you'd like to add a filling such as a nori sheet, place it on top of the egg layer when the bottom is set and the top is still slightly runny, then roll as usual."
   ]
  },
  {
@@ -2239,6 +3049,22 @@ window.RECIPES = [
    "1 Tbsp sugar ((to taste))",
    "2 servings cooked Japanese short-grain rice ((typically 1⅔ cups (250 g) per donburi serving))",
    "pickled red ginger ((to garnish))"
+  ],
+  "steps": [
+   "For the steamed rice, please note that 1½ cups (2 rice cooker cups, 300 g) of uncooked Japanese short-grain rice yield 4⅓ cups (660 g) of cooked rice, enough for 2 donburi servings (3⅓ cups, 500 g). See how to cook short-grain rice with a rice cooker, pot over the stove, Instant Pot, or donabe.",
+   "Gather all the ingredients. I usually put the thinly sliced beef in the freezer for 10 minutes because it‘s a lot easier to cut semi-frozen meat.",
+   "First, thinly slice ½ onion.",
+   "Next, cut 1 green onion/scallion diagonally into thin slices. Set aside.",
+   "Then, remove ½ lb thinly sliced beef (chuck or ribeye) from the freezer. Cut the semi-frozen meat into pieces 3 inches (7.6 cm) wide.",
+   "Start with a large, cold frying pan. DO NOT turn on the heat yet. Add ½ cup dashi (Japanese soup stock), 2 Tbsp sake, 2 Tbsp mirin, 3 Tbsp soy sauce, and 1 Tbsp sugar and stir to dissolve the sugar.",
+   "Next, separate the layers of sliced onion and spread them throughout the cold broth.",
+   "Finally, separate the thin slices of beef and distribute on top of the onions to cover them.",
+   "Cover the pan with a lid. Now, TURN ON the heat to medium and start cooking. Once simmering, turn down the heat to simmer and cook, covered, for 3–4 minutes.",
+   "While simmering, open the lid and skim off the scum and fat from the broth once or twice with a fine-mesh skimmer (find it on Amazon and JOC Goods).",
+   "Sprinkle the green onions on top and cook covered for another minute. Optional: If you would like to add beaten eggs, you can do it now (refer to my Tanindon recipe for detailed instructions).",
+   "Divide 2 servings cooked Japanese short-grain rice into large donburi bowls. Then, drizzle some of the pan sauce on top of the rice.",
+   "Put the beef and onion mixture on top of the rice. If you’d like, drizzle additional remaining sauce on top. Top the gyudon with pickled red ginger (beni shoga or kizami beni shoga). Enjoy!",
+   "You can keep any leftover beef and egg mixture in an airtight container and store in the refrigerator for up to 2–3 days and in the freezer for up to 3–4 weeks."
   ]
  },
  {
@@ -2268,6 +3094,26 @@ window.RECIPES = [
    "Japanese Shredded Cabbage Salad ((optional))",
    "Japanese Sesame Dressing ((optional))",
    "tomato ((optional))"
+  ],
+  "steps": [
+   "If you prefer not to deep-fry, see my recipe for Baked Chicken Katsu.",
+   "Gather all the ingredients.",
+   "Butterfly the chicken breast so the meat is thinner and cooks faster; read more about it in my blog post and watch how in my video. You can use one of two methods. You can split the breast horizontally from the side with a knife, stopping before you cut all the way through. Then, open it like a book. The two sides will mirror each other, resembling a butterfly. Alternatively, you could use the Japanese cutting technique Kannon biraki (観音開き) that I demonstrate here. With a sharp knife, score the top of 1 piece boneless, skinless chicken breast down the middle about halfway through the thickness of the breast; do not cut completely through.",
+   "Then, turn the knife parallel to the cutting board and slice from the center toward the left side (or the right side, if you‘re left-handed) to make it evenly thin. Stop before you cut all the way through, and open it like a book. Imagine we‘re creating a French door.",
+   "Turn the chicken 180 degrees and butterfly the second side, creating another “door.“",
+   "Cut the chicken in half down the center. Now, you have two pieces.",
+   "With a meat mallet or the back of the knife, pound the chicken pieces to an even thickness of about ¼–½ inch (6 mm–1.3 cm).",
+   "Season both sides with ½ tsp Diamond Crystal kosher salt and ⅛ tsp freshly ground black pepper.",
+   "Add 3 cups neutral oil to a medium-size, heavy-bottomed pot (I use a Staub 2.75 QT Dutch oven, 11 inches in diameter). Add enough so the oil is 1½ inches (3.8 cm) deep; dip a chopstick in it to measure. Start preheating it to 340ºF (170ºC) over medium-low heat (or low heat, if you need more time to bread the chicken). For the breading, prepare three bowls or trays: One with 3 Tbsp all-purpose flour (plain flour), one with 1 cup panko (Japanese breadcrumbs), and one with 1 large egg (50 g each w/o shell).",
+   "Add ½ Tbsp neutral oil to the egg and whisk it together. Tip: By adding oil, the breading won’t detach from the chicken while deep-frying and this will help seal in the chicken's juices and flavor.",
+   "Dredge the chicken in flour and shake off the excess. Then, coat it with the egg mixture.",
+   "Finally, coat the chicken with panko and gently press it to adhere to the cutlet. Gently shake off any excess, then place the breaded cutlet onto a tray or plate. Repeat with the other piece.",
+   "If the oil isn't hot enough (340ºF or 170ºC), increase the heat to medium. Once it reached the right temperature, carefully add one breaded cutlet to the oil. I recommend frying one at a time, as adding too many will lower the oil temperature too fast. Keep the heat on medium and adjust as needed to maintain the right temperature. Nami's tip: If you are new to deep-frying, learn more tips on my How to Deep Fry Food page. I recommend using an instant-read thermometer to monitor the oil temperature.",
+   "Deep-fry for a total of 3 minutes, flipping it over at the halfway point. Tip: Do not overcrowd the pot. Your ingredients should take up no more than about half of the oil surface area. If you add too much food, the temperature will drop quickly and the chicken will absorb too much oil.",
+   "Cook until both sides are golden brown. Remove the chicken and let the oil drip off by holding the cutlet vertically over the pot for a few seconds. Then, transfer it to a wire rack or tray lined with paper towels. If possible, keep it on its side to drain excess oil.",
+   "Scoop up and discard any fried crumbs in the oil with a fine-mesh strainer. Then, cook the other cutlet. Tip: Throughout cooking, keep the oil clean of crumbs, which can burn and make the oil dark and dirty.",
+   "Cut the chicken katsu into 1-inch (2.5 cm) pieces and serve it with tonkatsu sauce. Typically, I serve it with a side of shredded green cabbage and my Japanese Sesame Dressing. I also add a few wedges of tomato for color.",
+   "Transfer the leftovers to an airtight container and store them in the refrigerator for up to 2 days or in the freezer for up to a month. To reheat, bake at 350ºF (180ºC) for 15–20 minutes if defrosted (in the refrigerator overnight) or for 30 minutes from frozen. Check that the inside is warm before serving."
   ]
  },
  {
@@ -2297,6 +3143,28 @@ window.RECIPES = [
    "4 Tbsp soy sauce",
    "2 Tbsp sake",
    "1 Tbsp sugar"
+  ],
+  "steps": [
+   "Before You Start: Please note that this recipe requires 30 minutes of resting time.Gather all the ingredients.",
+   "Cut 1 onion in half, and cut each half into ½-inch (1.3 cm) wedges.",
+   "Peel 1 carrot and cut it into 1-inch (2.5 cm) pieces. Here, I use a Japanese cutting technique called rangiri where we cut the carrot diagonally while rotating it a quarter turn between cuts. This helps to create more surface area so it will cook faster and absorb more flavor.",
+   "Cut each of the 3 Yukon gold potatoes into quarters. Tip: Yukon golds keep their shape better during simmering, but I sometimes use russet potatoes, which tend to break easily but absorb flavors nicely.",
+   "Remove the sharp edges of the potatoes with a knife to create smooth corners. Then, soak the potatoes in water to remove the starch. Tip: We call this Japanese cutting technique mentori. This prevents the potatoes from breaking into pieces. If the potatoes have sharp edges, they are likely to bump into each other and break while simmering.",
+   "Remove the strings from 8 pieces snow peas.",
+   "Bring a small pot of water to a boil and add a pinch of salt. Add the snow peas.",
+   "Blanch them in the boiling water for 1 minute and take them out. Keep the water boiling.",
+   "Drain 1 package shirataki noodles and cut them roughly in half. Blanch the noodles in the pot of boiling water for 1 minute to remove any odor.",
+   "Drain well and set aside. Cut the thinly-sliced beef in half or thirds (depending on the size) so that the pieces are about 3 inches (7.6 cm) wide.",
+   "Preheat a large pot or Dutch oven (I used a 4-QT Staub cocotte) on medium heat. Then, add 1 Tbsp neutral oil and sauté the onion wedges.",
+   "When the onion wedges are coated with oil, add ½ lb thinly sliced beef (chuck or ribeye) and cook until no longer pink.",
+   "Add the potatoes and coat them well with the cooking liquid. Tip: This coating will help keep the potatoes from breaking.",
+   "Add the carrot pieces and shirataki noodles and mix everything together.",
+   "Add 2 cups dashi (Japanese soup stock), making sure there‘s enough liquid to almost cover the ingredients (it doesn‘t have to fully cover the ingredients). If there‘s not enough liquid, add water.",
+   "Cover with a lid and continue to cook. Once boiling, skim the scum and foam from the surface with a fine-mesh skimmer.",
+   "Add 1 Tbsp sugar, 2 Tbsp sake, 4 Tbsp soy sauce, and 4 Tbsp mirin.",
+   "Mix it all together and place an otoshibuta (drop lid) on top of the ingredients.",
+   "Simmer on low heat for 12–14 minutes, or until a skewer pierces a potato easily. Tip: The otoshibuta holds the ingredients in place and is necessary to maintain the shape of the vegetables. They bump into each other and break easily when they are loose. Do not mix the ingredients while cooking; the otoshibuta will help distribute the cooking liquid and its flavors.",
+   "Turn off the heat and remove the otoshibuta. Ideally, let the Nikujaga rest (uncovered) for 30–60 minutes before serving. The flavors will soak into the ingredients while cooling down."
   ]
  },
  {
@@ -2324,6 +3192,17 @@ window.RECIPES = [
    "1 Tbsp sugar",
    "3 Tbsp mirin",
    "3 Tbsp soy sauce ((plus more, to taste; I used Kikkoman Gluten-Free Tamari Soy Sauce))"
+  ],
+  "steps": [
+   "Gather all the ingredients first. For the cooked rice, please note that 1½ cups (300 g, 2 rice cooker cups) of uncooked Japanese short-grain rice yield 4⅓ cups (660 g) of cooked rice. See how to cook short-grain rice with a rice cooker, pot over the stove, Instant Pot, or donabe. If you just cooked your steamed rice, transfer it to a baking sheet lined with parchment paper to cool it and let the moisture evaporate.",
+   "Rehydrate 1 Tbsp dried hijiki seaweed in 1 cup water for 20 minutes.",
+   "Bring a small pot of water to a boil. Add 1 piece aburaage (deep-fried tofu pouch) in the boiling water and flip once. This step is optional, but it’s best to remove the oil from the aburaage. Transfer to a plate to let cool. Cut into thin strips and squeeze out the water.",
+   "Slice 1 carrot into slabs and then julienne strips.",
+   "Heat 1 Tbsp roasted sesame oil over medium heat in a large frying pan. When it’s hot, add the hijiki seaweed, aburaage, and carrot. Sauté to coat with the oil.",
+   "Add 1 Tbsp sake, 1 Tbsp sugar, and 3 Tbsp mirin.",
+   "Add 3 Tbsp soy sauce and mix all together.",
+   "Add ½ cup edamame and 3 servings cooked Japanese short-grain rice (cooled). Break the rice into smaller pieces (as Japanese rice tends to stick together) with a wooden spatula.",
+   "Make sure the rice is not clumped together and that each grain is well coated with the seasonings. Once heated through, serve and enjoy immediately."
   ]
  },
  {
@@ -2355,6 +3234,23 @@ window.RECIPES = [
    "lemon wedges",
    "Japanese Kewpie mayonnaise",
    "shichimi togarashi (Japanese seven spice)"
+  ],
+  "steps": [
+   "Before You Start…Please note that this recipe requires 30 minutes of marinating time. Gather all the ingredients.",
+   "Prepare 1½ lb boneless, skin-on chicken thighs by cutting each into 2-inch (5-cm) pieces. Season with ½ tsp Diamond Crystal kosher salt and ⅛ tsp freshly ground black pepper.",
+   "Now, grate the ginger (I use a ceramic grater) and measure ½ tsp ginger (grated, with juice). Add it to a large bowl. Mince or press 1 clove garlic (I use a garlic press) and add it to the bowl.",
+   "Add ½–1 Tbsp soy sauce, ½ Tbsp sake, and ½ tsp roasted sesame oil to the ginger and garlic. Whisk to combine.",
+   "Add the chicken to the marinade and mix it with your hands. Cover and marinate in the refrigerator for 30 minutes.",
+   "While the chicken is marinating, prepare the oil for deep-frying. Pour about 3–4 cups neutral oil into a heavy-bottomed pot (I like using the 2.75-QT Staub), until you have at least 1 to 1½ inches (2.5 to 3.8 cm) of oil. Heat it to 325ºF (160ºC) over medium-low heat so you have enough time to prep the chicken.",
+   "Meanwhile, dredge the chicken pieces. Prepare separate piles of 2 Tbsp all-purpose flour (plain flour) and 2 Tbsp potato starch or cornstarch in a tray. Lightly coat a piece of marinated chicken in the flour and dust off the excess.",
+   "Next, dredge it in the potato starch and shake off the excess. Place it in a separate tray. Continue with the remaining chicken pieces.",
+   "Check that the oil temperature has reached 325ºF (160ºC). Tip: If you don‘t have an instant read thermometer, insert a wooden chopstick into the oil; you‘ll know it‘s hot enough if small bubbles start to appear around the tip. For more helpful tips, see my post How to Deep-Fry Food.When it's ready, gently add 3 to 5 chicken pieces at a time to the hot oil. Do not overcrowd the pot. Tip: If you add too many pieces at once, the oil temperature will drop quickly, and the chicken will absorb too much oil.",
+   "Deep-fry for 90 seconds, or until the chicken is a light golden color. Transfer to a wire rack to drain the excess oil. Tip: If the chicken browns too quickly, then the oil temperature is too high. Either put a few more pieces of chicken in the oil or lower the heat setting. Controlling the oil temperature at all times is very important for deep-frying.",
+   "The residual heat will continue to cook the chicken as it rests. Continue to fry the remaining chicken pieces. Between batches, scoop up and discard the crumbs in the oil with a fine-mesh sieve. This keeps the oil clean and prevents it from becoming darker.",
+   "Now, raise the oil temperature to 350ºF (180ºC). Place the first 3 to 5 pieces of rested chicken back into the oil and deep-fry for 45 seconds, or until the skin is golden brown and crispy. Transfer them to the wire rack to drain the excess oil. Continue frying the remaining chicken pieces.",
+   "The left photo shows the chicken pieces after the first fry and the right photo shows them after the second fry. The chicken pieces on the right are slightly darker in color.",
+   "Serve the chicken hot with lemon wedges and a dipping plate of Japanese Kewpie mayonnaise. You can also sprinkle shichimi togarashi (Japanese seven spice) on the mayo for a bit of spice, if desired.",
+   "Let it cool completely and transfer to an airtight container. You can store it in the refrigerator for up to 3 days and in the freezer for up to a month."
   ]
  },
  {
@@ -2384,6 +3280,28 @@ window.RECIPES = [
    "½ large lemon ((for the zest + 2 Tbsp juice))",
    "2 Tbsp apricot jam",
    "2 tsp hot water"
+  ],
+  "steps": [
+   "Please note that this recipe requires a cooling time of 1–2 hours and a chilling time of at least 4–6 hours (or overnight) to achieve the perfect texture and balanced flavor. I encourage you to read the blog post for more detailed information about this recipe.Weigh your ingredients with a kitchen scale for best results. Click the Metric button above for weights. If you don't have a scale, here's how to measure flour with a measuring cup so you don't scoop too much: Fluff the flour with a spoon, sprinkle it into the measuring cup, and level it off.",
+   "Use a 9-inch (23-cm) x 4 inch (10 cm) cake pan. Cut one circle of parchment paper 9 inches (23 cm) in diameter (or use a 9-inch round parchment cake liner) and one rectangular strip 4 x 30 inches (10 x 76 cm). Cut two straps 2 x 30 inches (5 x 76 cm) each to use to lift the baked cake from the pan.",
+   "Use 1 Tbsp unsalted butter to grease the cake pan and one side of the parchment paper circle and strip. You don‘t need to use all the butter.",
+   "Crisscross the two straps on the bottom of the pan to form an “X\" and let the excess hang over the edges. Line the paper circle on the bottom and the strip on the sides, keeping the greased side touching the pan.",
+   "Preheat the oven to 350ºF (180ºC). For a convection oven, reduce the temperature by 25ºF (15ºC). Note: You will be baking at 320ºF (160ºC), but we’ll preheat a bit higher because your oven will lose heat when you open it to place the cake pan inside.",
+   "Set a medium saucepan with 2 inches (5 cm) of water over high heat for the double boiler. Bring it to a simmer, then cover and reduce the heat to maintain a steady simmer.",
+   "Gather all the ingredients.Separate 6 large eggs (50 g w/o shell) into egg yolks and whites. Place the egg whites in the refrigerator until ready to use. Nami's Tip: I highly recommend chilling a clean, dry stand mixer bowl in the fridge until you're ready to whip the egg whites.",
+   "Add 10.6 oz cream cheese, 4 Tbsp unsalted butter, 200 ml heavy (whipping) cream, and 4½ Tbsp sugar to a large bowl and rest it on the saucepan above the simmering water. Nami's Tip: The double boiler will warm and soften the cream cheese and butter, so you don't need to bring them to room temperature ahead of time.",
+   "Mash the cream cheese and butter with a silicone spatula until soft, then whisk the mixture until smooth and combined. Remove from the heat.",
+   "Add the egg yolks one at a time, whisking each yolk into the cream cheese mixture until fully incorporated before adding the next.",
+   "Sift ⅔ cup cake flour into the batter with a fine-mesh strainer. Whisk until no dry streaks remain.",
+   "Pass the batter through the strainer into a clean large bowl.",
+   "Add the zest of ½ large lemon (outer yellow layer only, avoiding the white pith) and 2 Tbsp lemon juice and whisk to combine.",
+   "Place a large baking sheet inside the preheating oven and add hot water until it is ½ inch deep (halfway up the sides). Close the oven door.",
+   "Add the cold egg whites to the cold, dry, and clean stand mixer bowl. Start on low (Speed 2) for 30 seconds to break down the egg whites and loosen their structure. Increase to medium (Speed 4) for 2 minutes until they become opaque, foamy, and bubbly. Slowly add ½ cup sugar, one-third at a time, while mixing.Nami's Tip: Use a clean and dry mixing bowl and beaters. A speck of oil, water, or egg yolk can minimize the volume of the beaten whites. Avoid plastic bowls, as they may hold oily residue. Use a bowl that's wide enough to keep the beaters from being buried in the egg whites.",
+   "Increase the speed to medium high (Speed 6–8) and beat the egg whites to firm peaks. Stop the mixer to check: When you lift the whisk upright, the egg whites should cling and hold their shape with the tip folding back on itself.",
+   "Add one-third of this meringue to the cream cheese mixture and whisk until incorporated. Fold in another one-third of the egg whites.",
+   "Pour the cream cheese mixture into the mixer bowl with the last of the meringue. Fold until just combined.",
+   "To minimize air pockets, pour the batter into one spot in the cake pan in a steady stream. Tap the pan on the counter a few times to release any trapped air.",
+   "Quickly place the cake pan on the baking sheet with the hot water bath.Reduce oven to 320ºF (160ºC)—295ºF (145ºC) for convection—and bake for 70–75 minutes.Reduce oven to 300ºF (150ºC)—275ºF (135ºC) for convection—and bake for 10 more minutes, until the top is golden brown. [Don't remove the cake!]"
   ]
  },
  {
@@ -2410,6 +3328,28 @@ window.RECIPES = [
    "3 large eggs (50 g each w/o shell) ((at room temperature—very important!))",
    "100 g sugar ((½ cup))",
    "½ Tbsp white sparkling sugar"
+  ],
+  "steps": [
+   "Please note that this recipe requires a chilling time of 12 hours or overnight.I highly encourage you to weigh your ingredients using a kitchen scale. For weights, click the Metric button above. If you‘re using a cup measure, please follow the “fluff and sprinkle“ method: Fluff your flour with a spoon, sprinkle it into your measuring cup, and level it off. Otherwise, you may scoop more than you need.",
+   "Gather all the ingredients. The eggs must be at room temperature. Preheat the oven to 350ºF (180ºC). *Please see my latest update in the Notes below regarding the oven temperature. For a convection oven, reduce the oven temperature by 25ºF (15ºC) to 325ºF (165ºC). Prepare a spray bottle with water, an offset spatula, and a bamboo skewer. Use a 1 lb baking pan that is light-colored for the best outcome.",
+   "On your work surface, place a sheet of parchment paper that‘s 13 x 16 inches (30 x 40 cm). Set a 1 lb loaf pan on top (I use a light-colored 1 lb loaf pan that‘s 8½ x 4½ x 2¾ inches or 22 x 11 x 7 cm). Mark the four corners of the loaf pan on the paper. Fold and crease the paper on all four sides following the corner marks.",
+   "Unfold the paper so that the long side of the creased rectangle is in front of you. On the two crease lines pointing toward you, cut slits up to the rectangle‘s left and right corners. Rotate the paper and cut two slits on the opposite long side. You will have four slits total. Then, place the paper in the baking pan, folding and layering the flaps to fit.",
+   "Cut a slit in each of the corner flaps down to the top edge of the pan. Then, fold down the paper over the pan‘s edges.",
+   "Secure the folded paper onto the edges with stainless steel clips to keep the lining from moving when you mix the batter during baking.",
+   "Combine 2 Tbsp water and 3 Tbsp honey in a small bowl. Then, add 1 Tbsp mizuame syrup (glutinous starch syrup). It‘s super sticky and extremely thick, so use a mini spatula to scrape it from the measuring spoon.",
+   "Take your time to dissolve the mizuame. Press down and mash the mizuame with the mini spatula to facilitate dissolving. Do not microwave the mixture as we do not want to increase the temperature of the batter. Set aside.",
+   "Sift 100 g bread flour with either a sifter or fine-meshed strainer. Hold the strainer‘s handle with one hand as you gently tap the strainer with the other, and the flour will gradually sift through. Tip: Why bread flour? That's what's traditionally used, and it gives the cake an elastic, bouncy texture that you cannot achieve with all-purpose flour.",
+   "In the bowl of a stand mixer, crack 3 large eggs (50 g each w/o shell) that are at room temperature. Add 100 g sugar.",
+   "Fit a stand mixer with the whisk attachment and vigorously beat the eggs and sugar on high speed (Speed 8/10) for 3–5 minutes without stopping. If you beat the eggs with a handheld mixer, it will take more time.",
+   "The beaten eggs will quadruple in volume and have a thick texture and pale yellow color.",
+   "When you stop the mixer and lift the whisk attachment, the mixture should fall in ribbons.",
+   "Gradually add the honey mixture to the batter while whisking on low speed (Speed 2) until combined, about 30 seconds.",
+   "Gradually add the bread flour while whisking on low speed (Stir) until just combined, for about 30 seconds. Do not overmix.",
+   "When the flour is just combined, stop whisking. When you lift the whisk, the batter should fall in ribbons.",
+   "Using a silicone spatula, scrape the batter from the bowl‘s sides and bottom and gently fold the batter a few times. Next, sprinkle ½ Tbsp white sparkling sugar on the bottom of the lined pan. This sugar will add a crunchy texture to the cake‘s bottom and help retain moisture.",
+   "Pour the batter into the cake pan in just one spot. This helps to minimize air pockets and smooth the top of the batter. Tip: If your pan is smaller than mine, you‘ll need to add the excess batter to another smaller pan and use a shorter bake time.",
+   "To level the batter and help remove air pockets, hold the cake pan 2 inches above the counter and drop it flat onto the counter. Then, draw a zigzag line through the batter with a bamboo skewer to further eliminate air bubbles.",
+   "Place the cake pan on the middle rack of the preheated oven at 350ºF (180ºC). Close the oven door and set a timer for 2 minutes."
   ]
  },
  {
@@ -2437,6 +3377,16 @@ window.RECIPES = [
    "1 tsp baking powder ((see Notes))",
    "1–2 Tbsp water",
    "neutral oil ((for greasing the pan))"
+  ],
+  "steps": [
+   "For best results, weigh your ingredients using a digital kitchen scale. Click the Metric button above for weights. If you don't have a scale, fluff the flour with a spoon, sprinkle it into the measuring cup, and level it off. See my guide on how to measure flour correctly. The batter needs to rest for 15 minutes to 1 hour before cooking.Gather all the ingredients.",
+   "Combine 4 large eggs (50 g each w/o shell), ⅔ cup sugar, and 2 Tbsp honey in a large bowl. Whisk vigorously until the mixture turns pale and thick. Nami's Tip: The air bubbles expand during cooking and give the pancakes their fluffy texture.",
+   "Sift 1⅓ cups all-purpose flour (plain flour) and 1 tsp baking powder into the egg mixture. Fold until no dry streaks remain. Refrigerate the batter for 15 minutes to 1 hour.Nami's Tip: The batter will smooth out as the gluten relaxes.",
+   "Stir in 1 Tbsp water and check the consistency. It should flow like pancake batter. If it's too thick, add up to 1 Tbsp more. Nami's Tip: The water amount will vary based on the weight of the eggs and flour.",
+   "Place a damp towel on the counter. Preheat a large nonstick frying pan over the lowest heat for 5 minutes. Set it briefly on a damp towel to eliminate hot spots. Increase the heat to medium low.Keep the pan very lightly oiled. Dip a paper towel in neutral oil, coat the pan, and wipe off any excess with a clean paper towel. Cook one pancake at a time. Scoop 3 Tbsp of batter with a ladle or ¼ cup measuring cup. Pour from about 3 inches (8 cm) above the pan to form a 3-inch (8-cm) round.",
+   "When bubbles form on the surface, about 60–90 seconds in, flip the pancake with a spatula. Cook the other side for 20–30 seconds, until edges look dry and set, and the underside is golden brown. Transfer the dorayaki to a plate, pretty side up. Loosely cover with a tightly wrung damp towel to prevent them from drying out. Continue cooking the remaining batter, greasing and wiping the pan between each pancake.",
+   "Spread a small scoop of sweet red bean paste (anko) on one pancake. Mound the paste in the center so it's thicker in the middle than the edges. Place another pancake on top to form a curved, domed sandwich. Wrap each dorayaki individually in plastic wrap until ready to serve.",
+   "Store the wrapped dorayaki at room temperature for up to 2 days, or freeze in a freezer bag for up to 1 month."
   ]
  },
  {
@@ -2465,6 +3415,28 @@ window.RECIPES = [
    "¾ cup heavy (whipping) cream ((chilled))",
    "1½ Tbsp sugar",
    "2 tsp matcha (ceremonial or culinary grade)"
+  ],
+  "steps": [
+   "Before You Start: Please note that this recipe requires 30 minutes of resting time and 2 hours of chilling time.",
+   "Gather all the ingredients. I highly encourage you to weigh your ingredients using a kitchen scale for this recipe. Click on the “Metric“ button at the top of the recipe to convert the ingredient measurements to metric. If you‘re using a cup measurement, please follow the “fluff and sprinkle“ method: Fluff your flour with a spoon, sprinkle the flour into your measuring cup, and level it off. Otherwise, you may scoop more flour than you need.",
+   "Preheat the oven to 375ºF (190ºC). For a convection oven, reduce the cooking temperature by 25ºF (15ºC). Line a 15- x 10-inch (38- x 25-cm) jelly roll pan with parchment paper.",
+   "Separate 4 large eggs (50 g each w/o shell) into egg yolks in one bowl and egg whites in another. Keep the whites in the refrigerator and the egg yolks at room temperature.",
+   "Prepare a work surface with a sheet of parchment paper. To a fine-mesh sieve, add ¾ cup cake flour, ½ tsp baking powder, and 2 Tbsp matcha (green tea powder). Sift these dry ingredients onto the parchment paper.",
+   "Use the parchment paper to transfer the dry ingredients to a bowl. Repeat sifting and transferring the dry ingredients two more times (for a total of three times). Set aside. Tip: Matcha is a very fine powder that’s difficult to blend into a batter without clumping. Sifting the dry ingredients three times ensures that the matcha and flour are well blended with no lumps and that air is incorporated into the mixture so it making it easier to blend into the batter.",
+   "In a large bowl, add the egg yolks and break them with a hand whisk.",
+   "Add half of the ½ cup sugar and whisk until the egg mixture doubles in volume. When you lift the whisk into the air with some of the mixture on it, the mixture should fall back into the bowl in ribbons, which slowly disappear back into the mixture.",
+   "Next, add the cold egg whites to a large, dry bowl. With an electric hand mixer (or stand mixer), beat the egg whites until foamy.",
+   "Gradually add the remaining half of the sugar, one-third at a time, and beat until stiff peaks form and the egg whites are glossy.",
+   "Using a hand whisk, gently fold about one-third of the egg whites into the egg yolk mixture until well incorporated.",
+   "Then, add the egg yolk mixture back into the bowl with remaining the egg whites. Gently fold in the egg whites with a silicone spatula until just incorporated. Tip: Rotate the bowl a quarter turn counterclockwise while you scoop up and fold the mixture onto itself clockwise.",
+   "Next, add the dry ingredients to the egg mixture. Using the silicone spatula, fold in gently until just incorporated. Do not overmix. Tip: Adding the dry ingredients last avoids overmixing, which results in a dense (not fluffy) sponge.",
+   "Add 2 Tbsp whole milk (warmed) to the batter and fold it in until incorporated.",
+   "Pour the batter into the prepared pan. Spread the batter evenly using an offset spatula or silicone pastry scraper.",
+   "Tap the jelly roll pan a few times on your working surface to remove any air pockets in the batter. Transfer the pan to the preheated oven and bake for 10–12 minutes, or until an inserted toothpick comes out clean and the top of cake springs back when touched. Tip: Do not overbake it or the cake will be too dry and break when you roll it.",
+   "Remove the pan from the oven and drop the pan on your working surface once to prevent the cake from shrinking.",
+   "While the pan is still hot, place a sheet of parchment paper across the surface of the cake. Place a baking sheet (or a cutting board) on top with the bottom of the pan against the paper.",
+   "Wearing oven mitts, hold the two baking sheets together with the cake sandwiched in between and flip them over. Using a knife or spatula, lift the jelly roll pan to reveal the cake.",
+   "Gently peel off the parchment paper attached to the cake. This side will be the exterior of the Swiss roll, so be gentle!"
   ]
  },
  {
@@ -2499,6 +3471,17 @@ window.RECIPES = [
    "Lime wedges ((essential))",
    "Ground chilli or cayenne pepper ((optional))",
    "More beansprouts"
+  ],
+  "steps": [
+   "Place noodles in a large bowl, pour over plenty of boiling water. Soak for 5 minutes, then drain in a colander and quickly rinse under cold water. Don't leave them sitting around for more than 5 - 10 minutes.",
+   "Mix Sauce in small bowl.",
+   "Heat 2 tbsp oil in a large non stick pan (or well seasoned skillet) over high heat. Add garlic and onion, cook for 30 seconds.",
+   "Add chicken and cook for 1 1/2 minutes until mostly cooked through.",
+   "Push to one side of the pan, pour egg in on the other side. Scramble using the wooden spoon (add touch of extra oil if pan is too dry), then mix into chicken.",
+   "Add bean sprouts, tofu, noodles then Sauce.",
+   "Toss gently for about 1 1/2 minutes until Sauce is absorbed by the noodles.",
+   "Add garlic chives and half the peanuts. Toss through quickly then remove from heat.",
+   "Serve immediately, sprinkled with remaining peanuts and lime wedges on the side, with a sprinkle of chilli and a handful of extra beansprouts on the side if desired (this is the Thai way!). Squeeze over lime juice to taste before eating."
   ]
  },
  {
@@ -2534,6 +3517,17 @@ window.RECIPES = [
    "Fresh red chilli slices ((small chilli - spicy, large = less spicy))",
    "Fresh coriander / cilantro leaves",
    "Steamed jasmine rice"
+  ],
+  "steps": [
+   "Heat oil in a large heavy based skillet over medium high heat.",
+   "Add curry paste and Extras (if using jar paste) and cook for about 2 minutes so it \"dries out\" (See video)",
+   "Add chicken broth and stir to dissolve paste. Simmer rapidly for 3 minutes or until liquid reduces by half.",
+   "Add coconut milk, lime leaves, sugar and fish sauce. Stir, then add chicken.",
+   "Spread chicken out, bring to simmer, then turn heat down to medium. Simmer for about 8- 10 minutes or until Sauce reduces, the chicken is cooked and the sauce is almost at the thickness you want.",
+   "Do a taste test. Add more fish sauce (or even shrimp paste) to add more saltiness, sugar for sweetness.",
+   "Add pumpkin and beans, stir. Cook for 3 minutes or until pumpkin is just cooked through and Sauce is thickened - see video for Sauce thickness.",
+   "Remove from heat. Stir through a handful of Thai basil leaves.",
+   "Serve over jasmine rice, garnished with fresh red chilli slices and fresh coriander/cilantro leaves, if desired."
   ]
  },
  {
@@ -2564,6 +3558,15 @@ window.RECIPES = [
    "Freshly ground black pepper",
    "3 tbsp red wine vinegar",
    "6 tbsp extra virgin olive oil ((preferably Greek!))"
+  ],
+  "steps": [
+   "Place Greek Salad Dressing ingredients in a jar and shake until well combined. Set aside for 20 minutes to let the flavours infuse.",
+   "Tomatoes: Cut each tomato into 6 wedges, then cut each wedge into 3 or 4 pieces. If the tomato is watery, scoop out the watery seeds inside with a teaspoon.",
+   "Cucumbers: Slice the cucumber into 1/2cm / 1/5\" thick slices. Or if they are thick cucumbers, slice the cucumber in half vertically, then slice.",
+   "Onion: Peel and finely slice the red onion. I keep it in rings - you could cut it in half then slice. (Note 2)",
+   "Capsicum: Cut into short strips.",
+   "Feta: Cut into 1cm / 2/5\" cubes.",
+   "Place the tomato, cucumber, onion, feta and olives in a bowl, sprinkle with oregano then pour over dressing. Toss to combine. Serve immediately!"
   ]
  },
  {
@@ -2598,6 +3601,16 @@ window.RECIPES = [
    "4 eggs eggs (up to 6 eggs ok)",
    "2 tbsp fresh parsley or coriander / cilantro (, roughly chopped)",
    "Pita or crusty bread, to serve"
+  ],
+  "steps": [
+   "Preheat oven to 180C/350F (if intending to bake them).",
+   "Heat oil in a medium size cast iron skillet over medium high heat. Add garlic and onion, cook for 2 minutes until onion is translucent.",
+   "Add capsicum, cook for 1 minute. Add diced tomato, cook for 2 minutes until broken down and it becomes a bit pasty (see video).",
+   "Add canned tomatoes, tomato paste, broth, paprika, cumin, salt and pepper. Mix to combine well.",
+   "Lower stove to medium low and simmer for 5 minutes until just thickened enough to make indentations (don't want dry sludge, needs to still be saucy).",
+   "Make indentations in the mixture and carefully crack the eggs in. Leave to cook for 1 minute until edges of whites are set (Note 1).",
+   "Transfer to oven and bake for 7 to 12 minutes until whites are just set but yolks are still runny (or to your taste). OR cover with lid and steam on stove for 3 minutes (runny yolks), or just simmer them without a lid.",
+   "Remove from oven/stove and serve immediately, scattered with the coriander or parsley. Serve with crusty bread, or pita bread."
   ]
  },
  {
@@ -2628,6 +3641,16 @@ window.RECIPES = [
    "1/2 tsp black pepper",
    "Plain Greek yogurt or Tzatziki",
    "Fresh oregano leaves ((optional))"
+  ],
+  "steps": [
+   "Mix Marinade ingredients in a large bowl.",
+   "Add chicken and coat well. Marinade for 24 hours (3 hours minimum).",
+   "Preheat oven to 180C.350F.",
+   "Line a tray with foil (trust me), place rack on tray (optional).",
+   "Place chicken on rack (reserve marinade), skin side up. Bake 30 minutes,",
+   "Remove from oven. Brush with marinade - do not flip.",
+   "Return to oven for 20 minutes or until golden and a bit crispy. Give it a spray of olive oil just before it's done if you want an extra crispy, shiny coat.",
+   "Rest for a few minutes before serving. Juicy and tasty enough to serve plain but extra great with tzatziki or even some plain yogurt."
   ]
  },
  {
@@ -2657,6 +3680,21 @@ window.RECIPES = [
    "1/3 cup milk ( (any fat %) (or water))",
    "1 garlic clove, minced",
    "1/2 tsp crushed chilli, samba oelak or other chilli paste, adjust to taste (optional)"
+  ],
+  "steps": [
+   "Peanut Sauce: Combine the Peanut Dipping Sauce ingredients. Mix briefly (it won't come together), then microwave for 30 seconds. Mix again until smooth. Set aside to cool. Adjust sour with vinegar, salt with salt and spiciness to taste. Thickness can be adjusted with milk or water once cooled.",
+   "Place vermicelli noodles in a bowl and cover with warm water for 2 minutes, then drain (or follow packet instructions).",
+   "Peel the prawns, slice in half lengthwise and devein (watch video).",
+   "Remove the crunchy core of the lettuce leaves (watch video).",
+   "Tip - LETTUCE BUNDLE (Note 4): Place some vermicelli noodles and bean sprouts in a lettuce leaf, then roll it up, finishing seam side down. Repeat.",
+   "Fill a large bowl with warm water. The bowl doesn't need to be large enough to fit the whole rice paper in one go.",
+   "Place two rice papers together (if using 2). Note which side is the smooth side - this is supposed to be the outside of the spring roll. Submerge the rice papers into the water (both of them at the same time, together) for 2 seconds. If your bowl isn't large enough to fit the whole rice paper in one go, that's fine, just rotate it and count 2 seconds for each section you submerge into the water.",
+   "Place both the rice papers (one on top of the other, they will stick together) on a board or the counter with the smooth side down.",
+   "On the top part of the rice paper, place 3 prawns with a mint leaf in between, as per the photo below.",
+   "Place the lettuce bundle with the seam side down onto the middle of the rice paper.",
+   "Fold the left and right edges of the rice paper in, then starting from the bottom, roll up to cover the lettuce bundle. Then keep rolling firmly. The rice paper is sticky, it will seal itself.",
+   "If you placed the ingredients on the rice paper as per the photo below, your rice paper rolls should look pretty with the prawn and mint leaves on the smooth side of the roll and the seam on the side or underside of the roll.",
+   "Serve immediately with the peanut dipping sauce."
   ]
  },
  {
@@ -2691,6 +3729,17 @@ window.RECIPES = [
    "2 eggs for frying (optional (1 egg per person))",
    "Prik nam pla (condiment if serving fried eggs, optional)",
    "Jasmine rice (for serving)"
+  ],
+  "steps": [
+   "Cut the protein into small bite-sized pieces - make them smaller than your average stir fry as pad gaprao is not good with chunky pieces. If using lean protein such as chicken breast, don’t slice them thinner than ½ an inch so they don’t overcook too quickly.",
+   "If using raw meat, add 1 tsp of fish sauce and mix well.",
+   "Make the sauce by combining oyster sauce, soy sauce, fish sauce, black or dark soy sauce, sugar, and water. Stir until the sugar is completely dissolved.",
+   "Pound the Thai chilies into a fine paste in a mortar and pestle, then add the garlic and the mild chilies and pound into a rough paste, just until there are no more big chunks.",
+   "If using raw protein, heat a wok or a skillet until very hot on high heat, add just enough oil to coat the bottom and add the protein, spreading the pieces out into one layer. Let them sear until browned on the underside, then give it a toss and stir until it’s done. This should only take a few minutes in total. Remove from the pan. Note: You can skip searing the protein and just add it to the wok raw, but the browning does add a nice flavour.",
+   "In a wok on medium-high heat, add the chili garlic mixture and stir until the garlic starts to turn golden, about 2 minutes. Add the onions and cook it for 30 seconds to a minute to soften slightly.",
+   "Turn the heat up to high and add the protein and the sauce, and toss everything together just for 30 seconds or so, until the meat is well coated and heated through. If you didn’t pre-cook the protein, take your time and keep tossing until it’s cooked through.",
+   "Turn off the heat, add the basil, and toss just to wilt.",
+   "Make the fried eggs if you wish, and serve the stir fry with jasmine rice and topped with a fried egg and some prik nam pla!"
   ]
  },
  {
@@ -2728,6 +3777,18 @@ window.RECIPES = [
    "1 avocado (, sliced)",
    "2 tbsp roughly chopped coriander ((cilantro), optional but recommended)",
    "Lime wedges (, optional)"
+  ],
+  "steps": [
+   "Toss Vegetable ingredients on a tray. Toss salmon with Fajita Seasoning, spread on separate tray lined with wrinkled foil. Bake 12 minutes at 240°C/465°F (220°C fan) along with foil wrapped tortillas. Make sauce. Serve!",
+   "Preheat oven to 240°C/465°F (220°C fan-forced).",
+   "Crinkled foil trick for baking fish – Lightly scrunch up foil, then gently unfold it so it stays wrinkled. Lots of little pointing bits = good! The wrinkles lift the fish slightly, preventing sticking and soggy undersides – clever Japanese fish-cooking trick (thanks mum!). Place on one side of the tray and fold the edges over the rim to secure. Repeat with another sheet to cover the whole tray.",
+   "Fajita flavour fish - Mix the Fajita seasoning ingredients in a bowl, it should be like a thin paste. Add fish and toss to coat. Spread out on the foil so the salmon is not touching each other.",
+   "Toss veg - On a separate large tray, toss capsicum and onion with the oil, garlic and salt. Spread it out in a single layer.",
+   "Wrap stack of tortillas in foil (make 2 parcels).",
+   "Bake everything - Put the salmon on the top shelf, vegetables on the middle shelf and tortillas into the oven (I put them on the floor of the oven but don’t do this if your heat element is there, mine comes from the back). Bake 12 minutes, or until the salmon flakes (don't turn or toss).",
+   "Sauce - Meanwhile, put the sauce ingredients in a small jug and blitz with stick blender until smooth.",
+   "Lay everything out - Transfer the salmon and vegetable onto a serving platter, pour all tray juices over. Place warmed tortillas, sauce, avocado, lime wedges and coriander on the side.",
+   "Making a fajita - Take a warm tortilla. Stuff with a little vegetables, place 2 pieces of salmon on then flake into large chucks. Tuck in avocado, drizzle with sauce, lime juice, sprinkle with coriander, devour!"
   ]
  }
 ];

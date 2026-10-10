@@ -55,6 +55,20 @@ def _as_list(value) -> list:
     return value if isinstance(value, list) else [value] if value else []
 
 
+def _steps(value) -> list[str]:
+    """Method steps from schema.org recipeInstructions: a string, or a list of strings,
+    HowToStep ({"text"}) and HowToSection ({"itemListElement"}) nodes."""
+    if isinstance(value, str):
+        return [t for t in (strip_html(p) for p in re.split(r"\n+|<br\s*/?>", value)) if t]
+    if isinstance(value, dict):
+        if value.get("itemListElement"):
+            return _steps(value["itemListElement"])
+        return _steps(value.get("text") or value.get("name") or "")
+    if isinstance(value, list):
+        return [step for item in value for step in _steps(item)]
+    return []
+
+
 def _kcal(node: dict) -> int | None:
     """Calories per serving from schema.org nutrition ("350 kcal", "350", 350), or None."""
     value = (node.get("nutrition") or {}).get("calories") if isinstance(node.get("nutrition"), dict) else None
@@ -98,6 +112,7 @@ def card(row: dict, fetcher: Fetcher) -> tuple[dict | None, str]:
         "serves": _servings(node.get("recipeYield")),
         "blurb": strip_html(str(node.get("description") or ""))[:160],
         "ingredients": [t for t in (strip_html(str(i)) for i in _as_list(node.get("recipeIngredient")))][:40],
+        "steps": _steps(node.get("recipeInstructions"))[:20],
     }, "ok"
 
 
@@ -126,6 +141,9 @@ def _selftest() -> None:
     assert _minutes({"prepTime": "PT10M", "cookTime": "PT20M"}) == 30
     assert _servings(["4", "4 servings"]) == "4"
     assert _as_list("1 egg") == ["1 egg"] and _as_list(None) == []
+    assert _steps("Mix.\nFry.") ==["Mix.", "Fry."] and _steps("Mix.") == ["Mix."]
+    assert _steps([{"@type": "HowToStep", "text": "A"}, {"@type": "HowToSection", "itemListElement": [{"text": "B"}, "C"]}]) == ["A", "B", "C"]
+    assert _steps(None) == []
     assert _kcal({"nutrition": {"calories": "352 kcal"}}) == 352 and _kcal({}) is None and _kcal({"nutrition": {"calories": "n/a"}}) is None
 
 
