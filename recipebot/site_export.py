@@ -106,7 +106,7 @@ def recipe_tags(category: str, recipe: dict) -> list[str]:
         protein = 0
     if category == "high_protein" or protein >= 25:
         tags.append("protein")
-    if category == "breakfast" or "breakfast" in (recipe.get("meals") or []):
+    if category not in APPLIANCE_TAGS and (category == "breakfast" or "breakfast" in (recipe.get("meals") or [])):  # appliance recipes stay in their own section
         tags.append("breakfast")
     if category.startswith("baking"):
         tags.append("baking")
