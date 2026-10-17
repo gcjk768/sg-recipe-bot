@@ -329,7 +329,6 @@ const TOPICS = [
   ["soup", "Soups", "汤", "🍲", r => /soup|stew|jjigae|broth|汤|羹/i.test(text(r))],
   ["noodles", "Noodles & pasta", "面", "🍜", r => /noodle|pasta|spaghetti|penne|fettuccine|lasagn|\bmee\b|udon|ramen|soba|pad thai|chow fun|hor fun|japchae|laksa|bee hoon|面|米粉|河粉/i.test(text(r))],
   ["rice", "Rice dishes", "饭", "🍚", r => /\brice\b|nasi|bibimbap|bokkeumbap|gohan|donburi|\w+don\b|risotto|biryani|饭|丼/i.test(text(r)) && !/rice paper|rice cake|rice flour/i.test(text(r))],
-  ["saved", "My saved", "我的收藏", "❤", r => isSaved(r)],
   ["veg", "Vegetarian", "素食", "🥬", r => (r.ingredients || []).length > 0 && !MEAT.test(text(r) + " " + r.ingredients.join(" "))],
 ];
 const $ = s => document.querySelector(s);
