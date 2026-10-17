@@ -79,6 +79,7 @@ def test_recipe_tags():
     assert recipe_tags("soups", {"nutrition_per_serving": {"protein_g": "12"}}) == []
     assert recipe_tags("breakfast", {}) == ["breakfast"]
     assert recipe_tags("baking_cakes", {}) == ["baking"]
+    assert recipe_tags("vitamix_blender", {}) == ["vitamix"]
 
 
 

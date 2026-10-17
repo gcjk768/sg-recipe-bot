@@ -78,3 +78,13 @@ def test_one_bake_a_day_alternating_western_and_eastern():
         assert daily_plan(day)[-1] == (None, bakes[0])  # the bake comes after the meal
         sides.append(bakes[0].theme.split()[0])
     assert set(sides) == {"Western", "Eastern"}
+
+
+def test_one_appliance_recipe_a_day_cycling_through_all_three():
+    from recipebot.rotation import appliance_slots, daily_plan
+    cats = []
+    for i in range(3):
+        day = date(2026, 10, 1) + timedelta(days=i)
+        assert (None, appliance_slots(day)[0]) not in daily_plan(day)  # its own run, not in the meal and bake plan
+        cats.append(appliance_slots(day)[0].category)
+    assert set(cats) == {"ninja_multicooker", "vitamix_blender", "magimix_processor"}

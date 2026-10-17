@@ -88,6 +88,19 @@ def bake_slots(day: date) -> list[Slot]:
     ]
 
 
+APPLIANCES = (  # the owner, 2026-10-17: one recipe a day for his appliances, one after another
+    ("ninja_multicooker", "one pot dinner or soup in the Ninja multi cooker"),
+    ("vitamix_blender", "smoothie, soup, sauce or dip in the Vitamix"),
+    ("magimix_processor", "dough, dip, slaw or paste in the Magimix"),
+)
+
+
+def appliance_slots(day: date) -> list[Slot]:
+    """One recipe for the day's appliance, walking through APPLIANCES by date."""
+    category, theme = APPLIANCES[day.toordinal() % len(APPLIANCES)]
+    return [Slot(category, theme)]
+
+
 def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
     """The scheduled day's posts as (meal, slot): MEALS_PER_DAY meals (rotating breakfast, lunch, dinner), PER_MEAL each, all
     high protein meal prep, each built around a different main protein (shifted by one each day),
@@ -102,7 +115,7 @@ def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
             style = STYLES[(day.toordinal() * 3 + len(plan)) % len(STYLES)]
             plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}, {style} style")))
     plan += [(None, slot) for slot in bake_slots(day)]
-    return plan
+    return plan  # the appliance recipes are a separate run, see appliance_slots
 
 
 class RotationError(ValueError):

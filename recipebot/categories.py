@@ -36,6 +36,10 @@ _PAN = "🍳"  # 🍳
 CATEGORIES: dict[str, Category] = {
     "high_protein": Category("high_protein", "High protein", "highprotein", total_cap=45, emoji=_PAN),
     "baking_cakes": Category("baking_cakes", "Cakes and baking", "baking", hands_on_cap=30, emoji="🎂"),
+    # the owner, 2026-10-17: one category per kitchen appliance he owns. One a day via rotation.appliance_slots.
+    "ninja_multicooker": Category("ninja_multicooker", "Ninja 11 in 1 multi cooker", "ninjamulticooker", total_cap=60, emoji="🍲"),
+    "vitamix_blender": Category("vitamix_blender", "Vitamix Explorian blender", "vitamix", total_cap=30, emoji="🥤"),
+    "magimix_processor": Category("magimix_processor", "Magimix 5200XL food processor", "magimix", total_cap=45, emoji="🔪"),
 }
 
 

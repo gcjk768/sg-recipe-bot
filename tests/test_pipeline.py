@@ -433,6 +433,7 @@ def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch
     monkeypatch.setattr("recipebot.rotation.PER_MEAL", 2)
     monkeypatch.setattr("recipebot.rotation.MEALS_PER_DAY", 3)  # all three meals; 2026-09-28 starts at breakfast
     monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
+    monkeypatch.setattr("recipebot.pipeline.appliance_slots", lambda day: [])
     plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 28))
     assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2
     assert {s.category for _, s in plan} == {"high_protein"}
@@ -478,5 +479,6 @@ def test_telegram_off_sends_no_alerts(settings, fixed_now):
 def test_one_meal_a_day_rotates_breakfast_lunch_dinner(monkeypatch):
     from recipebot.rotation import daily_plan
     monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
+    monkeypatch.setattr("recipebot.pipeline.appliance_slots", lambda day: [])
     meals = [daily_plan(date(2026, 9, 28 + i))[0][0] for i in range(3)]
     assert meals == ["breakfast", "lunch", "dinner"] and all(len(daily_plan(date(2026, 9, 28 + i))) == 1 for i in range(3))

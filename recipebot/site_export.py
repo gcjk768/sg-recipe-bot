@@ -92,6 +92,9 @@ def _kcal(recipe: dict) -> int | None:
     return kcal if 20 <= kcal <= 2500 else None
 
 
+APPLIANCE_TAGS = {"ninja_multicooker": "ninja", "vitamix_blender": "vitamix", "magimix_processor": "magimix"}
+
+
 def recipe_tags(category: str, recipe: dict) -> list[str]:
     """Website topics the bot knows for sure: protein (its high_protein category or 25 g+ a
     serving), breakfast (meal tag or category) and baking. Keyword topics are added by the page."""
@@ -107,6 +110,8 @@ def recipe_tags(category: str, recipe: dict) -> list[str]:
         tags.append("breakfast")
     if category.startswith("baking"):
         tags.append("baking")
+    if category in APPLIANCE_TAGS:
+        tags.append(APPLIANCE_TAGS[category])
     return tags
 
 

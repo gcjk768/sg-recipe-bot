@@ -25,7 +25,7 @@ from recipebot.parsing import ParseFailure, parse_reply
 from recipebot.prompts import load_brief_template, load_system_prompt
 from recipebot import telegram as tg
 from recipebot.render import RenderError, render_alert, render_recipe
-from recipebot.rotation import Rotation, Slot, daily_plan
+from recipebot.rotation import Rotation, Slot, appliance_slots, daily_plan
 from recipebot.site_export import safe_export
 from recipebot.videos import safe_refresh as refresh_videos
 from recipebot.telegram import TelegramClient, TelegramError
@@ -330,17 +330,22 @@ class Pipeline:
     def run_daily(self, day: date) -> list[RunReport]:
         """The scheduled day: one run per recipe in rotation.daily_plan, so one bad recipe or a
         truncated reply costs a single post, and each run sees the ones posted before it."""
+        reports = self._run_plan(day, "daily run", [(m, s) for m, s in daily_plan(day)])
+        # the owner, 2026-10-17: the appliance recipes are their own run, never mixed into the meal and bake plan.
+        reports += self._run_plan(day, "appliance run", [(None, s) for s in appliance_slots(day)])
+        refresh_videos(self.settings.site_export_dir, day, self.llm, self.fetcher)  # videos last (the owner): recipes first
+        return reports
+
+    def _run_plan(self, day: date, name: str, plan: list) -> list[RunReport]:
         reports = []
-        plan = daily_plan(day)
-        self.vault.log("🚀", "daily run started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
+        self.vault.log("🚀", f"{name} started", f"{day.isoformat()} · {len(plan)} recipes planned", when=self.now())  # 🚀
         for i, (meal, slot) in enumerate(plan):
             if i:
                 self.sleep(DAILY_PAUSE)
             reports.append(self.run(category=slot.category, theme=slot.theme, count=1, day=day, scheduled=True, meal=meal))
-        refresh_videos(self.settings.site_export_dir, day, self.llm, self.fetcher)  # videos last (the owner): recipes first
         posted = sum(len(r.posted) for r in reports)
         failed = sum(not r.ok for r in reports)
-        self.vault.log("🏁", "daily run finished", f"{posted} of {len(plan)} posted, {failed} failed", when=self.now())  # 🏁
+        self.vault.log("🏁", f"{name} finished", f"{posted} of {len(plan)} posted, {failed} failed", when=self.now())  # 🏁
         return reports
 
     def _run_inner(self, report: RunReport, slot: Slot, *, count: int, servings: int, dry_run: bool, check_pages: bool, meal: str | None = None) -> None:
