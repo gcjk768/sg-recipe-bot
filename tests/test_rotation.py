@@ -75,7 +75,7 @@ def test_one_bake_a_day_alternating_western_and_eastern():
         day = date(2026, 10, 1) + timedelta(days=i)
         bakes = bake_slots(day)
         assert len(bakes) == 1 and bakes[0].category == "baking_cakes" and bake_slots(day) == bakes
-        assert daily_plan(day)[-1] == (None, bakes[0])  # the bake comes after the meal
+        assert daily_plan(day)[-2] == (None, bakes[0])  # the bake comes after the meal
         sides.append(bakes[0].theme.split()[0])
     assert set(sides) == {"Western", "Eastern"}
 
@@ -88,3 +88,10 @@ def test_one_appliance_recipe_a_day_cycling_through_all_three():
         assert (None, appliance_slots(day)[0]) not in daily_plan(day)  # its own run, not in the meal and bake plan
         cats.append(appliance_slots(day)[0].category)
     assert set(cats) == {"ninja_multicooker", "vitamix_blender", "magimix_processor"}
+
+
+def test_every_day_ends_with_a_chicken_breast_takeaway_breakfast():
+    from recipebot.rotation import CHICKEN_BREAKFAST, daily_plan
+    for i in range(3):
+        assert daily_plan(date(2026, 10, 18) + timedelta(days=i))[-1] == ("breakfast", CHICKEN_BREAKFAST)
+    assert CHICKEN_BREAKFAST.category == "high_protein" and "chicken breast" in CHICKEN_BREAKFAST.theme

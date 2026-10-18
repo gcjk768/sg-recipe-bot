@@ -435,7 +435,7 @@ def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch
     monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
     monkeypatch.setattr("recipebot.pipeline.appliance_slots", lambda day: [])
     plan = __import__("recipebot.rotation", fromlist=["daily_plan"]).daily_plan(date(2026, 9, 28))
-    assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2
+    assert [m for m, _ in plan] == ["breakfast"] * 2 + ["lunch"] * 2 + ["dinner"] * 2 + ["breakfast"]  # last: the chicken breast breakfast
     assert {s.category for _, s in plan} == {"high_protein"}
     urls = [f"https://x.com/{i}" for i in range(len(plan))]
     llm = FakeLLM([reply_text([make_recipe(title=f"Dish {i}", category=s.category, meals=["supper"], prep_minutes=5,
@@ -446,7 +446,7 @@ def test_run_daily_posts_each_meal_with_its_tag(settings, fixed_now, monkeypatch
     assert [r.status for r in reports] == ["posted"] * len(plan)
     assert "theme: lunch meal prep for workouts" in llm.calls[2]["user"]
     posts = sent_texts(tg)
-    assert len(posts) == len(plan) and "#breakfast" in posts[0] and "#dinner" in posts[-1]
+    assert len(posts) == len(plan) and "#breakfast" in posts[0] and "#dinner" in posts[-2]
     with History(settings.db_path) as history:  # recorded against the scheduled date, so the loop won't rerun it
         assert len(history.runs_for_day(date(2026, 9, 28))) == len(plan)
 
@@ -481,4 +481,4 @@ def test_one_meal_a_day_rotates_breakfast_lunch_dinner(monkeypatch):
     monkeypatch.setattr("recipebot.rotation.bake_slots", lambda day: [])
     monkeypatch.setattr("recipebot.pipeline.appliance_slots", lambda day: [])
     meals = [daily_plan(date(2026, 9, 28 + i))[0][0] for i in range(3)]
-    assert meals == ["breakfast", "lunch", "dinner"] and all(len(daily_plan(date(2026, 9, 28 + i))) == 1 for i in range(3))
+    assert meals == ["breakfast", "lunch", "dinner"] and all(len(daily_plan(date(2026, 9, 28 + i))) == 2 for i in range(3))

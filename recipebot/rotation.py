@@ -88,6 +88,14 @@ def bake_slots(day: date) -> list[Slot]:
     ]
 
 
+# the owner, 2026-10-18: one chicken breast breakfast a day that he can take away and eat cold.
+CHICKEN_BREAKFAST = Slot(
+    "high_protein",
+    "takeaway breakfast built around chicken breast: a salad, wrap, sandwich or rice box made the night before, "
+    "that travels in a lunchbox and is eaten cold or at room temperature",
+)
+
+
 APPLIANCES = (  # the owner, 2026-10-17: one recipe a day for his appliances, one after another
     ("ninja_multicooker", "one pot dinner or soup in the Ninja multi cooker"),
     ("vitamix_blender", "smoothie, soup, sauce or dip in the Vitamix"),
@@ -104,7 +112,7 @@ def appliance_slots(day: date) -> list[Slot]:
 def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
     """The scheduled day's posts as (meal, slot): MEALS_PER_DAY meals (rotating breakfast, lunch, dinner), PER_MEAL each, all
     high protein meal prep, each built around a different main protein (shifted by one each day),
-    then the day's bakes, which carry no forced meal tag."""
+    then the day's bakes, which carry no forced meal tag, then the chicken breast takeaway breakfast."""
     shift = day.toordinal() % len(PROTEINS)
     plan: list[tuple[str | None, Slot]] = []
     meals = ("breakfast", "lunch", "dinner")
@@ -115,6 +123,7 @@ def daily_plan(day: date) -> list[tuple[str | None, Slot]]:
             style = STYLES[(day.toordinal() * 3 + len(plan)) % len(STYLES)]
             plan.append((meal, Slot("high_protein", f"{meal} meal prep for workouts, built around {protein}, {style} style")))
     plan += [(None, slot) for slot in bake_slots(day)]
+    plan.append(("breakfast", CHICKEN_BREAKFAST))
     return plan  # the appliance recipes are a separate run, see appliance_slots
 
 
