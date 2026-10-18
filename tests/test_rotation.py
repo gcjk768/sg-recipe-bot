@@ -90,8 +90,9 @@ def test_one_appliance_recipe_a_day_cycling_through_all_three():
     assert set(cats) == {"ninja_multicooker", "vitamix_blender", "magimix_processor"}
 
 
-def test_every_day_ends_with_a_chicken_breast_takeaway_breakfast():
-    from recipebot.rotation import CHICKEN_BREAKFAST, daily_plan
-    for i in range(3):
-        assert daily_plan(date(2026, 10, 18) + timedelta(days=i))[-1] == ("breakfast", CHICKEN_BREAKFAST)
-    assert CHICKEN_BREAKFAST.category == "high_protein" and "chicken breast" in CHICKEN_BREAKFAST.theme
+def test_every_day_ends_with_a_different_chicken_breast_salad():
+    from recipebot.rotation import CHICKEN_SALADS, daily_plan
+    days = [date(2026, 10, 18) + timedelta(days=i) for i in range(len(CHICKEN_SALADS))]
+    last = [daily_plan(d)[-1] for d in days]
+    assert all(m == "breakfast" and s.category == "high_protein" and "chicken breast salad" in s.theme for m, s in last)
+    assert len({s.theme for _, s in last}) == len(CHICKEN_SALADS)  # every style once before any repeats
