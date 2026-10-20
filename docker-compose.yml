@@ -7,6 +7,7 @@ services:
     container_name: recipebot
     env_file: .env
     environment:
+      PATH: "/fb:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       PLAYWRIGHT_WS_URL: ws://playwright:3000/
       # TZ from .env wins; Asia/Singapore is only the fallback.
       TZ: ${TZ:-Asia/Singapore}
@@ -18,6 +19,7 @@ services:
       # the owner, 2026-10-08: no Telegram messages (recipes or alerts); the website is the only output.
       TELEGRAM_ENABLED: "false"
     volumes:
+      - /volume1/docker/claude-fallback:/fb:ro   # claude -p fallback wrapper (API key -> subscription); /fb is first on PATH
       - ./data:/data
       - "${VAULT_HOST_PATH:-./data/vault}:/vault"
     # init forwards SIGTERM so "docker stop" ends the sleep loop cleanly instead of waiting to be killed.
