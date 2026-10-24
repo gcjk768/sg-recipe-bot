@@ -53,6 +53,30 @@ services:
         max-size: "5m"
         max-file: "2"
 
+  # Public address for the recipe website: its own Tailscale node "recipes" with Funnel on 443, so the link is
+  # https://recipes.<tailnet>.ts.net and the NAS node is not exposed. Only the static recipe-site is reachable.
+  # First start: no key needed; open the login URL from "docker logs recipes-public" once (state is kept in data/tailscale).
+  recipes-public:
+    image: tailscale/tailscale:stable
+    pull_policy: always
+    container_name: recipes-public
+    hostname: recipes
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY_RECIPES:-}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "true"
+      TS_SERVE_CONFIG: /config/serve.json
+    volumes:
+      - ./data/tailscale:/var/lib/tailscale
+      - ./tailscale-serve.json:/config/serve.json:ro
+    depends_on: [recipe-site]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
   # Optional: Claude Code CLI in a container, with this folder mounted, for editing and operating
   # the bot from the NAS. Not started by "docker compose up"; run it on demand:
   #   docker compose build claude
