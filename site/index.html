@@ -216,6 +216,22 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   .search input { min-width: 0; }
   .count { font-size: .85em; }
 }
+/* foldables (Oppo Find N5 unfolded is a near-square ~700 px screen), tablets: header wraps instead of squeezing buttons */
+@media (min-width: 601px) and (max-width: 900px) {
+  .bar { flex-wrap: wrap; gap: .8rem; }
+  .bar .tools > button { white-space: nowrap; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  dialog { max-height: 94dvh; }
+}
+/* touch screens have no hover: don't leave the lift or glow stuck after a tap */
+@media (hover: none) {
+  .chip:hover { transform: none; }
+  .card:hover, .tile:hover { box-shadow: none; }
+}
+/* notches and rounded corners */
+@supports (padding: env(safe-area-inset-left)) {
+  .wrap { padding-inline: env(safe-area-inset-left) env(safe-area-inset-right); }
+}
 /* phones: stack the header and search, full-screen dialogs, smaller type and tiles */
 @media (max-width: 600px) {
   html { --fs: 1.1rem; }
