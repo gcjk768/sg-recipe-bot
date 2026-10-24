@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 MIN_VIEWS = 20_000            # well watched: a rough "this recipe works for people" signal
 MIN_SECONDS, MAX_SECONDS = 60, 40 * 60  # no shorts, no hour-long streams
 PER_SEARCH = 6                # results asked for per platform per dish
-QUERIES_PER_DAY = 1  # the owner, 2026-10-09: one dish a day; videos come last
+QUERIES_PER_DAY = 3  # the owner, 2026-10-24: scrape more (education); was 1 since 2026-10-09. Videos still come last
 KEEP_DAYS = 90       # older videos leave the website (saved ones stay in the family's browser)
 MAX_VIDEOS = 3000
 
@@ -176,7 +176,7 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
 
 # ---- the recipe inside a video: description + subtitles -> ingredients and steps ----------------
 
-RECIPES_PER_DAY = 1  # model calls a day for writing up video recipes, most watched first (the owner, 2026-10-09)
+RECIPES_PER_DAY = 3  # model calls a day for writing up video recipes, most watched first (the owner, 2026-10-24; was 1)
 RECIPE_SYSTEM = """You turn a cooking video's title, description and transcript into a written recipe for home cooks.
 Use only what the text says. Do not invent ingredients, quantities or steps; leave a quantity out if the text has none.
 Write in the video's main language (Chinese for a Chinese video, English for an English one).

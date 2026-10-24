@@ -223,6 +223,12 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   .grid { grid-template-columns: repeat(2, 1fr); }
   dialog { max-height: 94dvh; }
 }
+/* iPad 11 in: portrait 834 px is the 601-900 block above; landscape 1194 px gets 3 roomy columns and a wrapping header */
+@media (min-width: 901px) and (max-width: 1210px) {
+  .bar { flex-wrap: wrap; gap: .8rem; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .tiles { grid-template-columns: repeat(3, 1fr); }
+}
 /* touch screens have no hover: don't leave the lift or glow stuck after a tap */
 @media (hover: none) {
   .chip:hover { transform: none; }

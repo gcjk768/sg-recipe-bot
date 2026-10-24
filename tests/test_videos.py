@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from recipebot.videos import QUERIES, _seconds, keep, queries_for, refresh
+from recipebot.videos import QUERIES, QUERIES_PER_DAY, _seconds, keep, queries_for, refresh
 
 
 def test_seconds():
@@ -20,7 +20,7 @@ def test_keep_needs_views_and_a_normal_length():
 
 def test_queries_rotate_daily():
     a, b = queries_for(date(2026, 10, 9)), queries_for(date(2026, 10, 10))
-    assert len(a) == 1 and a != b and all(q in QUERIES for q in a + b)
+    assert len(a) == QUERIES_PER_DAY and a != b and all(q in QUERIES for q in a + b)
 
 
 def test_refresh_merges_dedupes_and_survives_a_failing_platform(tmp_path):
