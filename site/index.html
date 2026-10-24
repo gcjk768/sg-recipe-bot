@@ -216,6 +216,36 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   .search input { min-width: 0; }
   .count { font-size: .85em; }
 }
+/* phones: stack the header and search, full-screen dialogs, smaller type and tiles */
+@media (max-width: 600px) {
+  html { --fs: 1.1rem; }
+  html.big { --fs: 1.4rem; }
+  .wrap { width: calc(100% - 1.6rem); }
+  .bar { flex-direction: column; align-items: stretch; gap: .8rem; padding: .9rem 0; }
+  .brand { justify-content: center; flex-wrap: wrap; }
+  .bar .tools { gap: .5rem; }
+  .bar .tools > button { flex: 1; padding: .5rem .6rem; font-size: .9rem; line-height: 1.2; }
+  .hero { padding: 1.4rem 0 1rem; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .search { flex-direction: column; align-items: stretch; }
+  .search .btn { justify-content: center; }
+  .tiles { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+  .tile { min-height: 150px; padding: .8rem; }
+  .tile .te { font-size: 1.8rem; }
+  .tile .tn { font-size: 1.15em; }
+  .grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .khead { flex-wrap: wrap; gap: .4rem .8rem; }
+  .khead .kemoji { font-size: 1rem; }
+  .pagebar .btn, .pagebar .chip { width: 100%; justify-content: center; }
+  .pager button { min-width: 48px; min-height: 48px; padding: 0 .7rem; }
+  dialog { width: 100vw; max-width: 100vw; max-height: 100dvh; height: 100dvh; border-radius: 0; border-width: 0; box-shadow: none; }
+  .dhead { padding: .8rem 1rem; }
+  .dbody { padding: 1rem 1rem 2rem; }
+  .dacts .btn { width: 100%; justify-content: center; }
+  .lrec header { flex-wrap: wrap; }
+  .lrec img { width: 64px; height: 64px; }
+  .addin, .search input { font-size: 16px; } /* iOS zooms into inputs smaller than 16px */
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
@@ -251,6 +281,8 @@ footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 2px solid var(--i
   </form>
   <h2 class="homeh">Categories <span>(类别)</span></h2>
   <div class="tiles" id="tilesT"></div>
+  <h2 class="homeh">By ingredient or dish type <span>(按食材和做法)</span></h2>
+  <div class="tiles" id="tilesM"></div>
   <h2 class="homeh">Cuisines <span>(菜系)</span></h2>
   <div class="tiles" id="tilesK"></div>
   <details class="more-d">
@@ -284,6 +316,7 @@ const KITCHENS = [
   ["chinese", "Chinese", "中餐", "🥢"],
   ["western", "Western", "西餐", "🍽️"],
   ["malay", "Malay", "马来", "🌶️"],
+  ["indian", "Indian", "印度", "🍛"],
   ["french", "French", "法国", "🥐"],
   ["italian", "Italian", "意大利", "🍝"],
   ["korean", "Korean", "韩国", "🥘"],
@@ -321,8 +354,12 @@ const REGIONS = [
   ["mediterranean", "Mediterranean", "地中海", "🫒", /mediterranean|greek|希腊|spanish|西班牙|paella|地中海/i],
 ];
 const TOPICS = [
+  ["challenge", "Master class for experienced cooks", "高手挑战", "🏆", r => has(r, "challenge")],
+  ["soft", "Soft and easy to chew", "软烂好入口", "🥣", r => has(r, "soft") || /steamed eggs?|egg custard|chawanmushi|porridge|congee|silken|soft tofu|egg drop|蒸蛋|蛋羹|粥|豆腐|羹/i.test(text(r))],
+  ["festive", "Festive and reunion dishes", "节庆团圆菜", "🧧", r => has(r, "festive") || /yee sang|pen cai|poon choi|nian gao|braised duck|pineapple tart|festive|盆菜|年糕|卤鸭|鱼生/i.test(text(r))],
+  ["snacks", "Snacks, kuih and dim sum", "小吃点心", "🥟", r => /kuih|kueh|dumpling|siu mai|shumai|har gow|\bbao\b|spring roll|samosa|pancake|ondeh|dim sum|xiao long|puff|点心|包子|饺|糕|粿/i.test(text(r)) && !/cheesecake|pancakes? with/i.test(text(r))],
   ["protein", "High protein, low calorie", "高蛋白低卡", "💪", r => has(r, "protein") && r.kcal > 0 && r.kcal <= LOW_KCAL],
-  ["chicken", "Chicken breast", "鸡胸肉", "🐔", r => /chicken breasts?|鸡胸/i.test(text(r) + " " + (r.ingredients || []).join(" "))],
+  ["chickenbreast", "Chicken breast", "鸡胸肉", "🐔", r => /chicken breasts?|鸡胸/i.test(text(r) + " " + (r.ingredients || []).join(" "))],
   ["pbreakfast", "Protein breakfast", "高蛋白早餐", "🍳", r => has(r, "protein") && has(r, "breakfast")],
   ["breakfast", "Breakfast", "早餐", "🌅", r => has(r, "breakfast")],
   ["baking", "Cakes & baking", "蛋糕烘焙", "🎂", r => has(r, "baking") || /(?<!pan)cake|cookie|muffin|scone|brownie|chiffon|kuih|castella|dorayaki|banana bread|\bloaf\b|\btarts?\b|蛋糕|饼干|烘焙/i.test(text(r)) && !/rice cake|fish ?cake/i.test(text(r))],
@@ -333,6 +370,16 @@ const TOPICS = [
   ["noodles", "Noodles & pasta", "面", "🍜", r => /noodle|pasta|spaghetti|penne|fettuccine|lasagn|\bmee\b|udon|ramen|soba|pad thai|chow fun|hor fun|japchae|laksa|bee hoon|面|米粉|河粉/i.test(text(r))],
   ["rice", "Rice dishes", "饭", "🍚", r => /\brice\b|nasi|bibimbap|bokkeumbap|gohan|donburi|\w+don\b|risotto|biryani|饭|丼/i.test(text(r)) && !/rice paper|rice cake|rice flour/i.test(text(r))],
   ["veg", "Vegetarian", "素食", "🥬", r => (r.ingredients || []).length > 0 && !MEAT.test(text(r) + " " + r.ingredients.join(" "))],
+  ["chicken", "Chicken", "鸡肉", "🍗", r => /chicken|鸡/i.test(text(r)), "m"],
+  ["pork", "Pork", "猪肉", "🐖", r => /pork|bacon|char siu|siu yuk|ribs|猪|叉烧|排骨/i.test(text(r)), "m"],
+  ["beef", "Beef", "牛肉", "🥩", r => /beef|steak|rendang|brisket|wellington|牛/i.test(text(r)), "m"],
+  ["fish", "Fish and seafood", "鱼和海鲜", "🐟", r => /fish|salmon|cod\b|barramundi|bass|snapper|tuna|prawn|shrimp|crab|squid|clam|mussel|seafood|鱼|虾|蟹/i.test(text(r)), "m"],
+  ["eggs", "Eggs", "鸡蛋", "🥚", r => /\beggs?\b|omelet|frittata|shakshuka|tamago|蛋/i.test(text(r)), "m"],
+  ["vegtofu", "Vegetables and tofu", "蔬菜豆腐", "🥦", r => /tofu|bok choy|choy sum|broccoli|spinach|cabbage|eggplant|aubergine|mushroom|vegetable|green beans?|greens|豆腐|青菜|菜|茄/i.test(text(r))  && !/dashi|bonito/i.test(text(r)), "m"],
+  ["curry", "Curries", "咖喱", "🍛", r => /curry|rendang|masala|\bdha?l\b|korma|咖喱/i.test(text(r)), "m"],
+  ["stirfry", "Stir-fries", "炒菜", "🍳", r => /stir.?fr(y|ied)|炒/i.test(text(r)), "m"],
+  ["steamed", "Steamed dishes", "蒸菜", "♨️", r => /steam|蒸/i.test(text(r)), "m"],
+  ["porridge", "Porridge and congee", "粥", "🥣", r => /porridge|congee|jook|粥/i.test(text(r)), "m"],
 ];
 const $ = s => document.querySelector(s);
 // Jumps to an element with an instant window.scrollTo:
@@ -526,7 +573,7 @@ const CATS = () => [
   ...REGIONS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => re.test(where(r)), group: "k" })),
   ...DIALECTS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => r.cuisine === "chinese" || r.cuisine === "malay" ? re.test(where(r)) : false, group: "d" })),
   { k: "videos", en: "Video recipes", zh: "视频食谱", e: "🎥", test: r => !!r.video, group: "t" },
-  ...TOPICS.map(([k, en, zh, e, test]) => ({ k, en, zh, e, test, group: "t" })),
+  ...TOPICS.map(([k, en, zh, e, test, group]) => ({ k, en, zh, e, test, group: group || "t" })),
   { k: "quick", en: `Under ${QUICK} min`, zh: `${QUICK}分钟内`, e: "⚡", test: r => r.minutes > 0 && r.minutes <= QUICK, group: "t" },
 ];
 // Cakes & baking: proven recipes first. Stars are pulled toward 4.0 until there are ~20 ratings,
@@ -552,6 +599,7 @@ function showHome() {
   $("#tilesK").replaceChildren(...shown("k").map(tile));
   $("#tilesD").replaceChildren(...shown("d").map(tile));
   $("#tilesT").replaceChildren(...shown("t").map(tile));
+  $("#tilesM").replaceChildren(...shown("m").map(tile));
 }
 
 function showPage(key, pageNo, words) {
