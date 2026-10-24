@@ -151,6 +151,9 @@ h1 em { font-style: italic; font-weight: 500; color: var(--seal); }
 .card[hidden] { display: none; }
 .cardlink { display: flex; flex-direction: column; flex: 1; width: 100%; text-align: left; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
 .heart { position: absolute; right: .7rem; top: .7rem; z-index: 2; width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--ink); background: var(--card); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.adder { display: grid; gap: .5rem; margin-bottom: 1.2rem; }
+.addin { font: inherit; padding: .7rem .9rem; border: 2px solid var(--line, #d9cfc0); border-radius: 10px; min-width: 0; }
+.addmsg { margin: 0; color: var(--seal); min-height: 1.2em; }
 .heart.saved { background: #fde3dc; color: var(--seal); }
 .photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, var(--saffron), var(--seal)); }
 .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -435,8 +438,32 @@ function showDetail(r) {
   d.showModal();
 }
 
+// Paste a link from anywhere and keep it in My list. The page can't read other sites (CORS), so only the
+// link and a name are stored: no photo or ingredients. ponytail: per browser like every save; a server-side add would need a backend.
+function addLink(rawUrl, name) {
+  let u;
+  try { u = new URL(rawUrl.trim()); } catch (_) { return "That is not a web address. (这不是网址。)"; }
+  if (u.protocol !== "https:") return "Please use a link starting with https://. (请用 https:// 开头的链接。)";
+  if (saved.some(x => x.url === u.href)) return "Already in your list. (已经收藏了。)";
+  const site = u.hostname.replace(/^www\./, "");
+  const slug = decodeURIComponent(u.pathname.split("/").filter(Boolean).pop() || "").replace(/\.\w+$/, "").replace(/[-_]+/g, " ").trim();
+  const title = name.trim() || (slug ? slug[0].toUpperCase() + slug.slice(1) : site);
+  const r = { cuisine: "others", zh: "", title, url: u.href, site, minutes: null, serves: null, ingredients: [], steps: [], image: null };
+  saved = [r, ...saved];
+  store.set("savedRecipes", saved);
+  if (!recipes.some(x => x.url === r.url)) recipes.push(r);
+  updateSaveUI();
+  return "";
+}
+
 function showList() {
   const d = $("#mylist");
+  const url = h("input", { type: "url", placeholder: "Paste a recipe link (粘贴菜谱链接) https://…", "aria-label": "Recipe link", class: "addin" });
+  const name = h("input", { type: "text", placeholder: "Name, optional (菜名，可不填)", "aria-label": "Recipe name", class: "addin" });
+  const msg = h("p", { class: "addmsg", role: "status" });
+  const add = () => { const err = addLink(url.value, name.value); if (err) msg.textContent = err; else showList(); };
+  url.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
+  const adder = h("div", { class: "adder noprint" }, url, name, h("button", { class: "btn btn-main", text: "💾 Save link (保存链接)", onclick: add }), msg);
   const blocks = saved.map(r => h("section", { class: "lrec" },
     h("header", {},
       https(r.image) ? h("img", { src: r.image, alt: "", referrerpolicy: "no-referrer", class: "noprint" }) : null,
@@ -448,6 +475,7 @@ function showList() {
   d.replaceChildren(
     h("div", { class: "dhead" }, h("h3", { text: `❤ My list (我的清单) · ${saved.length}` }), h("button", { class: "dclose noprint", "aria-label": "Close", text: "✕", onclick: () => d.close() })),
     h("div", { class: "dbody" },
+      adder,
       saved.length ? h("p", { class: "noprint", text: "Tick what you already have or have bought. (已有或买好的打勾。)" }) : null,
       ...(saved.length ? blocks : [h("p", { class: "lempty", text: "Nothing saved yet. Tap the ♡ on any dish. (还没有收藏，点 ♡ 就可以。)" })]),
       saved.length ? h("div", { class: "dacts noprint" },
