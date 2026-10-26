@@ -66,6 +66,15 @@ QUERIES: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
 )
 
 
+# the owner, 2026-10-27: one website category per favourite YouTube channel (tag, name, uploads page, cuisine).
+# Every upload counts, with no view floor: the channel is the quality signal and new uploads start small.
+CHANNELS: tuple[tuple[str, str, str, str], ...] = (
+    ("thepantryboy", "The Pantry Boy", "https://www.youtube.com/@thepantryboy/videos", "chinese"),
+    ("meatmen", "The Meatmen Channel", "https://www.youtube.com/@themeatmensg/videos", "chinese"),
+)
+CHANNEL_VIDEOS = 30  # latest uploads read per channel each day
+
+
 def queries_for(day: date) -> list[tuple[str, str, str, tuple[str, ...]]]:
     start = (day.toordinal() * QUERIES_PER_DAY) % len(QUERIES)
     return [QUERIES[(start + i) % len(QUERIES)] for i in range(QUERIES_PER_DAY)]
@@ -103,7 +112,15 @@ def _run_json_lines(cmd: list[str], timeout: int = 120) -> list[dict]:
 
 
 def youtube_search(query: str, n: int = PER_SEARCH) -> list[dict]:
-    rows = _run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", f"ytsearch{n}:{query}"])
+    return _youtube_videos(_run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", f"ytsearch{n}:{query}"]))
+
+
+def youtube_channel(url: str, n: int = CHANNEL_VIDEOS) -> list[dict]:
+    """The channel's latest n uploads (its /videos tab, so no shorts)."""
+    return _youtube_videos(_run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", "--playlist-end", str(n), url]))
+
+
+def _youtube_videos(rows: list[dict]) -> list[dict]:
     videos = []
     for d in rows:
         url = d.get("url") or (f"https://www.youtube.com/watch?v={d['id']}" if d.get("id") else "")
@@ -132,9 +149,9 @@ def bilibili_search(query: str, n: int = PER_SEARCH) -> list[dict]:
     } for d in data if d.get("bvid")]
 
 
-def keep(v: dict) -> bool:
+def keep(v: dict, min_views: int = MIN_VIEWS) -> bool:
     return (v.get("url", "").startswith("https://") and bool(v.get("title"))
-            and (v.get("views") or 0) >= MIN_VIEWS
+            and (v.get("views") or 0) >= min_views
             and v.get("seconds") is not None and MIN_SECONDS <= v["seconds"] <= MAX_SECONDS)
 
 
@@ -166,12 +183,49 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
     kept = [v for v in videos if v.get("added", "") >= cutoff]
     if added or len(kept) < len(videos):
         videos = (added + kept)[:MAX_VIDEOS]
-        tmp = path.with_name(path.name + ".tmp")
-        tmp.write_text(json.dumps(videos, ensure_ascii=False), encoding="utf-8")
-        os.chmod(tmp, 0o644)
-        os.replace(tmp, path)
+        _save(path, videos)
     log.info("videos: %d new (%d total)", len(added), len(videos))
     return len(added)
+
+
+def refresh_channels(out_dir: Path, day: date, reader=youtube_channel) -> int:
+    """Adds each channel in CHANNELS's new uploads to videos.json, tagged with the channel's key
+    (a video the dish search already found just gets the tag). Returns how many were added."""
+    path = out_dir / "videos.json"
+    try:
+        videos: list[dict] = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        videos = []
+    by_url = {v["url"]: v for v in videos}
+    added, changed = [], False
+    for tag, name, url, cuisine in CHANNELS:
+        try:
+            found = reader(url)
+        except Exception as exc:  # noqa: BLE001 - one channel failing must not stop the other
+            log.warning("channel %s failed: %s", name, exc)
+            continue
+        for v in found:
+            old = by_url.get(v["url"])
+            if old is not None:
+                if tag not in old.setdefault("tags", []):
+                    old["tags"].append(tag)
+                    changed = True
+            elif keep(v, min_views=0):
+                by_url[v["url"]] = new = {**v, "channel": v["channel"] or name, "dish": v["title"], "dish_zh": "",
+                                          "cuisine": cuisine, "tags": [tag], "added": day.isoformat()}
+                added.append(new)
+    if added or changed:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        _save(path, (added + videos)[:MAX_VIDEOS])
+    log.info("channels: %d new videos", len(added))
+    return len(added)
+
+
+def _save(path: Path, videos: list[dict]) -> None:
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(videos, ensure_ascii=False), encoding="utf-8")
+    os.chmod(tmp, 0o644)
+    os.replace(tmp, path)
 
 
 # ---- the recipe inside a video: description + subtitles -> ingredients and steps ----------------
@@ -284,10 +338,7 @@ def write_up(out_dir: Path, llm, fetcher, limit: int = RECIPES_PER_DAY, texts=No
         if recipe:
             v.update(recipe)
             written += 1
-    tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(json.dumps(videos, ensure_ascii=False), encoding="utf-8")
-    os.chmod(tmp, 0o644)
-    os.replace(tmp, path)
+    _save(path, videos)
     log.info("videos: %d recipes written from %d checked", written, len(todo))
     return written
 
@@ -297,6 +348,7 @@ def safe_refresh(out_dir: Path | None, day: date, llm=None, fetcher=None) -> Non
         return
     try:
         refresh(out_dir, day)
+        refresh_channels(out_dir, day)
         if llm is not None:
             write_up(out_dir, llm, fetcher)
     except Exception as exc:  # noqa: BLE001 - the website must never cost a daily run

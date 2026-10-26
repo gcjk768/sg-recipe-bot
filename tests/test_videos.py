@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from recipebot.videos import QUERIES, QUERIES_PER_DAY, _seconds, keep, queries_for, refresh
+from recipebot.videos import CHANNELS, QUERIES, QUERIES_PER_DAY, _seconds, keep, queries_for, refresh, refresh_channels
 
 
 def test_seconds():
@@ -103,3 +103,23 @@ def test_refresh_drops_videos_older_than_three_months(tmp_path):
     (tmp_path / "videos.json").write_text(json.dumps([recent, old]), encoding="utf-8")
     refresh(tmp_path, date(2026, 10, 9), {"youtube": lambda q: []})
     assert [v["url"][-3:] for v in json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))] == ["new"]
+
+
+def test_channels_keep_every_upload_and_tag_videos_already_found(tmp_path):
+    found = {"platform": "youtube", "url": "https://www.youtube.com/watch?v=old", "title": "Claypot rice", "channel": "",
+             "views": 50_000, "seconds": 400, "added": "2026-10-01", "tags": []}
+    (tmp_path / "videos.json").write_text(json.dumps([found]), encoding="utf-8")
+    fresh = {**found, "url": "https://www.youtube.com/watch?v=new", "views": 300}  # new upload, few views
+    short = {**fresh, "url": "https://www.youtube.com/watch?v=s", "seconds": 20}
+
+    def reader(url):
+        if "meatmen" in url:
+            raise RuntimeError("yt-dlp failed")
+        return [found, fresh, short]
+
+    assert refresh_channels(tmp_path, date(2026, 10, 27), reader) == 1
+    stored = {v["url"][-3:]: v for v in json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))}
+    tag, name = CHANNELS[0][:2]
+    assert set(stored) == {"old", "new"} and stored["old"]["tags"] == [tag]
+    assert stored["new"]["tags"] == [tag] and stored["new"]["channel"] == name and stored["new"]["added"] == "2026-10-27"
+    assert refresh_channels(tmp_path, date(2026, 10, 28), reader) == 0

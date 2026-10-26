@@ -907,6 +907,9 @@ const CATS = () => [
   ...REGIONS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => re.test(where(r)), group: "k" })),
   ...DIALECTS.map(([k, en, zh, e, re]) => ({ k, en, zh, e, test: r => r.cuisine === "chinese" || r.cuisine === "malay" ? re.test(where(r)) : false, group: "d" })),
   { k: "videos", en: "Video recipes", zh: "视频食谱", e: "🎥", test: r => !!r.video, group: "t" },
+  // the owner, 2026-10-27: one tile per favourite YouTube channel; the tag is recipebot/videos.py CHANNELS
+  { k: "thepantryboy", en: "The Pantry Boy", zh: "YouTube 频道", e: "🧑‍🍳", test: r => has(r, "thepantryboy"), group: "t" },
+  { k: "meatmen", en: "The Meatmen Channel", zh: "YouTube 频道", e: "🍖", test: r => has(r, "meatmen"), group: "t" },
   ...TOPICS.map(([k, en, zh, e, test, group]) => ({ k, en, zh, e, test, group: group || "t" })),
   { k: "quick", en: `Under ${QUICK} min`, zh: `${QUICK}分钟内`, e: "⚡", test: r => r.minutes > 0 && r.minutes <= QUICK, group: "t" },
 ];
