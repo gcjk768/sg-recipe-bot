@@ -110,16 +110,36 @@ def test_channels_keep_every_upload_and_tag_videos_already_found(tmp_path):
              "views": 50_000, "seconds": 400, "added": "2026-10-01", "tags": []}
     (tmp_path / "videos.json").write_text(json.dumps([found]), encoding="utf-8")
     fresh = {**found, "url": "https://www.youtube.com/watch?v=new", "views": 300}  # new upload, few views
-    short = {**fresh, "url": "https://www.youtube.com/watch?v=s", "seconds": 20}
+    short = {**fresh, "url": "https://www.youtube.com/watch?v=sht", "seconds": None}  # shorts come without a length
+    stream = {**fresh, "url": "https://www.youtube.com/watch?v=liv", "seconds": 3 * 3600}
+    calls = []
 
-    def reader(url):
+    def reader(url, n=30):
+        calls.append(n)
         if "meatmen" in url:
             raise RuntimeError("yt-dlp failed")
-        return [found, fresh, short]
+        return [found, fresh, short, stream]
 
-    assert refresh_channels(tmp_path, date(2026, 10, 27), reader) == 1
+    assert refresh_channels(tmp_path, date(2026, 10, 27), reader) == 2
     stored = {v["url"][-3:]: v for v in json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))}
     tag, name = CHANNELS[0][:2]
-    assert set(stored) == {"old", "new"} and stored["old"]["tags"] == [tag]
+    assert set(stored) == {"old", "new", "sht"} and stored["old"]["tags"] == [tag]
     assert stored["new"]["tags"] == [tag] and stored["new"]["channel"] == name and stored["new"]["added"] == "2026-10-27"
-    assert refresh_channels(tmp_path, date(2026, 10, 28), reader) == 0
+    assert refresh_channels(tmp_path, date(2026, 10, 28), reader, full=True) == 0 and calls[-1] is None
+
+
+def test_channel_backfill_is_not_new_and_never_ages_out(tmp_path):
+    from recipebot import videos
+    rows = [{"platform": "youtube", "url": f"https://www.youtube.com/watch?v={i}", "title": f"Dish {i}", "channel": "c",
+             "views": 5, "seconds": 300} for i in range(videos.CHANNEL_NEW + 5)]
+    refresh_channels(tmp_path, date(2026, 1, 1), lambda url, n=30: rows if "pantry" in url else [])
+    stored = json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))
+    assert sum(not v.get("backfill") for v in stored) == videos.CHANNEL_NEW  # only the newest count as new
+    refresh(tmp_path, date(2026, 10, 9), {"youtube": lambda q: []})  # 9 months later
+    assert len(json.loads((tmp_path / "videos.json").read_text(encoding="utf-8"))) == len(rows)
+
+
+def test_shorts_get_the_watch_url_the_player_needs():
+    from recipebot.videos import _youtube_videos
+    [v] = _youtube_videos([{"id": "abc", "url": "https://www.youtube.com/shorts/abc", "title": "t"}])
+    assert v["url"] == "https://www.youtube.com/watch?v=abc" and v["seconds"] is None

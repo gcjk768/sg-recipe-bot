@@ -746,7 +746,7 @@ let recipes = [];
 // "New" lasts a week (the owner): anything added in the last 7 days, today included, local time.
 const NEW_DAYS = 7;
 const weekAgo = (() => { const d = new Date(); d.setDate(d.getDate() - (NEW_DAYS - 1)); return d.toLocaleDateString("en-CA"); })(); // YYYY-MM-DD
-const isNew = r => !!r.added && r.added >= weekAgo;
+const isNew = r => !!r.added && r.added >= weekAgo && !r.backfill; // backfill: a channel's back catalogue
 
 // ---- saved list (kept in this browser: localStorage) ----
 const store = {
@@ -884,7 +884,7 @@ function card(r) {
   if (isNew(r)) box.append(h("span", { class: "new", text: "🆕 New" }));
   const fast = !r.video && r.minutes && r.minutes <= QUICK;
   const meta = r.video
-    ? [`▶ ${Math.floor(r.seconds / 60)}:${String(r.seconds % 60).padStart(2, "0")} video`, r.platform === "bilibili" ? "Bilibili" : "YouTube"].join(" · ")
+    ? [r.seconds ? `▶ ${Math.floor(r.seconds / 60)}:${String(r.seconds % 60).padStart(2, "0")} video` : "▶ Short video", r.platform === "bilibili" ? "Bilibili" : "YouTube"].join(" · ")
     : [mins(r), r.serves && `serves ${r.serves}`].filter(Boolean).join(" · ");
   // The whole card opens our own recipe window; the original site is one button inside it.
   return h("article", { class: "card" },

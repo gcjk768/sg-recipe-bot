@@ -67,12 +67,15 @@ QUERIES: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
 
 
 # the owner, 2026-10-27: one website category per favourite YouTube channel (tag, name, uploads page, cuisine).
-# Every upload counts, with no view floor: the channel is the quality signal and new uploads start small.
+# Every upload counts, shorts included, with no view floor: the channel is the quality signal and new
+# uploads start small. Channel videos never age out (KEEP_DAYS), so the whole back catalogue stays.
 CHANNELS: tuple[tuple[str, str, str, str], ...] = (
-    ("thepantryboy", "The Pantry Boy", "https://www.youtube.com/@thepantryboy/videos", "chinese"),
-    ("meatmen", "The Meatmen Channel", "https://www.youtube.com/@themeatmensg/videos", "chinese"),
+    ("thepantryboy", "The Pantry Boy", "https://www.youtube.com/@thepantryboy", "chinese"),
+    ("meatmen", "The Meatmen Channel", "https://www.youtube.com/@themeatmensg", "chinese"),
 )
-CHANNEL_VIDEOS = 30  # latest uploads read per channel each day
+CHANNEL_TAGS = {c[0] for c in CHANNELS}
+CHANNEL_VIDEOS = 30  # latest uploads read per tab (videos, shorts) each day; refresh_channels(full=True) reads all
+CHANNEL_NEW = 10     # at most this many per channel per run count as "New this week" (a backfill is not new)
 
 
 def queries_for(day: date) -> list[tuple[str, str, str, tuple[str, ...]]]:
@@ -115,15 +118,22 @@ def youtube_search(query: str, n: int = PER_SEARCH) -> list[dict]:
     return _youtube_videos(_run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", f"ytsearch{n}:{query}"]))
 
 
-def youtube_channel(url: str, n: int = CHANNEL_VIDEOS) -> list[dict]:
-    """The channel's latest n uploads (its /videos tab, so no shorts)."""
-    return _youtube_videos(_run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", "--playlist-end", str(n), url]))
+def youtube_channel(url: str, n: int | None = CHANNEL_VIDEOS) -> list[dict]:
+    """The channel's latest n videos and n shorts, newest first (n=None: everything)."""
+    limit = ["--playlist-end", str(n)] if n else []
+    videos = []
+    for tab in ("videos", "shorts"):
+        videos += _youtube_videos(_run_json_lines(["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", "--sleep-requests", "1",
+                                                   *limit, f"{url}/{tab}"], timeout=900))
+    return videos
 
 
 def _youtube_videos(rows: list[dict]) -> list[dict]:
     videos = []
     for d in rows:
-        url = d.get("url") or (f"https://www.youtube.com/watch?v={d['id']}" if d.get("id") else "")
+        url = d.get("url") or ""
+        if d.get("id") and (not url or "/shorts/" in url):  # one URL form, so the site's player and dedupe work
+            url = f"https://www.youtube.com/watch?v={d['id']}"
         thumbs = d.get("thumbnails") or []
         videos.append({
             "platform": "youtube", "title": d.get("title") or "", "url": url, "channel": d.get("channel") or d.get("uploader") or "",
@@ -180,7 +190,7 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
                     added.append({**v, "dish": en.replace(" recipe", ""), "dish_zh": zh.replace(" 做法", ""),
                                   "cuisine": cuisine, "tags": list(tags), "added": day.isoformat()})
     cutoff = date.fromordinal(day.toordinal() - KEEP_DAYS).isoformat()
-    kept = [v for v in videos if v.get("added", "") >= cutoff]
+    kept = [v for v in videos if v.get("added", "") >= cutoff or CHANNEL_TAGS & set(v.get("tags") or [])]
     if added or len(kept) < len(videos):
         videos = (added + kept)[:MAX_VIDEOS]
         _save(path, videos)
@@ -188,7 +198,7 @@ def refresh(out_dir: Path, day: date, searchers=None) -> int:
     return len(added)
 
 
-def refresh_channels(out_dir: Path, day: date, reader=youtube_channel) -> int:
+def refresh_channels(out_dir: Path, day: date, reader=youtube_channel, full: bool = False) -> int:
     """Adds each channel in CHANNELS's new uploads to videos.json, tagged with the channel's key
     (a video the dish search already found just gets the tag). Returns how many were added."""
     path = out_dir / "videos.json"
@@ -200,19 +210,23 @@ def refresh_channels(out_dir: Path, day: date, reader=youtube_channel) -> int:
     added, changed = [], False
     for tag, name, url, cuisine in CHANNELS:
         try:
-            found = reader(url)
+            found = reader(url, None) if full else reader(url)
         except Exception as exc:  # noqa: BLE001 - one channel failing must not stop the other
             log.warning("channel %s failed: %s", name, exc)
             continue
+        fresh = 0
         for v in found:
             old = by_url.get(v["url"])
             if old is not None:
                 if tag not in old.setdefault("tags", []):
                     old["tags"].append(tag)
                     changed = True
-            elif keep(v, min_views=0):
+            elif v["url"].startswith("https://") and v["title"] and (v["seconds"] or 0) <= MAX_SECONDS:  # shorts have no length
                 by_url[v["url"]] = new = {**v, "channel": v["channel"] or name, "dish": v["title"], "dish_zh": "",
                                           "cuisine": cuisine, "tags": [tag], "added": day.isoformat()}
+                fresh += 1
+                if fresh > CHANNEL_NEW:
+                    new["backfill"] = True
                 added.append(new)
     if added or changed:
         out_dir.mkdir(parents=True, exist_ok=True)
